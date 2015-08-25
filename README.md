@@ -1,4 +1,4 @@
-# Declarative Styling of Complex Components
+# Concise Declarative Styling of Complex Components
 
 ```js
 <DropDown style={`
@@ -20,55 +20,20 @@
 </DropDown>
 ```
 
-## `styleTypes`: expose state
-
-```js
-class DropDown extends React.Component {
-  static styleTypes = {
-    expanded: React.PropTypes.bool,
-  };
-
-  getStyleState () {
-    return {
-      expanded: this.state.expanded,
-    };
-  }
-
-  // ...
-
-}
-
-class DropDownItem extends React.Component {
-  static styleTypes = {
-    selected: React.PropTypes.bool,
-  };
-
-  getStyleState () {
-    return {
-      selected: this.state.selected,
-    };
-  }
-
-  // ...
-
-}
-```
-
 ## Why not just expose props that provide hooks into state?
 
 Example:
 
 ```js
-<DropDown expandedStyle={{
+<DropDown expandedStyle={`
   border: 1px solid black;
-}} />
+`} />
 ```
 
 This is essentially all we're doing, but with one crucial difference: we're explicitly declaring
 what state is available. This has some subtle yet powerful benefits.
 
-For instance, suppose you're refactoring some existing code to use this shiny new `<DropDown>` component,
-and for whatever reason it's just not obeying your demands:
+For instance, suppose you're using this `DropDown` for the first time, and you write something like this:
 
 ```js
 class FancyForm extends React.Component {
@@ -76,7 +41,7 @@ class FancyForm extends React.Component {
     return (
       <DropDown style={`
         &:expand {
-          color: red;
+          border: 1px solid black;
         }
       `} />;
     );
@@ -87,8 +52,44 @@ class FancyForm extends React.Component {
 You flip over to your browser and see this friendly warning:
 
 ```
-Warning: Style state `expand` was not specified in `DropDown`. Available style state parameters are: `expanded`. Check the render method of `FancyForm`.
+Warning: Style state `expand` was not specified in `DropDown`. Available states are: `expanded`. Check the render method of `FancyForm`.
 ```
 
 How friendly -- you didn't even need to check the documentation of `DropDown` to fix the issue!
 
+Furthermore, this leads to a cleaner implementation on our `DropDown` component;
+
+```js
+// Standard props:
+
+class DropDown extends React.Component {
+  static propTypes = {
+    expandedStyle: React.PropTypes.object,
+  };
+
+  render () {
+    return <div style={[
+      this.props.style,
+      this.state.expanded && this.props.expandedStyle,
+    ]} />;
+  }
+}
+
+// With styleStateTypes:
+
+class DropDown extends React.Component {
+  static styleStateTypes = {
+    expanded: React.PropTypes.bool,
+  };
+
+  getStyleState () {
+    return {
+      expanded: this.state.expanded,
+    };
+  }
+
+  render () {
+    return <div style={getStyles()} />;
+  }
+}
+```
