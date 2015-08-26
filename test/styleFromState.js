@@ -82,9 +82,13 @@ runTests({
       capability: 'should group default styles into a single object',
       input: {
         state: {
+          expanded: true,
         },
         style: {
           backgroundColor: 'whitesmoke',
+          '&:expanded': {
+            color: 'red',
+          },
           color: 'black',
         },
       },
@@ -92,8 +96,9 @@ runTests({
       expected: [
         {
           backgroundColor: 'whitesmoke',
-          color: 'black'
+          color: 'black',
         },
+        {color: 'red'},
       ],
     },
   ],
