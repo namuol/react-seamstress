@@ -1,4 +1,6 @@
-# Declarative Styling of Complex Components
+# Declarative Styling of Complex React Components
+
+**Note**: This is an experiment. Please use the [issues](http://)
 
 ```js
 <DropDown style={{
@@ -57,11 +59,11 @@ Warning: Style state `active` was not specified in `DropDown`. Available states 
 
 How friendly -- you didn't even need to check the documentation of `DropDown` to fix the issue!
 
-Furthermore, this leads to a cleaner implementation on our `DropDown` component;
+Furthermore, this leads to a cleaner implementation on our `DropDown` component.
+
+Here's an implementation using a standard prop to expose `expandedStyle`:
 
 ```js
-// Standard props:
-
 class DropDown extends React.Component {
   static propTypes = {
     expandedStyle: React.PropTypes.object,
@@ -74,12 +76,16 @@ class DropDown extends React.Component {
     ]} />;
   }
 }
+```
 
-// With styleStateTypes:
+...and here's an example using a decorator that provides us with `styleStateProps`,
+`getStyleState()` and `getStyle()`:
 
+```js
+@HasDeclarativeStyles
 class DropDown extends React.Component {
   static styleStateTypes = {
-    expanded: React.PropTypes.bool,
+    expanded: React.PropTypes.bool.isRequired,
   };
 
   getStyleState () {
@@ -89,7 +95,71 @@ class DropDown extends React.Component {
   }
 
   render () {
-    return <div style={getStyle()} />;
+    return <div style={this.getStyle()} />;
   }
+}
+```
+
+In our example, `getStyle()` effectively does the work of composing style props as done manually in the first example.
+
+## "This is just syntactic sugar/I prefer the `expandedStyle` prop approach"
+
+This approach offers more than a shorthand for providing hooks into state-aware styles.
+
+For example, we can compose multiple 
+
+## Other possibilities/unimplemented features
+
+Sub-component styling could be achieved with `::pseudo-element` inspired syntax.
+
+Here's a hypothetical example of a `DropDown` that has a dropdown indicator
+(usually something like a down arrow/triangle) which can be styled:
+
+```js
+@HasDeclarativeStyles
+class DropDown extends React.Component {
+  static styleStateTypes = {
+    expanded: React.PropTypes.bool.isRequired,
+  };
+
+  getStyleState () {
+    return {
+      expanded: this.state.expanded,
+    };
+  }
+
+  render () {
+    return (
+      <div style={this.getStyle()}>
+        <div style={this.getStyleFor('indicator')} />
+        {
+          // ...
+        }
+      </div>
+    );
+  }
+}
+```
+
+Here's how such a component could be used:
+
+```js
+<DropDown style={{
+  '&::indicator': {
+    display: 'none',
+  }
+}}
+```
+
+We could provide developers with something like `subComponentNames` to explicitly declar which sub-components are available, enabling helpful warning messages/static analysis:
+
+```js
+@HasDeclarativeStyles
+class Dropdown extends React.Component {
+  static subComponentNames = {
+    'indicator',
+  };
+
+  // ...
 }
 ```
