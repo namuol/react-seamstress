@@ -1,13 +1,13 @@
-# Concise Declarative Styling of Complex Components
+# Declarative Styling of Complex Components
 
 ```js
-<DropDown style={`
+<DropDown style={{
   &:expanded: {
-    border: 1px solid black;
+    border: '1px solid black',
   }
-`}>
+}}>
   {items.map(item => 
-    <DropDownItem style={`
+    <DropDownItem style={{
       background-color: #0f0;
       color: #f0f;
       
@@ -15,7 +15,7 @@
         background-color: #f0f;
         color: #0f0;
       }
-    `} />
+    }} />
   )}
 </DropDown>
 ```
@@ -25,9 +25,9 @@
 Example:
 
 ```js
-<DropDown expandedStyle={`
-  border: 1px solid black;
-`} />
+<DropDown expandedStyle={{
+  border: '1px solid black',
+}} />
 ```
 
 This is essentially all we're doing, but with one crucial difference: we're explicitly declaring
@@ -39,11 +39,11 @@ For instance, suppose you're using this `DropDown` for the first time, and you w
 class FancyForm extends React.Component {
   render () {
     return (
-      <DropDown style={`
-        &:expand {
-          border: 1px solid black;
+      <DropDown style={{
+        '&:active': {
+          border: '1px solid black',
         }
-      `} />;
+      }} />;
     );
   }
 }
@@ -52,7 +52,7 @@ class FancyForm extends React.Component {
 You flip over to your browser and see this friendly warning:
 
 ```
-Warning: Style state `expand` was not specified in `DropDown`. Available states are: `expanded`. Check the render method of `FancyForm`.
+Warning: Style state `active` was not specified in `DropDown`. Available states are: `expanded`. Check the render method of `FancyForm`.
 ```
 
 How friendly -- you didn't even need to check the documentation of `DropDown` to fix the issue!
@@ -89,7 +89,7 @@ class DropDown extends React.Component {
   }
 
   render () {
-    return <div style={getStyles()} />;
+    return <div style={getStyle()} />;
   }
 }
 ```

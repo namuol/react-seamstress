@@ -1,13 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import HasDeclarativeStyles from '../../src/HasDeclarativeStyles';
-import mergeStyles from '../../src/mergeStyles';
 
 @HasDeclarativeStyles
 class Toggler extends Component {
-  static styleStateTypes = {
-    toggled: PropTypes.bool,
-  };
-
   static baseStyle = {
     backgroundColor: '#eee',
     border: '2px solid #aaa',
@@ -15,9 +10,14 @@ class Toggler extends Component {
     height: '20px',
     cursor: 'pointer',
     margin: '5px',
+    display: 'inline-block',
     '&:toggled': {
       backgroundColor: '#aaa',
     },
+  };
+
+  static styleStateTypes = {
+    toggled: PropTypes.bool,
   };
 
   state = (() => {
@@ -71,7 +71,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <Toggler style={RED_STYLE} />
+        <Toggler style={GREEN_STYLE} />
         <Toggler style={GREEN_STYLE} />
         <Toggler style={BLUE_STYLE} />
       </div>

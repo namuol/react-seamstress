@@ -35,7 +35,7 @@ export default function HasDeclarativeStyles (Component) {
 
     getStyle () {
       const state = this.getStyleState();
-      const style = mergeStyles([Component.baseStyle, this.props.style]);
+      const style = mergeStyles([Component.baseStyle, ...arrayify(this.props.style)]);
       return mergeStyles(styleFromState({state, style}));
     }
   }
