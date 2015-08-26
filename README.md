@@ -8,12 +8,12 @@
 }}>
   {items.map(item => 
     <DropDownItem style={{
-      background-color: #0f0;
-      color: #f0f;
+      backgroundColor: '#0f0',
+      color: '#f0f',
       
       &:selected: {
-        background-color: #f0f;
-        color: #0f0;
+        backgroundColor: '#f0f',
+        color: '#0f0',
       }
     }} />
   )}

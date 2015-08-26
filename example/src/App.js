@@ -33,13 +33,13 @@ export default class App extends Component {
         <div>
           <p>Without style:</p>
           <Toggler />
-          <Toggler />
+          <Toggler toggled={true} />
           <Toggler />
         </div>
         <div>
           <p>With style:</p>
           <Toggler style={RED_STYLE} />
-          <Toggler style={GREEN_STYLE} />
+          <Toggler style={GREEN_STYLE} toggled={true} />
           <Toggler style={BLUE_STYLE} />
         </div>
       </div>

@@ -19,9 +19,13 @@ export default class Toggler extends Component {
     toggled: PropTypes.bool,
   };
 
+  static defaultProps = {
+    toggled: false,
+  };
+
   state = (() => {
     return {
-      toggled: this.props.toggled || false,
+      toggled: this.props.toggled,
     };
   }());
   
