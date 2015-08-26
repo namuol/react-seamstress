@@ -1,51 +1,10 @@
-import React, { PropTypes, Component } from 'react';
-import HasDeclarativeStyles from '../../src/HasDeclarativeStyles';
+import React, { Component } from 'react';
 
-@HasDeclarativeStyles
-class Toggler extends Component {
-  static baseStyle = {
-    backgroundColor: '#eee',
-    border: '2px solid #aaa',
-    width: '20px',
-    height: '20px',
-    cursor: 'pointer',
-    margin: '5px',
-    display: 'inline-block',
-    '&:toggled': {
-      backgroundColor: '#aaa',
-    },
-  };
-
-  static styleStateTypes = {
-    toggled: PropTypes.bool,
-  };
-
-  state = (() => {
-    return {
-      toggled: this.props.toggled || false,
-    };
-  }());
-  
-  getStyleState () {
-    return {
-      toggled: this.state.toggled,
-    };
-  }
-
-  render () {
-    return (
-      <div style={this.getStyle()} onClick={() => {
-        this.setState({
-          toggled: !this.state.toggled,
-        });
-      }} />
-    );
-  }
-}
+import Toggler from './Toggler';
 
 const RED_STYLE = {
   border: '2px solid #c66',
-  backgroundColor: '#f88',
+  backgroundColor: '#fbb',
   '&:toggled': {
     backgroundColor: '#c66',
   },
@@ -53,7 +12,7 @@ const RED_STYLE = {
 
 const GREEN_STYLE = {
   border: '2px solid #6c6',
-  backgroundColor: '#8f8',
+  backgroundColor: '#bfb',
   '&:toggled': {
     backgroundColor: '#6c6',
   },
@@ -61,7 +20,7 @@ const GREEN_STYLE = {
 
 const BLUE_STYLE = {
   border: '2px solid #66c',
-  backgroundColor: '#88f',
+  backgroundColor: '#bbf',
   '&:toggled': {
     backgroundColor: '#66c',
   },
@@ -71,9 +30,18 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <Toggler style={GREEN_STYLE} />
-        <Toggler style={GREEN_STYLE} />
-        <Toggler style={BLUE_STYLE} />
+        <div>
+          <p>Without style:</p>
+          <Toggler />
+          <Toggler />
+          <Toggler />
+        </div>
+        <div>
+          <p>With style:</p>
+          <Toggler style={RED_STYLE} />
+          <Toggler style={GREEN_STYLE} />
+          <Toggler style={BLUE_STYLE} />
+        </div>
       </div>
     );
   }

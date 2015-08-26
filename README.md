@@ -2,7 +2,7 @@
 
 ```js
 <DropDown style={{
-  &:expanded: {
+  '&:expanded': {
     border: '1px solid black',
   }
 }}>
