@@ -10,7 +10,7 @@ export default class Toggler extends Component {
     height: '20px',
     cursor: 'pointer',
     margin: '5px',
-    '&:toggled': {
+    ':toggled': {
       backgroundColor: '#aaa',
     },
   };

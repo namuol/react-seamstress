@@ -5,7 +5,7 @@ import Toggler from './Toggler';
 const RED_STYLE = {
   border: '2px solid #c66',
   backgroundColor: '#fbb',
-  '&:toggled': {
+  ':toggled': {
     backgroundColor: '#c66',
   },
 };
@@ -13,7 +13,7 @@ const RED_STYLE = {
 const GREEN_STYLE = {
   border: '2px solid #6c6',
   backgroundColor: '#bfb',
-  '&:toggled': {
+  ':toggled': {
     backgroundColor: '#6c6',
   },
 };
@@ -21,7 +21,7 @@ const GREEN_STYLE = {
 const BLUE_STYLE = {
   border: '2px solid #66c',
   backgroundColor: '#bbf',
-  '&:toggled': {
+  ':toggled': {
     backgroundColor: '#66c',
   },
 };

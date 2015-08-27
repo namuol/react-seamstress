@@ -27,7 +27,7 @@ runTests({
         },
         style: {
           color: 'black',
-          '&:expanded': {
+          ':expanded': {
             color: 'red',
           }
         },
@@ -47,7 +47,7 @@ runTests({
         },
         style: {
           color: 'black',
-          '&:expanded': {
+          ':expanded': {
             color: 'red',
           }
         },
@@ -65,7 +65,7 @@ runTests({
           expanded: true,
         },
         style: {
-          '&:expanded': {
+          ':expanded': {
             color: 'red',
           },
           color: 'black',
@@ -86,7 +86,7 @@ runTests({
         },
         style: {
           backgroundColor: 'whitesmoke',
-          '&:expanded': {
+          ':expanded': {
             color: 'red',
           },
           color: 'black',

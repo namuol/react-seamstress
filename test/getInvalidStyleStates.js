@@ -14,10 +14,10 @@ runTests({
     },
 
     {
-      capability: 'should return an array of each &:style-state that wasn\'t specified on `styleStateTypes`',
+      capability: 'should return an array of each :style-state that wasn\'t specified on `styleStateTypes`',
       input: {
         style: {
-          '&:invalid': {},
+          ':invalid': {},
         },
         styleStateTypes: {},
       },
@@ -25,10 +25,10 @@ runTests({
     },
 
     {
-      capability: 'should not include any &:style-state items that are specified on `styleStateTypes`',
+      capability: 'should not include any :style-state items that are specified on `styleStateTypes`',
       input: {
         style: {
-          '&:valid': {},
+          ':valid': {},
         },
         styleStateTypes: {
           valid: PropTypes.bool,
@@ -38,11 +38,11 @@ runTests({
     },
 
     {
-      capability: 'should correctly handle a mixture of valid and invalid &:style-state items',
+      capability: 'should correctly handle a mixture of valid and invalid :style-state items',
       input: {
         style: {
-          '&:valid': {},
-          '&:invalid': {},
+          ':valid': {},
+          ':invalid': {},
         },
         styleStateTypes: {
           valid: PropTypes.bool,
@@ -55,8 +55,8 @@ runTests({
       capability: 'should not include "toplevel" style items',
       input: {
         style: {
-          '&:valid': {},
-          '&:invalid': {},
+          ':valid': {},
+          ':invalid': {},
           'color': 'red',
         },
         styleStateTypes: {

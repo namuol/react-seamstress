@@ -1,30 +1,26 @@
 # Declarative Styling of Complex React Components
 
-**Note**: This is an experiment. Please use the [issues](http://)
+**Note**: This is an experiment. Please submit
+[issues](https://github.com/namuol/react-declarative-styles/issues) 
+for any bugs/questions/comments/discussion.
+
+----
+
+Idea: custom :pseudo-selector-like abilities in React components.
+
+Example:
 
 ```js
 <DropDown style={{
-  '&:expanded': {
+  ':expanded': {
     border: '1px solid black',
   }
-}}>
-  {items.map(item => 
-    <DropDownItem style={{
-      backgroundColor: '#0f0',
-      color: '#f0f',
-      
-      &:selected: {
-        backgroundColor: '#f0f',
-        color: '#0f0',
-      }
-    }} />
-  )}
-</DropDown>
+}} />
 ```
 
 ## Why not just expose props that provide hooks into state?
 
-Example:
+We can already support this pretty easily with props:
 
 ```js
 <DropDown expandedStyle={{
@@ -32,17 +28,18 @@ Example:
 }} />
 ```
 
-This is essentially all we're doing, but with one crucial difference: we're explicitly declaring
-what state is available. This has some subtle yet powerful benefits.
+However, why not explicitly declare what state is available to styles separately?
+This has some subtle yet powerful benefits.
 
-For instance, suppose you're using this `DropDown` for the first time, and you write something like this:
+For instance, suppose you're using this `DropDown` for the first time,
+and you write something like this:
 
 ```js
 class FancyForm extends React.Component {
   render () {
     return (
       <DropDown style={{
-        '&:active': {
+        ':active': {
           border: '1px solid black',
         }
       }} />;
@@ -54,14 +51,17 @@ class FancyForm extends React.Component {
 You flip over to your browser and see this friendly warning:
 
 ```
-Warning: Style state `active` was not specified in `DropDown`. Available states are: `expanded`. Check the render method of `FancyForm`.
+Warning: Style state `active` was not specified in `DropDown`.
+Available states are: `expanded`. Check the render method of `FancyForm`.
 ```
 
-How friendly -- you didn't even need to check the documentation of `DropDown` to fix the issue!
+How friendly -- you didn't even need to check the documentation of `DropDown`
+to fix the issue!
 
-Furthermore, this leads to a cleaner implementation on our `DropDown` component.
+Furthermore, this leads to a cleaner implementation on our `DropDown`
+component.
 
-Here's an implementation using a standard prop to expose `expandedStyle`:
+Here's how you'd implement this today by exposing the `expandedStyle` prop:
 
 ```js
 class DropDown extends React.Component {
@@ -78,8 +78,8 @@ class DropDown extends React.Component {
 }
 ```
 
-...and here's an example using a decorator that provides us with `styleStateProps`,
-`getStyleState()` and `getStyle()`:
+...and here's an example using a decorator that provides us with
+`styleStateProps`, `getStyleState()` and `getStyle()`:
 
 ```js
 @HasDeclarativeStyles
@@ -100,20 +100,16 @@ class DropDown extends React.Component {
 }
 ```
 
-In our example, `getStyle()` effectively does the work of composing style props as done manually in the first example.
-
-## "This is just syntactic sugar/I prefer the `expandedStyle` prop approach"
-
-This approach offers more than a shorthand for providing hooks into state-aware styles.
-
-For example, we can compose multiple 
+In our example, `getStyle()` effectively does the work of composing
+style props as done manually in the first example.
 
 ## Other possibilities/unimplemented features
 
-Sub-component styling could be achieved with `::pseudo-element` inspired syntax.
+Sub-component styling could be achieved with a `::pseudo-element`-inspired
+interface.
 
-Here's a hypothetical example of a `DropDown` that has a dropdown indicator
-(usually something like a down arrow/triangle) which can be styled:
+Here's a hypothetical example of a `DropDown` that has an indicator
+(such as a down arrow) which can be styled:
 
 ```js
 @HasDeclarativeStyles
@@ -145,13 +141,15 @@ Here's how such a component could be used:
 
 ```js
 <DropDown style={{
-  '&::indicator': {
+  '::indicator': {
     display: 'none',
   }
-}}
+}} />
 ```
 
-We could provide developers with something like `subComponentNames` to explicitly declar which sub-components are available, enabling helpful warning messages/static analysis:
+We could provide developers with something like `subComponentNames` to
+explicitly declare which sub-components are available, enabling helpful
+warning messages/static analysis:
 
 ```js
 @HasDeclarativeStyles

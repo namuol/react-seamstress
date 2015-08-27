@@ -24,11 +24,11 @@ const tests = [
   {
     capability: 'should override nested styles in the order they appear',
     input: [
-      {'&:hover': {color:'red'}},
-      {'&:hover': {color:'black'}},
+      {':hover': {color:'red'}},
+      {':hover': {color:'black'}},
     ],
     expected: [
-      ['&:hover', [
+      [':hover', [
         ['color', 'black'],
       ]],
     ],
@@ -42,11 +42,11 @@ const tests = [
       },
 
       {
-        '&:hover': {
+        ':hover': {
           color: 'red',
         },
         '@media': {
-          '&:hover': {
+          ':hover': {
             color: 'black'
           },
         },
@@ -55,12 +55,12 @@ const tests = [
     ],
 
     expected: [
-      ['&:hover', [
+      [':hover', [
         ['color', 'red'],
       ]],
 
       ['@media', [
-        ['&:hover', [
+        [':hover', [
           ['color', 'black'],
         ]],
       ]],
@@ -89,7 +89,7 @@ const tests = [
       },
       {
         '@media': {
-          '&:hover': {
+          ':hover': {
             color: 'black',
           },
         },
@@ -98,7 +98,7 @@ const tests = [
     expected: [
       ['@media', [
         ['color', 'black'],
-        ['&:hover', [
+        [':hover', [
           ['color', 'black'],
         ]],
       ]],
@@ -118,14 +118,14 @@ const tests = [
       },
       {
         backgroundColor: 'black',
-        '&:hover': {
+        ':hover': {
           backgroundColor: 'red',
         },
         '@media2': {
           padding: '100px',
         },
         '@media1': {
-          '&:hover': {
+          ':hover': {
             backgroundColor: 'black',
           },
         },
@@ -135,7 +135,7 @@ const tests = [
 
     expected: [
       ['backgroundColor', 'black'],
-      ['&:hover', [
+      [':hover', [
         ['backgroundColor', 'red'],
       ]],
 
@@ -145,7 +145,7 @@ const tests = [
 
       ['@media1', [
         ['padding', '10px'],
-        ['&:hover', [
+        [':hover', [
           ['backgroundColor', 'black'],
         ]],
       ]],
