@@ -18,7 +18,7 @@ Example:
 }} />
 ```
 
-## Why not just expose props that provide hooks into state?
+### Why not just expose props that provide hooks into state?
 
 We can already support this pretty easily with props:
 
@@ -103,61 +103,3 @@ class DropDown extends React.Component {
 In our example, `getStyle()` effectively does the work of composing
 style props as done manually in the first example.
 
-## Other possibilities/unimplemented features
-
-Sub-component styling could be achieved with a `::pseudo-element`-inspired
-interface.
-
-Here's a hypothetical example of a `DropDown` that has an indicator
-(such as a down arrow) which can be styled:
-
-```js
-@HasDeclarativeStyles
-class DropDown extends React.Component {
-  static styleStateTypes = {
-    expanded: React.PropTypes.bool.isRequired,
-  };
-
-  getStyleState () {
-    return {
-      expanded: this.state.expanded,
-    };
-  }
-
-  render () {
-    return (
-      <div style={this.getStyle()}>
-        <div style={this.getStyleFor('indicator')} />
-        {
-          // ...
-        }
-      </div>
-    );
-  }
-}
-```
-
-Here's how such a component could be used:
-
-```js
-<DropDown style={{
-  '::indicator': {
-    display: 'none',
-  }
-}} />
-```
-
-We could provide developers with something like `subComponentNames` to
-explicitly declare which sub-components are available, enabling helpful
-warning messages/static analysis:
-
-```js
-@HasDeclarativeStyles
-class Dropdown extends React.Component {
-  static subComponentNames = {
-    'indicator',
-  };
-
-  // ...
-}
-```
