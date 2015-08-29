@@ -122,7 +122,7 @@ _**Note**: This syntax is very far from final ;)_
   },
 
   ':optionCount > 1': {
-    // ... styles for a dropdown with a single element
+    // ... styles for a dropdown with many elements
   }
 }} />
 ```
