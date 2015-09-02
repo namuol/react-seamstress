@@ -1,9 +1,9 @@
 import mergeStyles from '../src/mergeStyles';
 import runTests from './runTests';
 
-function arrayify (val) {
+function orderedMap (val) {
   if (typeof val === 'object') {
-    return Object.keys(val).map(k => [k, arrayify(val[k])]);
+    return Object.keys(val).map(k => [k, orderedMap(val[k])]);
   } else {
     return val;
   }
@@ -155,8 +155,8 @@ const tests = [
 
 runTests({
   // I convert results to array-tuple to ensure the key order is correct:
-  func: function _arrayifyMergeStyles (styles) {
-    return arrayify(mergeStyles(styles));
+  func: function orderedMapMergeStyles (styles) {
+    return orderedMap(mergeStyles(styles));
   },
   funcName: 'mergeStyles',
   tests,

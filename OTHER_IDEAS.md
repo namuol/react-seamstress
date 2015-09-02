@@ -41,16 +41,16 @@ Here's how such a component could be used:
 }} />
 ```
 
-**Question:** How do we handle/provide custom `:pseudo-selectors` to subcomponents?
+**Question:** How do we pass `:pseudo-selectors` to subcomponents?
 
 Maybe something like:
 
 ```js
 class DropDown extends React.Component {
   static subComponents = {
-    someSubComponent: {
+    indicator: {
       styleStateTypes: {
-        someSubComponentStateItem: PropTypes.bool,
+        hover: PropTypes.bool,
       }
     }
   };
@@ -61,8 +61,8 @@ class DropDown extends React.Component {
 // ...
 
 <DropDown style={{
-  '::someSubComponent': {
-    ':someSubComponentStateItem': {
+  '::indicator': {
+    ':hover': {
       // etc
     }
   }
@@ -70,6 +70,78 @@ class DropDown extends React.Component {
 ```
 
 A better question might be: Would doing this ever be considered good practice?
+
+A more straightforward approach is to simply break your component up further. In
+the case of our `DropDown` with an `::indicator`, we can simply create an `Indicator`
+component and set `styleStateTypes` on it directly:
+
+```js
+@HasDeclarativeStyles
+class Indicator extends React.Component {
+  static styleStateTypes = {
+    hover: React.PropTypes.bool.isRequired,
+  };
+
+  isHovered () {
+    // TODO: Implementation ;)
+  }
+
+  getStyleState () {
+    return {
+      hover: this.isHovered(),
+    };
+  }
+
+  render () {
+    return <div style={this.getStyle()} />;
+  }
+}
+
+@HasDeclarativeStyles
+class DropDown extends React.Component {
+  static subComponents = {
+    indicator: Indicator,
+  };
+
+  static styleStateTypes = {
+    expanded: React.PropTypes.bool.isRequired,
+  };
+
+  getStyleState () {
+    return {
+      expanded: this.state.expanded,
+    };
+  }
+
+  render () {
+    return (
+      <div style={this.getStyle()}>
+        <Indicator
+          style={this.getStyleFor('indicator')}
+        />
+      </div>
+    );
+  }
+}
+```
+
+This makes expressing complex variations much easier:
+
+```js
+<DropDown style={{
+  '::indicator': {
+    ':hover': {
+      display: 'none',
+    },
+  },
+
+  ':expanded': {
+    '::indicator': {
+      transform: 'rotate(90deg)',
+    },
+  },
+}} />
+```
 
 ### `:composed:pseudo:selectors`
 
@@ -123,8 +195,16 @@ _**Note**: This syntax is very far from final ;)_
 
   ':optionCount > 1': {
     // ... styles for a dropdown with many elements
-  }
+  },
 }} />
+```
+
+We may even want to support comparing multiple style state items:
+
+```js
+':foo > :bar': {
+  // ...
+}
 ```
 
 Similar operations may also be performed on `PropTypes.string` items.
@@ -136,3 +216,12 @@ Similar operations may also be performed on `PropTypes.string` items.
   },
 }} />
 ```
+
+Queries that make no sense (i.e. comparing a `PropType.string` to a
+`PropType.number`) could warn the user.
+
+```
+Warning: Numeric comparison query attempted in `string` defined on `CountryChooser`.
+Check the render method of `SomeComponent`.
+```
+

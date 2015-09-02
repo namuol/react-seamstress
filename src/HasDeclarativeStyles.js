@@ -12,12 +12,13 @@ function arrayify (obj) {
 
 export default function HasDeclarativeStyles (Component) {
   const displayName = Component.displayName || Component.name;
+
   return class ComponentWithDeclarativeStyles extends Component {
     static displayName = displayName;
 
     static propTypes = Object.assign({
       style: (props, propName, component) => {
-        const style = mergeStyles(arrayify(props.style));
+        const style = mergeStyles(arrayify(props[propName]));
         const invalidStyleStates = getInvalidStyleStates({
           style,
           styleStateTypes: Component.styleStateTypes,
