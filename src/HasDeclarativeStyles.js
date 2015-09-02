@@ -17,7 +17,7 @@ export default function HasDeclarativeStyles (Component) {
     static displayName = displayName;
 
     static propTypes = Object.assign({
-      style: (props, propName, component) => {
+      styles: (props, propName, component) => {
         const style = mergeStyles(arrayify(props[propName]));
         const invalidStyleStates = getInvalidStyleStates({
           style,
@@ -36,7 +36,7 @@ export default function HasDeclarativeStyles (Component) {
 
     getStyle () {
       const state = this.getStyleState();
-      const style = mergeStyles([Component.baseStyle, ...arrayify(this.props.style)]);
+      const style = mergeStyles([Component.baseStyle, ...arrayify(this.props.styles)]);
       return mergeStyles(styleFromState({state, style}));
     }
   }
