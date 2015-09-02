@@ -1,5 +1,26 @@
 # Declarative Styling of Complex React Components
 
+## Why stop at `:hover`?
+
+```js
+<Dropdown styles={{
+  ':expanded': {
+    border: '1px solid black',
+  },
+
+  ':busy': {
+    opacity: 0.5,
+    cursor: 'no-drag',
+  },
+
+  ':error': {
+    color: 'red',
+  },
+}} />
+```
+
+----
+
 **Note**: This is an experiment. Please submit
 [issues](https://github.com/namuol/react-declarative-styles/issues) 
 for any bugs/questions/comments/discussion.
@@ -10,7 +31,7 @@ for any bugs/questions/comments/discussion.
 
 1. We need a better way to provide styling hooks into components that have a complex set of states.
 2. The declarativeness of pseudo-selectors (i.e. `:hover`, `:disabled`) is one of the most powerful things about CSS.
-3. Our components are much more than the DOM primitives they're comprised of, so **why limit ourselves to CSS's internal set of pseudo-selectors?**
+3. Our components are much more than the DOM primitives they're comprised of, so **why limit ourselves to CSS's default set of pseudo-selectors?**
 
 ## Example
 
