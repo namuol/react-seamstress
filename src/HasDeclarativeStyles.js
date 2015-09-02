@@ -1,6 +1,7 @@
 import mergeStyles from './mergeStyles';
 import styleFromState from './styleFromState';
 import getInvalidStyleStates from './getInvalidStyleStates';
+import checkPropTypes from './checkPropTypes';
 
 function arrayify (obj) {
   if (Array.isArray(obj)) {
@@ -29,7 +30,9 @@ export default function HasDeclarativeStyles (Component) {
           return new Error(
             `Style state${plural ? 's' : ''} ${listString}` +
             ` ${plural ? 'were' : 'was'} not specified in \`${displayName}\`. ` +
-            `Available states are: ${JSON.stringify(Object.keys(Component.styleStateTypes))}. `
+            'Available states are: [' +
+            Object.keys(Component.styleStateTypes).map(s=>`\`${s}\``).join(', ') +
+            '].'
           );
         }
       },
@@ -37,6 +40,8 @@ export default function HasDeclarativeStyles (Component) {
 
     getStyle () {
       const state = this.getStyleState();
+      checkPropTypes(displayName, Component.styleStateTypes, state, "prop", "styleStateType",
+        `Check the \`getStyleState\` method of \`${displayName}\`.`);
       const style = mergeStyles([Component.baseStyle, ...arrayify(this.props.styles)]);
       return mergeStyles(styleFromState({state, style}));
     }

@@ -16,7 +16,7 @@ export default class Toggler extends Component {
   };
 
   static styleStateTypes = {
-    toggled: PropTypes.bool,
+    toggled: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
