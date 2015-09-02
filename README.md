@@ -40,10 +40,10 @@ Imagine a `<Combobox>` that can asynchronously fetch its options.
 It has many specific internal states (such as `busy`, `expanded`, etc.), each of
 which will need a different look & feel.
 
-Here's how a thoughtful author of `<Combobox>` would provide style hooks to users like so,
+Here's how the thoughtful author of `<Combobox>` would provide style hooks to users,
 using the tools React already gives us:
 
-(For the sake of simplicity, let's also pretend that the
+(**Note:** For the sake of simplicity, let's also pretend that the
 [style array syntax](https://github.com/reactjs/react-future/blob/fc5b7ac89effaea4c00143cb4d3bd3daa0f81f5d/04%20-%20Layout/04%20-%20Inline%20Styles.md#using-styles))
 is a standard part of React)
 
@@ -89,7 +89,7 @@ The users of `<Combobox>` now have a convenient, declarative way to control how 
 
 Again, slightly verbose, but gets the job done and it's easy to understand.
 
-What if we instead borrowed CSS's familiar `:pseudo-selector` syntax and
+But what if we instead borrowed CSS's familiar `:pseudo-selector` syntax and
 combined the entire set of styles in a single "sheet"?
 
 ```js
@@ -137,7 +137,7 @@ Under the hood, `@HasDeclarativeStyles` uses the result of `getStyleState()` to
 determine which `:pseudo-selector` styles should be applied.
 
 Now, the `<Combobox>` author can succinctly *describe* how their component can be styled
-inside the results of `getStyleState`, rather than with a big list of short-circuit boolean
+inside the results of `getStyleState`, rather than with a big list of short-circuited boolean
 operations.
 
 ## More than "syntactic sugar"
@@ -145,7 +145,7 @@ operations.
 This method might first only seem like sugar for the `<Combobox>` author, but 
 there are other subtle but powerful benefits.
 
-I publish `<Combobox>` on NPM, using the canonical approach to specify styles.
+Suppose I publish `<Combobox>` on NPM, using the canonical approach to specify styles.
 
 A few days in, and someone creates a new issue on GitHub:
 
@@ -154,14 +154,14 @@ A few days in, and someone creates a new issue on GitHub:
 
 Here's how I'm using <Combobox>:
 
-<Combobox
-  busyStyle={{
-    opacity: 0.5,
-  }}
-  expandedStyle={{
-    opacity: 1,
-  }}
-/>
+    <Combobox
+      busyStyle={{
+        opacity: 0.5,
+      }}
+      expandedStyle={{
+        opacity: 1,
+      }}
+    />
 
 Now, when the Combobox is expanded, I would expect its *opacity* to be 1, 
 however, it seems that *busyStyle* always overrides the styles in *expandedStyle*.
@@ -171,7 +171,8 @@ Is there any way around this?
 ```
 
 In the canonical approach, our styles were ordered in such a
-way that `busyStyle` was always last.
+way that `busyStyle` was always last, causing the `expectedStyle`'s opacity
+param to be overridden when the user needs it to be the other way around.
 
 Rather than simply reordering the styles in the array and potentially breaking
 other people's projects, you decide the only way around this is to
@@ -202,7 +203,7 @@ provide yet another, *weirdly-specific* style prop: `expandedAndBusyStyle`.
 ]} />
 ```
 
-You know something's wrong here, but it solves the problem.
+You know something's not quite right here, but it solves the problem.
 
 Meanwhile, using our `:pseudo-selector`-inspired syntax, this can be expressed much more cleanly:
 
@@ -217,7 +218,9 @@ Meanwhile, using our `:pseudo-selector`-inspired syntax, this can be expressed m
 }} />
 ```
 
-`@HasDeclarativeStyles` was written in such a way as to ensure that styles are applied
+Nothing would need to change in our implementation of `<Combobox>`.
+
+How? `@HasDeclarativeStyles` was written in such a way as to ensure that styles are applied
 in the order they are iterated over in the original object, meaning that "whatever comes last"
 always overrides what's above.
 
