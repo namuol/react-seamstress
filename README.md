@@ -8,9 +8,9 @@ for any bugs/questions/comments/discussion.
 
 ## Reasoning
 
-1. The declarativeness of pseudo-selectors (i.e. `:hover`, `:disabled`) is one of the most powerful things about CSS.
-2. Our components are much more than the DOM primitives they're comprised of, so **why limit ourselves to CSS's internal set of pseudo-selectors?**
-3. We need a better way to provide styling hooks into components that have a complex set states.
+1. We need a better way to provide styling hooks into components that have a complex set of states.
+2. The declarativeness of pseudo-selectors (i.e. `:hover`, `:disabled`) is one of the most powerful things about CSS.
+3. Our components are much more than the DOM primitives they're comprised of, so **why limit ourselves to CSS's internal set of pseudo-selectors?**
 
 ## Example
 
