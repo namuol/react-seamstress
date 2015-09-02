@@ -40,7 +40,7 @@ Here's how the thoughtful author of `<Combobox>` would provide style hooks to us
 using the tools React already gives us:
 
 (**Note:** For the sake of simplicity, let's also pretend that the
-[style array syntax](https://github.com/reactjs/react-future/blob/fc5b7ac89effaea4c00143cb4d3bd3daa0f81f5d/04%20-%20Layout/04%20-%20Inline%20Styles.md#using-styles))
+[style array syntax](https://github.com/reactjs/react-future/blob/fc5b7ac89effaea4c00143cb4d3bd3daa0f81f5d/04%20-%20Layout/04%20-%20Inline%20Styles.md#using-styles)
 is a standard part of React)
 
 ```js
