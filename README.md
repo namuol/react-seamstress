@@ -296,11 +296,108 @@ Warning: Failed styleStateType: Required styleStateType `expanded` was not speci
 
 ## Current Implementation
 
-Currently, only the most basic single boolean pseudo-selectors are implemented.
+### Missing Features
 
-See `OTHER_IDEAS.md` for a more comprehensive set of potential features.
+Only single boolean pseudo-selectors are implemented. (no `:composed:selectors`, for instance)
 
-## Discussion
+See `OTHER_IDEAS.md` for a more comprehensive set of potential features that I'd like to experiment with.
+
+### How are styles applied?
+
+The purpose of this experiment is **not** to prefer using `props.className` or `props.style`.
+
+Currently, for the sake of this experiment, styles are only applied inline on `style={...}`.
+
+However, it should be pretty easy to transparently support the composition of styles
+with `className` **and** `style` simultaneously, allowing this to play nicely with most of the existing
+style-defining solutions (i.e. [Radium](https://github.com/FormidableLabs/radium) vs [CSS Modules](https://github.com/css-modules/css-modules) vs [free-style](https://github.com/blakeembrey/react-free-style)).
+
+How could we support all of these solutions?
+
+`className` can be composed of any strings we encounter in the `props.styles` array,
+and everything else can be assumed to be a `style` object.
+
+Users could specify `className` styles simply by using strings instead of objects inside
+a `styles` object, and top-level (i.e. "default") `className`s can be specified by using an
+array, like so:
+
+```js
+const MY_STYLES = [
+  'myFancyClass',
+  {
+    ':hover': 'myFancyClass_hover',
+    ':active': 'myFancyClass_active',
+  },
+];
+```
+
+An alternative, more succinct API might be to reserve the `:default` styleStateType for
+applying top-level styles:
+
+```js
+const MY_STYLES = {
+  ':default': 'myFancyClass',
+  ':hover': 'myFancyClass_hover',
+  ':active': 'myFancyClass_active',
+};
+```
+
+The `getStyle()` method would return an object that looks like this:
+
+```js
+{
+  className: 'foo bar',
+  style: {color: 'red'},
+}
+```
+
+Component authors can exploit React/babel's spread operator (`...`) to apply the styles:
+
+```js
+<div {...getStyles()} />
+```
+
+One caveat is that it's possible to supply inline styles before attempting to "override" them
+with classNames.
+
+For example:
+
+```js
+<Combobox styles={[
+  {
+    color: 'red',
+  },
+  'MyComboBox',
+]} />
+```
+
+In this example, we're trying to "override" an inline style with a className.
+
+Browser semantics dictate that this will not do what we expect.
+
+To reduce the risk of this kind of thing, we can provide a runtime check
+that ensures all inline style definitions are supplied **at the end** of 
+a style definition:
+
+```
+Warning: Attempted to override inline styles with className styles; this may lead to unexpected styling behavior. Check the render method of `MyComponent`.
+```
+
+This works well for internally-used components, but is less elegant
+in the case of third-party components.
+
+Why? A third-party component author may decide to only use inline styles, but
+the component *user* may exclusively use classNames in their project.
+
+This is still an unsolved problem for component authors, and another 
+reason why React really needs a single, agreed-upon implementation of styling.
+
+[react-future](https://github.com/reactjs/react-future/blob/fc5b7ac89effaea4c00143cb4d3bd3daa0f81f5d/04%20-%20Layout/04%20-%20Inline%20Styles.md)
+uses `StyleSheet.create` in its examples, which is also [the standard with React Native](https://facebook.github.io/react-native/docs/style.html),
+so there's a good chance we'll see this standard become part of React
+as a whole.
+
+## Discussion/Contributing
 
 This is an experimental repo created for discussion purposes.
 

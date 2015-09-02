@@ -26,7 +26,7 @@ export default function HasDeclarativeStyles (Component) {
         });
         if (!!invalidStyleStates) {
           const plural = invalidStyleStates.length > 1;
-          const listString = invalidStyleStates.map(s => `\`${s}\``).join(', ');
+          const listString = invalidStyleStates.map(s => `\`:${s}\``).join(', ');
           return new Error(
             `Style state${plural ? 's' : ''} ${listString}` +
             ` ${plural ? 'were' : 'was'} not specified in \`${displayName}\`. ` +
