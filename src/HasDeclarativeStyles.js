@@ -23,11 +23,12 @@ export default function HasDeclarativeStyles (Component) {
           style,
           styleStateTypes: Component.styleStateTypes,
         });
-
         if (!!invalidStyleStates) {
+          const plural = invalidStyleStates.length > 1;
+          const listString = invalidStyleStates.map(s => `\`${s}\``).join(', ');
           return new Error(
-            `Warning: Style states ${JSON.stringify(invalidStyleStates)}` +
-            ` were not specified in \`${displayName}\`. ` +
+            `Style state${plural ? 's' : ''} ${listString}` +
+            ` ${plural ? 'were' : 'was'} not specified in \`${displayName}\`. ` +
             `Available states are: ${JSON.stringify(Object.keys(Component.styleStateTypes))}. `
           );
         }

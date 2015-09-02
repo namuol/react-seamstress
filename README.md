@@ -3,7 +3,7 @@
 ## Why stop at `:hover`?
 
 ```js
-<Dropdown styles={{
+<Combobox styles={{
   ':expanded': {
     border: '1px solid black',
   },
@@ -11,10 +11,6 @@
   ':busy': {
     opacity: 0.5,
     cursor: 'no-drag',
-  },
-
-  ':error': {
-    color: 'red',
   },
 }} />
 ```
@@ -50,6 +46,10 @@ is a standard part of React)
 ```js
 // Inside Combobox.js - render():
 
+const expanded = this.state.expanded;
+const busy = this.state.options === undefined;
+const error = this.state.options === null;
+
 <div style={[
   // Default styles:
   DEFAULT_STYLE,
@@ -57,14 +57,19 @@ is a standard part of React)
   this.props.style,
   
   // Default expanded styles:
-  this.state.expanded && EXPANDED_STYLE,
+  expanded && EXPANDED_STYLE,
   // User expanded styles:
-  this.state.expanded && this.this.props.expandedStyle,
+  expanded && this.this.props.expandedStyle,
 
   // Default busy styles:
-  this.state.busy && BUSY_STYLE,
+  busy && BUSY_STYLE,
   // User busy styles:
-  this.state.busy && this.this.props.busyStyle,
+  busy && this.this.props.busyStyle,
+
+  // Default error styles:
+  error && ERROR_STYLE,
+  // User error styles:
+  error && this.this.props.errorStyle,
 ]} />
 ```
 
@@ -89,7 +94,9 @@ The users of `<Combobox>` now have a convenient, declarative way to control how 
 
 Again, slightly verbose, but gets the job done and it's easy to understand.
 
-But what if we instead borrowed CSS's familiar `:pseudo-selector` syntax and
+This is the current "state of the art", but I think we could better.
+
+What if we instead borrowed CSS's familiar `:pseudo-selector` syntax and
 combined the entire set of styles in a single "sheet"?
 
 ```js
@@ -136,8 +143,8 @@ class Combobox extends React.Component {
 Under the hood, `@HasDeclarativeStyles` uses the result of `getStyleState()` to 
 determine which `:pseudo-selector` styles should be applied.
 
-Now, the `<Combobox>` author can succinctly *describe* how their component can be styled
-inside the results of `getStyleState`, rather than with a big list of short-circuited boolean
+Now, the `<Combobox>` author can simply *describe* how their component can be styled
+with `getStyleState()`, rather than by manually implementing a big list of short-circuited boolean
 operations.
 
 ## More than "syntactic sugar"
@@ -145,9 +152,9 @@ operations.
 This method might first only seem like sugar for the `<Combobox>` author, but 
 there are other subtle but powerful benefits.
 
-Suppose I publish `<Combobox>` on NPM, using the canonical approach to specify styles.
+Suppose I publish `<Combobox>` on NPM, using the canonical `props` approach to specify styles.
 
-A few days in, and someone creates a new issue on GitHub:
+People start using it in their projects, and someone creates a new issue on GitHub:
 
 ```md
 **Unexpected styling behavior when expanded AND busy**
@@ -163,8 +170,9 @@ Here's how I'm using <Combobox>:
       }}
     />
 
-Now, when the Combobox is expanded, I would expect its *opacity* to be 1, 
-however, it seems that *busyStyle* always overrides the styles in *expandedStyle*.
+When the Combobox is *expanded*, I expect *opacity* to be 1, but it's 0.5.
+
+It looks like *busyStyle* **always** overrides *expandedStyle*.
 
 Is there any way around this?
 
@@ -174,9 +182,9 @@ In the canonical approach, our styles were ordered in such a
 way that `busyStyle` was always last, causing the `expectedStyle`'s opacity
 param to be overridden when the user needs it to be the other way around.
 
-Rather than simply reordering the styles in the array and potentially breaking
+Rather than reordering the styles in the array and potentially breaking
 other people's projects, you decide the only way around this is to
-provide yet another, *weirdly-specific* style prop: `expandedAndBusyStyle`.
+provide yet another, *weirdly-specific* style prop: `expandedAndBusyStyle`:
 
 ```js
 <Combobox
@@ -192,6 +200,8 @@ provide yet another, *weirdly-specific* style prop: `expandedAndBusyStyle`.
 />
 ```
 
+Your `Combobox` implementation would need to be updated to support this, of course:
+
 ```js
 // Inside Combobox.js - render():
 
@@ -199,13 +209,16 @@ provide yet another, *weirdly-specific* style prop: `expandedAndBusyStyle`.
   
   // ... a bunch of other styles ...
 
-  (this.state.expanded && this.state.options === undefined) && this.props.expandedAndBusyStyle
+  (expanded && busy) && this.props.expandedAndBusyStyle
 ]} />
 ```
 
-You know something's not quite right here, but it solves the problem.
+Your gut tells you something's not quite right here, but it solves the problem without breaking anyone else's code.
 
-Meanwhile, using our `:pseudo-selector`-inspired syntax, this can be expressed much more cleanly:
+What if we chose to use `@HasDeclarativeStyles` instead?
+
+This can be expressed much more cleanly, and "just works" --
+`:expanded`'s opacity of 1 overrides `:busy`'s 0.5:
 
 ```js
 <Combobox style={{
@@ -220,11 +233,13 @@ Meanwhile, using our `:pseudo-selector`-inspired syntax, this can be expressed m
 
 Nothing would need to change in our implementation of `<Combobox>`.
 
-How? `@HasDeclarativeStyles` was written in such a way as to ensure that styles are applied
-in the order they are iterated over in the original object, meaning that "whatever comes last"
-always overrides what's above.
+Why does this work?
 
-This could also be expressed more explicitly using `:composed:pseudo-selectors`, like so:
+`@HasDeclarativeStyles` was written such that styles are applied
+in the order they are iterated over in the original style object, meaning that
+"whatever comes last" always overrides what's described above (if applicable).
+
+This could also be expressed more directly using `:composed:pseudo-selectors`, like so:
 
 ```js
 <Combobox style={{
@@ -236,6 +251,46 @@ This could also be expressed more explicitly using `:composed:pseudo-selectors`,
 
 This makes composing styles much easier to reason about, and more closely resembles
 the actual behavior of the syntax that inspired it.
+
+## The Pit of Success
+
+Suppose someone is using your `<Combobox>` for the first time, and they misspell
+one of the pseudo-selectors:
+
+```js
+<Combobox style={{
+  ':expand': {
+    opacity: 1,
+  }
+}} />
+```
+
+Component authors can take advantage of a special static component field, `styleStateTypes`:
+
+```js
+@HasDeclarativeStyles
+class Combobox extends React.Component {
+  static styleStateTypes = {
+    expanded: React.PropTypes.bool.required,
+    busy: React.PropTypes.bool.required,
+    error: React.PropTypes.bool.required,
+  };
+
+  // ...
+}
+```
+
+Now, the user who made the typo will see this friendly message:
+
+```
+Warning: Failed propType: Style state `expand` was not specified in `Combobox`. Available states are: ["expanded", "busy", "error"].  Check the render method of `MyApp`.
+```
+
+Furthermore, component authors that forget to specify a required field on `styleStateTypes` may also receive warnings:
+
+```
+Warning: Failed styleStateType: Required styleStateType `expanded` was not specified in the `getStyleState` method of `Combobox`.
+```
 
 ----
 

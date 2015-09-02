@@ -21,7 +21,7 @@ const GREEN_STYLE = {
 const BLUE_STYLE = {
   border: '2px solid #66c',
   backgroundColor: '#bbf',
-  ':toggled': {
+  ':toggld': {
     backgroundColor: '#66c',
   },
 };
