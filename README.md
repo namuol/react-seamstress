@@ -271,9 +271,9 @@ Component authors can take advantage of a special static component field, `style
 @HasDeclarativeStyles
 class Combobox extends React.Component {
   static styleStateTypes = {
-    expanded: React.PropTypes.bool.required,
-    busy: React.PropTypes.bool.required,
-    error: React.PropTypes.bool.required,
+    expanded: React.PropTypes.bool.isRequired,
+    busy: React.PropTypes.bool.isRequired,
+    error: React.PropTypes.bool.isRequired,
   };
 
   // ...
