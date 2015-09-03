@@ -21,6 +21,9 @@
 [issues](https://github.com/namuol/react-declarative-styles/issues) 
 for any bugs/questions/comments/discussion.
 
+At the time of writing, much of what's written in these markdown files is
+unimplemented, and primarily serves as a brain-dump.
+
 ----
 
 ## Reasoning
