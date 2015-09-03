@@ -16,9 +16,13 @@ const tests = [
       {color:'red'},
       {color:'black'},
     ],
-    expected: [
-      ['color', 'black'],
-    ],
+
+    expected: {
+      className: '',
+      style: orderedMap({
+        'color': 'black',
+      })
+    },
   },
 
   {
@@ -27,11 +31,14 @@ const tests = [
       {':hover': {color:'red'}},
       {':hover': {color:'black'}},
     ],
-    expected: [
-      [':hover', [
-        ['color', 'black'],
-      ]],
-    ],
+    expected: {
+      className: '',
+      style: orderedMap({
+        ':hover': {
+          'color': 'black',
+        },
+      })
+    },
   },
 
   {
@@ -47,24 +54,27 @@ const tests = [
         },
         '@media': {
           ':hover': {
-            color: 'black'
+            color: 'black',
           },
         },
       },
       
     ],
 
-    expected: [
-      [':hover', [
-        ['color', 'red'],
-      ]],
+    expected: {
+      className: '',
+      style: orderedMap({
+        ':hover': {
+          'color': 'red',
+        },
 
-      ['@media', [
-        [':hover', [
-          ['color', 'black'],
-        ]],
-      ]],
-    ],
+        '@media': {
+          ':hover': {
+            'color': 'black',
+          },
+        },
+      })
+    },
   },
 
   {
@@ -73,10 +83,13 @@ const tests = [
       {color:'red', backgroundColor: 'blue'},
       {color:'black'},
     ],
-    expected: [
-      ['backgroundColor', 'blue'],
-      ['color', 'black'],
-    ],
+    expected: {
+      className: '',
+      style: orderedMap({
+        'backgroundColor': 'blue',
+        'color': 'black',
+      })
+    },
   },
 
   {
@@ -95,14 +108,18 @@ const tests = [
         },
       },
     ],
-    expected: [
-      ['@media', [
-        ['color', 'black'],
-        [':hover', [
-          ['color', 'black'],
-        ]],
-      ]],
-    ],
+
+    expected: {
+      className: '',
+      style: orderedMap({
+        '@media': {
+          'color': 'black',
+          ':hover': {
+            'color': 'black',
+          },
+        },
+      })
+    },
   },
 
   {
@@ -133,30 +150,96 @@ const tests = [
       false
     ],
 
-    expected: [
-      ['backgroundColor', 'black'],
-      [':hover', [
-        ['backgroundColor', 'red'],
-      ]],
+    expected: {
+      className: '',
+      style: orderedMap({
+        'backgroundColor': 'black',
+        ':hover': {
+          'backgroundColor': 'red',
+        },
 
-      ['@media2', [
-        ['padding', '100px'],
-      ]],
+        '@media2': {
+          'padding': '100px',
+        },
 
-      ['@media1', [
-        ['padding', '10px'],
-        [':hover', [
-          ['backgroundColor', 'black'],
-        ]],
-      ]],
+        '@media1': {
+          'padding': '10px',
+          ':hover': {
+            'backgroundColor': 'black',
+          },
+        },
+      })
+    },
+  },
+
+  {
+    capability: 'should handle a single className',
+    input: [
+      'aaa',
     ],
-  }
+
+    expected: {
+      className: 'aaa',
+      style: orderedMap({}),
+    },
+  },
+
+  {
+    capability: 'should handle multiple classNames',
+    input: [
+      'aaa',
+      'bbb',
+      'ccc',
+    ],
+
+    expected: {
+      className: 'aaa bbb ccc',
+      style: orderedMap({}),
+    },
+  },
+
+  {
+    capability: 'should ignore duplicate classNames',
+    input: [
+      'aaa',
+      'bbb',
+      'bbb',
+      'ccc',
+    ],
+
+    expected: {
+      className: 'aaa bbb ccc',
+      style: orderedMap({}),
+    },
+  },
+
+  {
+    capability: 'should be able to combine styles with classNames',
+    input: [
+      'aaa',
+      'bbb',
+      'ccc',
+      {color: 'red'},
+      {color: 'black'},
+    ],
+
+    expected: {
+      className: 'aaa bbb ccc',
+      style: orderedMap({
+        'color': 'black',
+      }),
+    },
+  },
 ];
 
 runTests({
   // I convert results to array-tuple to ensure the key order is correct:
   func: function orderedMapMergeStyles (styles) {
-    return orderedMap(mergeStyles(styles));
+    const {style, className} = mergeStyles(styles);
+    return {
+      className,
+      style: orderedMap(style),
+    };
   },
   funcName: 'mergeStyles',
   tests,

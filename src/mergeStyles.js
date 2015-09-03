@@ -1,6 +1,15 @@
-export default function mergeStyles (styles) {
-  return styles.reduce((result, style) => {
-    if (!style) {
+function _mergeStyles (styles, depth=0) {
+  const classNames = {};
+  let classNameCount = 0;
+
+  const style = styles.reduce((result, style) => {
+    const typeofStyle = typeof style;
+    if (typeofStyle !== 'object') {
+      if (depth === 0 && typeofStyle === 'string') {
+        classNames[style] = classNameCount;
+        classNameCount += 1;
+        return result;
+      }
       return result;
     }
 
@@ -9,7 +18,7 @@ export default function mergeStyles (styles) {
       
       let finalVal;
       if (typeof val === 'object' && result[key]) {
-        finalVal = mergeStyles([result[key], val]);
+        finalVal = _mergeStyles([result[key], val], depth+1);
       } else {
         finalVal = val;
       }
@@ -20,4 +29,18 @@ export default function mergeStyles (styles) {
 
     return result;
   }, {});
+
+  if (depth > 0) {
+    return style;
+  }
+
+  return {
+    className: Object.keys(classNames).join(' '),
+    style,
+  };
 };
+
+
+export default function mergeStyles (styles) {
+  return _mergeStyles(styles);
+}

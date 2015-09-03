@@ -39,7 +39,7 @@ const MY_STYLES = {
 };
 ```
 
-The `getStyle()` method would return an object that looks like this:
+The `getStyleProps()` method would return an object that looks like this:
 
 ```js
 {
@@ -55,7 +55,7 @@ Component authors can utilize React/babel's spread operator (`...`) to apply `cl
 all at once:
 
 ```js
-<div {...getStyles()} />
+<div {...getStyleProps()} />
 ```
 
 #### Caveats

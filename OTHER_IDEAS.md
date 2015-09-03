@@ -17,8 +17,8 @@ class DropDown extends React.Component {
 
   render () {
     return (
-      <div style={this.getStyle()}>
-        <div style={this.getStyleFor('indicator')} />
+      <div {...this.getStyleProps()}>
+        <div {...this.getStylePropsFor('indicator')} />
         {
           // ...
         }
@@ -34,7 +34,7 @@ This allows us to warn the user of our component if they make a mistake.
 Here's how such a component could be used:
 
 ```js
-<DropDown style={{
+<DropDown styles={{
   '::indicator': {
     display: 'none',
   }
@@ -60,7 +60,7 @@ class DropDown extends React.Component {
 
 // ...
 
-<DropDown style={{
+<DropDown styles={{
   '::indicator': {
     ':hover': {
       // etc
@@ -93,7 +93,7 @@ class Indicator extends React.Component {
   }
 
   render () {
-    return <div style={this.getStyle()} />;
+    return <div {...getStyleProps()} />;
   }
 }
 
@@ -115,9 +115,9 @@ class DropDown extends React.Component {
 
   render () {
     return (
-      <div style={this.getStyle()}>
+      <div {...getStyleProps()}>
         <Indicator
-          style={this.getStyleFor('indicator')}
+          {...this.getStylePropsFor('indicator')}
         />
       </div>
     );
@@ -128,7 +128,7 @@ class DropDown extends React.Component {
 This makes expressing complex variations much easier:
 
 ```js
-<DropDown style={{
+<DropDown styles={{
   '::indicator': {
     ':hover': {
       display: 'none',
@@ -153,7 +153,7 @@ users might want to be able to change the appearance of an `:expanded` dropdown
 when it is `:busy`:
 
 ```js
-<DropDown style={{
+<DropDown styles={{
   ':expanded:busy': {
     cursor: 'progress',
   }
@@ -164,7 +164,7 @@ when it is `:busy`:
 not final; we may want to use the more canonical `&:nested` form):
 
 ```js
-<DropDown style={{
+<DropDown styles={{
   ':expanded': {
     ':busy': {
       cursor: 'progress',
@@ -184,7 +184,7 @@ has one option, or has many options:
 _**Note**: This syntax is very far from final ;)_
 
 ```js
-<DropDown style={{
+<DropDown styles={{
   ':optionCount == 0': {
     // ... styles for an empty dropdown
   },

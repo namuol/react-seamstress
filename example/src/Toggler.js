@@ -15,20 +15,21 @@ export default class Toggler extends Component {
     },
   };
 
-  static styleStateTypes = {
-    toggled: PropTypes.bool.isRequired,
-  };
 
   static defaultProps = {
-    toggled: false,
+    defaultToggled: false,
   };
 
   state = (() => {
     return {
-      toggled: this.props.toggled,
+      toggled: this.props.defaultToggled,
     };
   }());
-  
+
+  static styleStateTypes = {
+    toggled: PropTypes.bool.isRequired,
+  };
+
   getStyleState () {
     return {
       toggled: this.state.toggled,
@@ -37,7 +38,7 @@ export default class Toggler extends Component {
 
   render () {
     return (
-      <div style={this.getStyle()} onClick={() => {
+      <div {...this.getStyleProps()} onClick={() => {
         this.setState({
           toggled: !this.state.toggled,
         });

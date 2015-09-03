@@ -1,5 +1,5 @@
 import mergeStyles from './mergeStyles';
-import styleFromState from './styleFromState';
+import filterStylesFromState from './filterStylesFromState';
 import getInvalidStyleStates from './getInvalidStyleStates';
 import checkPropTypes from './checkPropTypes';
 
@@ -38,12 +38,14 @@ export default function HasDeclarativeStyles (Component) {
       },
     }, Component.propTypes);
 
-    getStyle () {
+    getStyleProps () {
       const state = this.getStyleState();
-      checkPropTypes(displayName, Component.styleStateTypes, state, "prop", "styleStateType",
+      checkPropTypes(displayName, Component.styleStateTypes, state, 'prop', 'styleStateType',
         `Check the \`getStyleState\` method of \`${displayName}\`.`);
-      const style = mergeStyles([Component.baseStyle, ...arrayify(this.props.styles)]);
-      return mergeStyles(styleFromState({state, style}));
+      return mergeStyles(filterStylesFromState({
+        state,
+        styles: [...arrayify(Component.baseStyle), ...arrayify(this.props.styles)],
+      }));
     }
   }
 }

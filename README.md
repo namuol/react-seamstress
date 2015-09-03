@@ -166,7 +166,7 @@ class Combobox extends React.Component {
   }
 
   render () {
-    <div style={this.getStyle()}>
+    <div {...getStyleProps()}>
       {
         // ... etc
       }
