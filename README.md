@@ -59,6 +59,7 @@ Some examples of syntax-related questions:
 
 - Do we want to support Sass-like `&:nested` selectors?
 - Should we really precede all custom selectors with `:`?
+  * Alternatively, we might use something like `$expanded` -- no need to quote and has less risk of confusion with ordinary CSS `:selectors`
 - etc
 
 ## Example
