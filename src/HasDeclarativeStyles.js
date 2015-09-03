@@ -38,13 +38,13 @@ export default function HasDeclarativeStyles (Component) {
       },
     }, Component.propTypes);
 
-    getStyleProps () {
+    getStyleProps (baseStyle) {
       const state = this.getStyleState();
       checkPropTypes(displayName, Component.styleStateTypes, state, 'prop', 'styleStateType',
         `Check the \`getStyleState\` method of \`${displayName}\`.`);
       return mergeStyles(filterStylesFromState({
         state,
-        styles: [...arrayify(Component.baseStyle), ...arrayify(this.props.styles)],
+        styles: [...arrayify(baseStyle), ...arrayify(this.props.styles)],
       }));
     }
   }

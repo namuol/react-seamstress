@@ -1,20 +1,23 @@
 import HasDeclarativeStyles from '../../src/HasDeclarativeStyles';
 import React, { PropTypes, Component } from 'react';
 
+const BASE_STYLE = {
+  backgroundColor: '#eee',
+  border: '2px solid #aaa',
+  width: '20px',
+  height: '20px',
+  cursor: 'pointer',
+  margin: '5px',
+  ':toggled': {
+    backgroundColor: '#aaa',
+  },
+};
+
 @HasDeclarativeStyles
 export default class Toggler extends Component {
-  static baseStyle = {
-    backgroundColor: '#eee',
-    border: '2px solid #aaa',
-    width: '20px',
-    height: '20px',
-    cursor: 'pointer',
-    margin: '5px',
-    ':toggled': {
-      backgroundColor: '#aaa',
-    },
+  static propTypes = {
+    defaultToggled: PropTypes.bool,
   };
-
 
   static defaultProps = {
     defaultToggled: false,
@@ -38,7 +41,7 @@ export default class Toggler extends Component {
 
   render () {
     return (
-      <div {...this.getStyleProps()} onClick={() => {
+      <div {...this.getStyleProps(BASE_STYLE)} onClick={() => {
         this.setState({
           toggled: !this.state.toggled,
         });
