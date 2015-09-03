@@ -26,24 +26,25 @@ const BLUE_STYLE_INLINE = {
   },
 };
 
+
 const RED_STYLE_CSS = [
-  'RedToggle',
+  'RedToggler',
   {
-    ':toggled': 'RedToggle_toggled',
+    ':toggled': 'RedToggler_toggled',
   }
 ];
 
 const GREEN_STYLE_CSS = [
   'GreenToggle',
   {
-    ':toggled': 'GreenToggle_toggled',
+    ':toggled': 'GreenToggler_toggled',
   }
 ];
 
 const BLUE_STYLE_CSS = [
-  'BlueToggle',
+  'BlueToggler',
   {
-    ':toggled': 'BlueToggle_toggled',
+    ':toggled': 'BlueToggler_toggled',
   }
 ];
 
@@ -51,6 +52,23 @@ export default class App extends Component {
   render() {
     return (
       <div>
+        <style>
+        {`
+          /* HACK: Pretend this was generated/included with Toggler */
+          .Toggler {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin: 5px;
+            border: 2px solid #aaa;
+            background-color: #eee;
+          }
+
+          .Toggler_toggled {
+            background-color: #aaa;
+          }
+        `}
+        </style>
         <div>
           <p>Without style:</p>
           <Toggler />
@@ -66,38 +84,38 @@ export default class App extends Component {
 
         <div>
           <p>With CSS:</p>
-          <style>{`
-            /* HACK: We need to use !important since Toggler uses inline styles :( */
-
-            .RedToggle {
-              border: 2px solid #c66!important;
-              background-color: #fbb!important;
+          <style>
+          {`
+            .RedToggler {
+              border: 2px solid #c66;
+              background-color: #fbb;
             }
 
-            .RedToggle_toggled {
-              background-color: #c66!important;
+            .RedToggler_toggled {
+              background-color: #c66;
             }
 
 
             .GreenToggle {
-              border: 2px solid #6c6!important;
-              background-color: #bfb!important;
+              border: 2px solid #6c6;
+              background-color: #bfb;
             }
 
-            .GreenToggle_toggled {
-              background-color: #6c6!important;
+            .GreenToggler_toggled {
+              background-color: #6c6;
             }
 
 
-            .BlueToggle {
-              border: 2px solid #66c!important;
-              background-color: #bbf!important;
+            .BlueToggler {
+              border: 2px solid #66c;
+              background-color: #bbf;
             }
 
-            .BlueToggle_toggled {
-              background-color: #66c!important;
+            .BlueToggler_toggled {
+              background-color: #66c;
             }
-          `}</style>
+          `}
+          </style>
           <Toggler styles={RED_STYLE_CSS} />
           <Toggler styles={GREEN_STYLE_CSS} defaultToggled={true} />
           <Toggler styles={BLUE_STYLE_CSS} />

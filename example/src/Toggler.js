@@ -1,17 +1,12 @@
 import HasDeclarativeStyles from '../../src/HasDeclarativeStyles';
 import React, { PropTypes, Component } from 'react';
 
-const BASE_STYLE = {
-  backgroundColor: '#eee',
-  border: '2px solid #aaa',
-  width: '20px',
-  height: '20px',
-  cursor: 'pointer',
-  margin: '5px',
-  ':toggled': {
-    backgroundColor: '#aaa',
-  },
-};
+const BASE_STYLE = [
+  'Toggler',
+  {
+    ':toggled': 'Toggler_toggled'
+  }
+];
 
 @HasDeclarativeStyles
 export default class Toggler extends Component {
