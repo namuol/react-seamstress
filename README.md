@@ -29,6 +29,23 @@ for any bugs/questions/comments/discussion.
 2. The declarativeness of pseudo-selectors (i.e. `:hover`, `:disabled`) is one of the most powerful things about CSS.
 3. Our components are much more than the DOM primitives they're comprised of, so **why limit ourselves to CSS's default set of pseudo-selectors?**
 
+## A note on syntax
+
+We all have strong feelings about syntax, especially when it comes to
+expanding on previously-established syntax.
+
+So please keep in mind that any kind of syntax outlined here is anything but final;
+the broader concepts are what I've focused on, so far.
+
+That said, syntax is nonetheless important, so if you have any suggestions, please
+[submit an issue](https://github.com/namuol/react-declarative-styles/issues)! :beers:
+
+Some examples of syntax-related questions:
+
+- Do we want to support Sass-like `&:nested` selectors?
+- Should we really precede all custom selectors with `:`?
+- etc
+
 ## Example
 
 Imagine a `<Combobox>` that can asynchronously fetch its options.
@@ -94,9 +111,11 @@ The users of `<Combobox>` now have a convenient, declarative way to control how 
 
 Again, slightly verbose, but gets the job done and it's easy to understand.
 
-This is the current "state of the art", but I think we could better.
+This is the current "state of the art", but I think we could do better.
 
-What if we instead borrowed CSS's familiar `:pseudo-selector` syntax and
+### A familiar, yet new approach
+
+What if we instead borrowed CSS's `:pseudo-selector` syntax and
 combined the entire set of styles in a single "sheet"?
 
 ```js
@@ -147,7 +166,7 @@ Now, the `<Combobox>` author can simply *describe* how their component can be st
 with `getStyleState()`, rather than by manually implementing a big list of short-circuited boolean
 operations.
 
-## More than "syntactic sugar"
+## This is more than "syntactic sugar"
 
 This method might first only seem like sugar for the `<Combobox>` author, but 
 there are other subtle but powerful benefits.
@@ -306,109 +325,9 @@ Only single boolean pseudo-selectors are implemented. (That is, aforementioned `
 
 See `OTHER_IDEAS.md` for a more comprehensive set of potential features that I'd like to experiment with.
 
-### How are styles applied?
+## Usage with other styling tools/libraries
 
-This experiment is not concerned with the debate over using `props.className` or `props.style`.
-
-Currently, for the sake of simplicity, styles are only applied inline on `style={...}`.
-
-However, it should be pretty easy to transparently support the composition of styles
-with `className` **and** `style` simultaneously, allowing `@HasDeclarativeStyles` to play nicely with
-most of the existing style-defining solutions
-(i.e. [Radium](https://github.com/FormidableLabs/radium) vs [CSS Modules](https://github.com/css-modules/css-modules) vs [free-style](https://github.com/blakeembrey/react-free-style)).
-
-How could we support all of these solutions?
-
-`className` can be composed of any strings we encounter in the `props.styles` array,
-and everything else can be assumed to be a `style` object.
-
-Users could specify `className` styles simply by using strings instead of objects inside
-a `styles` object, and top-level (i.e. "default") `className`s can be specified by composing it
-into an array, like so:
-
-```js
-const MY_STYLES = [
-  'myFancyClass',
-  {
-    ':hover': 'myFancyClass_hover',
-    ':active': 'myFancyClass_active',
-  },
-];
-```
-
-An alternative, more succinct API might be to reserve something like `:default` for
-applying "top-level" styles:
-
-```js
-const MY_STYLES = {
-  ':default': 'myFancyClass',
-  ':hover': 'myFancyClass_hover',
-  ':active': 'myFancyClass_active',
-};
-```
-
-The `getStyle()` method would return an object that looks like this:
-
-```js
-{
-  // Automatically-combined classNames:
-  className: 'myFancyClass myFancyClass_hover',
-
-  // Any inline styles:
-  style: {color: 'red'},
-}
-```
-
-Component authors can utilize React/babel's spread operator (`...`) to apply `className` and `style` props
-all at once:
-
-```js
-<div {...getStyles()} />
-```
-
-#### Caveats
-
-It's possible to supply inline styles before attempting to "override" them
-with classNames, which can lead to unexpected behavior.
-
-For example, here we're trying to "override" an inline style with a className:
-
-```js
-<Combobox styles={[
-  {
-    color: 'red',
-  },
-  'MyComboBox',
-]} />
-```
-
-Browser semantics dictate that this will not do what we expect, because the inline
-styles always take priority over styles derived from CSS.
-
-To reduce the risk of this kind of thing, we can provide a runtime check
-that ensures all inline style definitions are supplied **at the end** of 
-a style definition:
-
-```
-Warning: Attempted to override inline styles with className styles; this may lead to unexpected styling behavior. Check the render method of `MyComponent`.
-```
-
-This will work well for internally-used components where there's probably a single
-approach to how styles are applied, but in the case of third-party components, it could
-be problematic.
-
-Why? A third-party component author may decide to only use inline styles, but
-the component *user* may exclusively use classNames in their project. In this situation,
-the component author's inline styles can only be overridden by other inline styles,
-which poses problems for users who prefer a CSS/classname-oriented styling system.
-
-This is still an unsolved problem for component authors, and another 
-reason why React really needs a single, agreed-upon implementation of styling.
-
-[react-future](https://github.com/reactjs/react-future/blob/fc5b7ac89effaea4c00143cb4d3bd3daa0f81f5d/04%20-%20Layout/04%20-%20Inline%20Styles.md)
-uses `StyleSheet.create` in its examples, which is also [the standard with React Native](https://facebook.github.io/react-native/docs/style.html),
-so there's a good chance we'll see this standard become part of React
-as a whole.
+See `PLAYING_NICE.md`.
 
 ## Discussion/Contributing
 
