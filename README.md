@@ -170,9 +170,9 @@ Here's how I'm using <Combobox>:
       }}
     />
 
-When the Combobox is *expanded*, I expect *opacity* to be 1, but it's 0.5.
+When the Combobox is *expanded* **AND** *busy*, I expect *opacity* to be 1, but it's 0.5.
 
-It looks like *busyStyle* **always** overrides *expandedStyle*.
+It looks like *busyStyle* **always** overrides *expandedStyle* when the Combobox is busy.
 
 Is there any way around this?
 
@@ -217,8 +217,7 @@ Your gut tells you something's not quite right here, but it solves the problem w
 
 What if we chose to use `@HasDeclarativeStyles` instead?
 
-This can be expressed much more cleanly, and "just works" --
-`:expanded`'s opacity of 1 overrides `:busy`'s 0.5:
+This scenario already works as expected; `:expanded`'s opacity of 1 overrides `:busy`'s 0.5:
 
 ```js
 <Combobox style={{
@@ -233,13 +232,13 @@ This can be expressed much more cleanly, and "just works" --
 
 Nothing would need to change in our implementation of `<Combobox>`.
 
-Why does this work?
+How does this work?
 
 `@HasDeclarativeStyles` was written such that styles are applied
-in the order they are iterated over in the original style object, meaning that
-"whatever comes last" always overrides what's described above (if applicable).
+*in the order they are iterated over in the original style object*, meaning that
+"whatever comes last" always overrides what was described earlier.
 
-This could also be expressed more directly using `:composed:pseudo-selectors`, like so:
+Alternatively, this behavior be expressed more directly using `:composed:pseudo-selectors`, like so:
 
 ```js
 <Combobox style={{
@@ -249,7 +248,7 @@ This could also be expressed more directly using `:composed:pseudo-selectors`, l
 }} />
 ```
 
-This makes composing styles much easier to reason about, and more closely resembles
+This makes composed styles much easier to reason about, and more closely resembles
 the actual behavior of the syntax that inspired it.
 
 ## The Pit of Success
@@ -265,7 +264,11 @@ one of the pseudo-selectors:
 }} />
 ```
 
-Component authors can take advantage of a special static component field, `styleStateTypes`:
+Component authors can take advantage of a special static component field, `styleStateTypes`, which
+declares the values that `getStyleState` returns.
+
+This is intentionally very similar to the way `childContextTypes` and `getChildContext`
+already work, so this should already be a familiar pattern for sophisticated component authors.
 
 ```js
 @HasDeclarativeStyles
@@ -283,13 +286,14 @@ class Combobox extends React.Component {
 Now, the user who made the typo will see this friendly message:
 
 ```
-Warning: Failed propType: Style state `expand` was not specified in `Combobox`. Available states are: ["expanded", "busy", "error"].  Check the render method of `MyApp`.
+Warning: Failed propType: Style state `:expand` was not specified in `Combobox`. Available states are: [`:expanded`, `:busy`, `:error`].  Check the render method of `MyApp`.
 ```
 
-Furthermore, component authors that forget to specify a required field on `styleStateTypes` may also receive warnings:
+We can take this one step further: component authors that forget to specify a required
+field from `styleStateTypes` in their `getStyleState` can also receive helpful warnings at runtime:
 
 ```
-Warning: Failed styleStateType: Required styleStateType `expanded` was not specified in the `getStyleState` method of `Combobox`.
+Warning: Failed styleStateType: Required prop `expanded` was not specified in the `getStyleState` method of `Combobox`.
 ```
 
 ----
@@ -298,19 +302,20 @@ Warning: Failed styleStateType: Required styleStateType `expanded` was not speci
 
 ### Missing Features
 
-Only single boolean pseudo-selectors are implemented. (no `:composed:selectors`, for instance)
+Only single boolean pseudo-selectors are implemented. (That is, aforementioned `:composed:selectors` are not yet supported)
 
 See `OTHER_IDEAS.md` for a more comprehensive set of potential features that I'd like to experiment with.
 
 ### How are styles applied?
 
-The purpose of this experiment is **not** to prefer using `props.className` or `props.style`.
+This experiment is not concerned with the debate over using `props.className` or `props.style`.
 
-Currently, for the sake of this experiment, styles are only applied inline on `style={...}`.
+Currently, for the sake of simplicity, styles are only applied inline on `style={...}`.
 
 However, it should be pretty easy to transparently support the composition of styles
-with `className` **and** `style` simultaneously, allowing this to play nicely with most of the existing
-style-defining solutions (i.e. [Radium](https://github.com/FormidableLabs/radium) vs [CSS Modules](https://github.com/css-modules/css-modules) vs [free-style](https://github.com/blakeembrey/react-free-style)).
+with `className` **and** `style` simultaneously, allowing `@HasDeclarativeStyles` to play nicely with
+most of the existing style-defining solutions
+(i.e. [Radium](https://github.com/FormidableLabs/radium) vs [CSS Modules](https://github.com/css-modules/css-modules) vs [free-style](https://github.com/blakeembrey/react-free-style)).
 
 How could we support all of these solutions?
 
@@ -318,8 +323,8 @@ How could we support all of these solutions?
 and everything else can be assumed to be a `style` object.
 
 Users could specify `className` styles simply by using strings instead of objects inside
-a `styles` object, and top-level (i.e. "default") `className`s can be specified by using an
-array, like so:
+a `styles` object, and top-level (i.e. "default") `className`s can be specified by composing it
+into an array, like so:
 
 ```js
 const MY_STYLES = [
@@ -331,8 +336,8 @@ const MY_STYLES = [
 ];
 ```
 
-An alternative, more succinct API might be to reserve the `:default` styleStateType for
-applying top-level styles:
+An alternative, more succinct API might be to reserve something like `:default` for
+applying "top-level" styles:
 
 ```js
 const MY_STYLES = {
@@ -346,21 +351,27 @@ The `getStyle()` method would return an object that looks like this:
 
 ```js
 {
-  className: 'foo bar',
+  // Automatically-combined classNames:
+  className: 'myFancyClass myFancyClass_hover',
+
+  // Any inline styles:
   style: {color: 'red'},
 }
 ```
 
-Component authors can exploit React/babel's spread operator (`...`) to apply the styles:
+Component authors can utilize React/babel's spread operator (`...`) to apply `className` and `style` props
+all at once:
 
 ```js
 <div {...getStyles()} />
 ```
 
-One caveat is that it's possible to supply inline styles before attempting to "override" them
-with classNames.
+#### Caveats
 
-For example:
+It's possible to supply inline styles before attempting to "override" them
+with classNames, which can lead to unexpected behavior.
+
+For example, here we're trying to "override" an inline style with a className:
 
 ```js
 <Combobox styles={[
@@ -371,9 +382,8 @@ For example:
 ]} />
 ```
 
-In this example, we're trying to "override" an inline style with a className.
-
-Browser semantics dictate that this will not do what we expect.
+Browser semantics dictate that this will not do what we expect, because the inline
+styles always take priority over styles derived from CSS.
 
 To reduce the risk of this kind of thing, we can provide a runtime check
 that ensures all inline style definitions are supplied **at the end** of 
@@ -383,11 +393,14 @@ a style definition:
 Warning: Attempted to override inline styles with className styles; this may lead to unexpected styling behavior. Check the render method of `MyComponent`.
 ```
 
-This works well for internally-used components, but is less elegant
-in the case of third-party components.
+This will work well for internally-used components where there's probably a single
+approach to how styles are applied, but in the case of third-party components, it could
+be problematic.
 
 Why? A third-party component author may decide to only use inline styles, but
-the component *user* may exclusively use classNames in their project.
+the component *user* may exclusively use classNames in their project. In this situation,
+the component author's inline styles can only be overridden by other inline styles,
+which poses problems for users who prefer a CSS/classname-oriented styling system.
 
 This is still an unsolved problem for component authors, and another 
 reason why React really needs a single, agreed-upon implementation of styling.
