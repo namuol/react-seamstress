@@ -52,23 +52,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <style>
-        {`
-          /* HACK: Pretend this was generated/included with Toggler */
-          .Toggler {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            margin: 5px;
-            border: 2px solid #aaa;
-            background-color: #eee;
-          }
-
-          .Toggler_toggled {
-            background-color: #aaa;
-          }
-        `}
-        </style>
+        <Toggler.Styles />
         <div>
           <p>Without style:</p>
           <Toggler />
