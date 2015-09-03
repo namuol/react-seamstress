@@ -24,6 +24,18 @@ for any bugs/questions/comments/discussion.
 At the time of writing, much of what's written in these markdown files is
 unimplemented, and primarily serves as a brain-dump.
 
+However, if you'd like to see a live example of what's been implemented,
+clone this repo, then run:
+
+```shell
+npm install
+npm start
+```
+
+A debug server should now be running on http://localhost:3000/
+
+The source code of this demo can be found in `./example`.
+
 ----
 
 ## Reasoning
