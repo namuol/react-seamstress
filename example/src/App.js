@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import Toggler from './Toggler';
 
 const RED_STYLE_INLINE = {
