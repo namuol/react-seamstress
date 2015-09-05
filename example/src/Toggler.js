@@ -31,6 +31,8 @@ export class Styles extends Component {
 
 @HasDeclarativeStyles
 export default class Toggler extends Component {
+  static Styles = Styles;
+  
   static propTypes = {
     defaultToggled: PropTypes.bool,
   };
@@ -65,5 +67,3 @@ export default class Toggler extends Component {
     );
   }
 }
-
-Toggler.Styles = Styles;

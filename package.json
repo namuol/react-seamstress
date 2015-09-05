@@ -6,7 +6,7 @@
   "scripts": {
     "test": "babel-node test | tap-difflet",
     "hack": "nodemon -w src -w test -w package.json --exec npm test & npm run example",
-    "example": "cd example; npm install && npm start",
+    "example": "cd example && npm install && npm start",
     "start": "npm run hack"
   },
   "author": "Louis Acresti <louis.acresti@gmail.com> (http://namuol.github.io)",
@@ -19,6 +19,7 @@
     "tape": "^4.2.0"
   },
   "dependencies": {
-    "react": "^0.13.3"
+    "react": "^0.14.0-beta3",
+    "react-dom": "^0.14.0-beta3"
   }
 }

@@ -48,7 +48,7 @@ const BLUE_STYLE_CSS = [
 ];
 
 export default class App extends Component {
-  render() {
+  render () {
     return (
       <div>
         <Toggler.Styles />

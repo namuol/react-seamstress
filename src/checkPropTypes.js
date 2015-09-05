@@ -1,10 +1,10 @@
-// TODO: use only public React functionality; ideally no React dependencies ...
 //
 // Adapted from React's internal propTypes validation
 // https://github.com/facebook/react/blob/2d63dfd73c5258e683d394d9ea0b922be21c65d8/src/isomorphic/classic/element/ReactElementValidator.js
+//
 
-import warning from 'react/lib/warning';
-import invariant from 'react/lib/invariant';
+import warning from 'fbjs/lib/warning';
+import invariant from 'fbjs/lib/invariant';
 import ReactPropTypeLocationNames from 'react/lib/ReactPropTypeLocationNames';
 
 const loggedTypeFailures = {};
