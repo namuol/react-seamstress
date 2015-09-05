@@ -18,8 +18,5 @@
     "tap-difflet": "^0.3.0",
     "tape": "^4.2.0"
   },
-  "dependencies": {
-    "react": "^0.14.0-beta3",
-    "react-dom": "^0.14.0-beta3"
-  }
+  "dependencies": {}
 }
