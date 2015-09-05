@@ -209,8 +209,9 @@ automated with a simple helper function:
 
 ```js
 function stylize (classes) {
-  return Object.keys(classes).reduce((style, className) => {
-    style[':' + className] = classes[className];
+  return Object.keys(classes).reduce((styles, className) => {
+    styles[':' + className] = classes[className];
+    return styles;
   }, {});
 }
 
