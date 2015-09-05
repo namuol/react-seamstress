@@ -6,9 +6,10 @@ function _mergeStyles (styles, depth=0) {
     const typeofStyle = typeof style;
     if (typeofStyle !== 'object') {
       if (depth === 0 && typeofStyle === 'string') {
-        classNames[style] = classNameCount;
-        classNameCount += 1;
-        return result;
+        style.split(/\s+/).forEach((className) => {
+          classNames[className] = classNameCount;
+          classNameCount += 1;
+        })
       }
       return result;
     }

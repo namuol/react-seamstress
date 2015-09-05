@@ -1,13 +1,6 @@
 import HasDeclarativeStyles from '../../src/HasDeclarativeStyles';
 import React, { PropTypes, Component } from 'react';
 
-const BASE_STYLE = [
-  'Toggler',
-  {
-    ':toggled': 'Toggler_toggled'
-  }
-];
-
 export class Styles extends Component {
   render () {
     return <style>{
@@ -32,6 +25,13 @@ export class Styles extends Component {
 @HasDeclarativeStyles
 export default class Toggler extends Component {
   static Styles = Styles;
+
+  static baseStyles = [
+    'Toggler',
+    {
+      ':toggled': 'Toggler_toggled'
+    }
+  ];
   
   static propTypes = {
     defaultToggled: PropTypes.bool,
@@ -59,7 +59,7 @@ export default class Toggler extends Component {
 
   render () {
     return (
-      <div {...this.getStyleProps(BASE_STYLE)} onClick={() => {
+      <div {...this.getStyleProps()} onClick={() => {
         this.setState({
           toggled: !this.state.toggled,
         });

@@ -34,7 +34,7 @@ const RED_STYLE_CSS = [
 ];
 
 const GREEN_STYLE_CSS = [
-  'GreenToggle',
+  'GreenToggler',
   {
     ':toggled': 'GreenToggler_toggled',
   }
@@ -47,62 +47,77 @@ const BLUE_STYLE_CSS = [
   }
 ];
 
+const RedToggler = Toggler.withStyles(RED_STYLE_CSS);
+const GreenToggler = Toggler.withStyles(GREEN_STYLE_CSS);
+const BlueToggler = Toggler.withStyles(BLUE_STYLE_CSS);
+
 export default class App extends Component {
   render () {
     return (
       <div>
         <Toggler.Styles />
-        <div>
-          <p>Without style:</p>
-          <Toggler />
-          <Toggler defaultToggled={true} />
-          <Toggler />
-        </div>
-        <div>
-          <p>With inline styles:</p>
-          <Toggler styles={RED_STYLE_INLINE} />
-          <Toggler styles={GREEN_STYLE_INLINE} defaultToggled={true} />
-          <Toggler styles={BLUE_STYLE_INLINE} />
-        </div>
 
-        <div>
-          <p>With CSS:</p>
-          <style>
-          {`
-            .RedToggler {
-              border: 2px solid #c66;
-              background-color: #fbb;
-            }
+        <section>
+          <h3>Overriding inside render with `props.styles`:</h3>
+          <div>
+            <p>Without style:</p>
+            <Toggler />
+            <Toggler defaultToggled={true} />
+            <Toggler />
+          </div>
+          <div>
+            <p>With inline styles:</p>
+            <Toggler styles={RED_STYLE_INLINE} />
+            <Toggler styles={GREEN_STYLE_INLINE} defaultToggled={true} />
+            <Toggler styles={BLUE_STYLE_INLINE} />
+          </div>
 
-            .RedToggler_toggled {
-              background-color: #c66;
-            }
+          <div>
+            <p>With CSS:</p>
+            <style>
+            {`
+              .RedToggler {
+                border: 2px solid #c66;
+                background-color: #fbb;
+              }
 
-
-            .GreenToggle {
-              border: 2px solid #6c6;
-              background-color: #bfb;
-            }
-
-            .GreenToggler_toggled {
-              background-color: #6c6;
-            }
+              .RedToggler_toggled {
+                background-color: #c66;
+              }
 
 
-            .BlueToggler {
-              border: 2px solid #66c;
-              background-color: #bbf;
-            }
+              .GreenToggler {
+                border: 2px solid #6c6;
+                background-color: #bfb;
+              }
 
-            .BlueToggler_toggled {
-              background-color: #66c;
-            }
-          `}
-          </style>
-          <Toggler styles={RED_STYLE_CSS} />
-          <Toggler styles={GREEN_STYLE_CSS} defaultToggled={true} />
-          <Toggler styles={BLUE_STYLE_CSS} />
-        </div>
+              .GreenToggler_toggled {
+                background-color: #6c6;
+              }
+
+
+              .BlueToggler {
+                border: 2px solid #66c;
+                background-color: #bbf;
+              }
+
+              .BlueToggler_toggled {
+                background-color: #66c;
+              }
+            `}
+            </style>
+            <Toggler styles={RED_STYLE_CSS} />
+            <Toggler styles={GREEN_STYLE_CSS} defaultToggled={true} />
+            <Toggler styles={BLUE_STYLE_CSS} />
+          </div>
+        </section>
+
+        <section>
+          <h3>Overriding with `Toggler.withStyles`:</h3>
+          <RedToggler />
+          <GreenToggler defaultToggled={true} />
+          <BlueToggler />
+        </section>
       </div>
     );
   }

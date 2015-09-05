@@ -38,6 +38,10 @@ The source code of this demo can be found in `./example`.
 
 ----
 
+## Usage with other styling tools/libraries
+
+See `PLAYING_NICE.md`.
+
 ## Reasoning
 
 1. We need a better way to provide styling hooks into components that have a complex set of states.
@@ -331,6 +335,38 @@ field from `styleStateTypes` in their `getStyleState` can also receive helpful w
 Warning: Failed styleStateType: Required prop `expanded` was not specified in the `getStyleState` method of `Combobox`.
 ```
 
+### What about Theming/Skinning?
+
+Passing in custom styles to every component via props is not ideal when you
+use the same style everywhere. This is the common use-case for "skinning" a
+third-party component to be used with your project.
+
+What we ***really*** want is a way to simply get a version of 
+`SomeThirdPartyComponent` that has OUR styles as its default styles.
+
+Here's how that looks, as it is currently implemented:
+
+```js
+import SomeThirdPartyComponent from 'some-third-party-component';
+
+// SomeThirdPartyComponent uses HasDeclarativeStyles
+
+const MY_STYLES = {
+  ':error': {
+    color: '#faa',
+    backgroundColor: '#b00',
+  },
+  ':busy': {
+    opacity: 0.5,
+  },
+};
+
+export default const MyComponent = SomeThirdPartyComponent.withStyles(MY_STYLES);
+```
+
+The only downside I can think of is that we'd have to manually override
+`displayName` if we want it to show up in devtools/error messages as `MyComponent`.
+
 ----
 
 ## Current Implementation
@@ -340,10 +376,6 @@ Warning: Failed styleStateType: Required prop `expanded` was not specified in th
 Only single boolean pseudo-selectors are implemented. (That is, aforementioned `:composed:selectors` are not yet supported)
 
 See `OTHER_IDEAS.md` for a more comprehensive set of potential features that I'd like to experiment with.
-
-## Usage with other styling tools/libraries
-
-See `PLAYING_NICE.md`.
 
 ## Discussion/Contributing
 

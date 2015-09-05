@@ -230,6 +230,20 @@ const tests = [
       }),
     },
   },
+
+  {
+    capability: 'should treat whitespace-delimited classNames uniquely',
+    input: [
+      'aaa',
+      'bbb ccc',
+      'ccc',
+    ],
+
+    expected: {
+      className: 'aaa bbb ccc',
+      style: orderedMap({}),
+    },
+  },
 ];
 
 runTests({
