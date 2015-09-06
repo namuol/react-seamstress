@@ -99,28 +99,18 @@ pre-order depth first to ensure the order matches our expectations. This will na
 when using something like CSS modules or CSS-in-JS solutions like free-style, but
 users need to be extra careful when combining different approaches.
 
-Inline styles don't have the ordering problem
+Inline styles don't have the ordering problem, but are problematic for reasons
+mentioned above.
 
 ### The need for a standard
-
-Given the lack of overridability of inline styles, it might make most sense to use
-CSS for styling a component you intend to distribute on NPM or the like.
-
-A third-party component author may decide to only use inline styles, but
-the component *user* may exclusively use CSS in their project. In this situation,
-the component author's inline styles can only be overridden by other inline styles,
-which poses problems for users who prefer a CSS/classname-oriented styling system.
-
-This is still an unsolved problem for component authors, and another 
-reason why React really needs a single, agreed-upon implementation of styling.
 
 [react-future](https://github.com/reactjs/react-future/blob/fc5b7ac89effaea4c00143cb4d3bd3daa0f81f5d/04%20-%20Layout/04%20-%20Inline%20Styles.md)
 uses `StyleSheet.create` in its examples, which is also [the standard with React Native](https://facebook.github.io/react-native/docs/style.html),
 so there's a good chance we'll see this standard become part of React as a whole.
 
 Whether `StyleSheet.create` uses `props.className` or `props.style` under the hood is
-really just an *implementation detail*, in the end -- ideally the behavior would transparently
-mimic the desired behavior using the most sensible approach, not unlike the VDOM.
+really just an *implementation detail*. Ideally the behavior would transparently
+mimic the desired behavior using the most sensible/performant approach, not unlike the VDOM.
 
 ### Conclusions?
 
