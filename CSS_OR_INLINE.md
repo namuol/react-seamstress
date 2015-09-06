@@ -56,8 +56,6 @@ Component authors can utilize the spread operator (`...`) to apply
 
 ### Gotchas
 
-There are issues with both approaches to be aware of, especially if you intend to 
-
 #### inline trumps CSS
 
 It's possible to supply inline styles before attempting to override them

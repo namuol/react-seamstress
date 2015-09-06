@@ -132,7 +132,7 @@ export default YourComponent;
 A static property defined on your component.
 
 These are the default styles for your component. Takes the same form 
-as the [`styles`](#props.styles) prop.
+as the [`styles`](#propsstyles) prop.
 
 #### `YourComponent.styleStateTypes`
 
