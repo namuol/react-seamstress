@@ -92,7 +92,7 @@ export default const MyCombobox = Combobox.withStyles(MY_STYLES);
 ## Features
 
 - Replace lots of inflexible styling boilerplate
-  * (no more `style={this.state.expanded && styles.busy}`)
+  * (no more `style={this.state.expanded && styles.expanded}`)
 - Fall into [the Pit of Success](WHY.md#the-pit-of-success)
 - Easily combine [inline styles with CSS/classNames](CSS_OR_INLINE.md)
 
