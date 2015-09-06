@@ -1,114 +1,21 @@
-## CSS vs inline styles
+# Usage with other styling libraries
 
-This experiment is **not** concerned with the debate over using `props.className` or `props.style`.
+I'm trying to keep the project flexible enough to work with most styling tools out there.
 
-Currently, for the sake of simplicity, styles are only applied inline on `style={...}`.
+If you can't get it to work with your workflow, please [file an issue](https://github.com/namuol/react-declarative-styles/issues).
 
-However, it should be pretty easy to transparently support the composition of styles
-with `className` **and** `style` simultaneously, allowing `@HasDeclarativeStyles` to play nicely with
-most of the existing style-defining solutions
-(i.e. [Radium](https://github.com/FormidableLabs/radium) vs [CSS Modules](https://github.com/css-modules/css-modules) vs [free-style](https://github.com/blakeembrey/react-free-style)).
+Contributions of examples using other tools/workflows are welcome! :beers:
 
-How could we support all of these solutions?
+----
 
-`className` can be composed of any strings we encounter in the `props.styles` array,
-and everything else can be assumed to be a `style` object.
+TODO: Create live examples of all of these.
 
-Users could specify `className` styles simply by using strings instead of objects inside
-a `styles` object, and top-level (i.e. "default") `className`s can be specified by composing it
-into an array, like so:
+Each example should illustrate:
 
-```js
-const MY_STYLES = [
-  'myFancyClass',
-  {
-    ':hover': 'myFancyClass_hover',
-    ':active': 'myFancyClass_active',
-  },
-];
-```
+1. How to author a third-party component
+2. How to re-skin a third-party component
 
-An alternative, more succinct API might be to reserve something like `:default` for
-applying "top-level" styles:
-
-```js
-const MY_STYLES = {
-  ':default': 'myFancyClass',
-  ':hover': 'myFancyClass_hover',
-  ':active': 'myFancyClass_active',
-};
-```
-
-The `getStyleProps()` method would return an object that looks like this:
-
-```js
-{
-  // Automatically-combined classNames:
-  className: 'myFancyClass myFancyClass_hover',
-
-  // Any inline styles:
-  style: {color: 'red'},
-}
-```
-
-Component authors can utilize React/babel's spread operator (`...`) to apply `className` and `style` props
-all at once:
-
-```js
-<div {...getStyleProps()} />
-```
-
-#### Caveats
-
-It's possible to supply inline styles before attempting to "override" them
-with classNames, which can lead to unexpected behavior.
-
-For example, here we're trying to "override" an inline style with a className:
-
-```js
-<Combobox styles={[
-  {
-    color: 'red',
-  },
-  'MyComboBox',
-]} />
-```
-
-Browser semantics dictate that this will not do what we expect, because the inline
-styles always take priority over styles derived from CSS.
-
-To reduce the risk of this kind of thing, we can provide a runtime check
-that ensures all inline style definitions are supplied **at the end** of 
-a style definition:
-
-```
-Warning: Attempted to override inline styles with className styles; this may lead to unexpected styling behavior. Check the render method of `MyComponent`.
-```
-
-This will work well for internally-used components where there's probably a single
-approach to how styles are applied, but in the case of third-party components, it could
-be problematic.
-
-Why? A third-party component author may decide to only use inline styles, but
-the component *user* may exclusively use classNames in their project. In this situation,
-the component author's inline styles can only be overridden by other inline styles,
-which poses problems for users who prefer a CSS/classname-oriented styling system.
-
-This is still an unsolved problem for component authors, and another 
-reason why React really needs a single, agreed-upon implementation of styling.
-
-[react-future](https://github.com/reactjs/react-future/blob/fc5b7ac89effaea4c00143cb4d3bd3daa0f81f5d/04%20-%20Layout/04%20-%20Inline%20Styles.md)
-uses `StyleSheet.create` in its examples, which is also [the standard with React Native](https://facebook.github.io/react-native/docs/style.html),
-so there's a good chance we'll see this standard become part of React
-as a whole.
-
-## Usage with other styling libraries
-
-Assuming we did implement support for className + inline styles, here's how one might integrate
-
-### [Radium](https://github.com/FormidableLabs/radium)
-
-TODO
+----
 
 ### [free-style](https://github.com/blakeembrey/free-style)
 
@@ -233,3 +140,13 @@ be removed.
 #### What about nested `::pseudo-elements`?
 
 TODO
+
+### [Radium](https://github.com/FormidableLabs/radium)
+
+TODO
+
+I personally like Radium's interface and their approach (it's what inspired this project),
+however the implementation is problematic for third-party component authors.
+
+Radium unfortunately may not be a good choice for authoring third-party components, because
+it forces users to use inline-styles to reskin your component.

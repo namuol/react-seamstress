@@ -58,13 +58,16 @@ export default class App extends Component {
         <Toggler.Styles />
 
         <section>
-          <h3>Overriding inside render with `props.styles`:</h3>
+          <h2>Default styles:</h2>
           <div>
-            <p>Without style:</p>
             <Toggler />
             <Toggler defaultToggled={true} />
             <Toggler />
           </div>
+        </section>
+
+        <section>
+          <h2>Overriding inside render with <code>props.styles</code>:</h2>
           <div>
             <p>With inline styles:</p>
             <Toggler styles={RED_STYLE_INLINE} />
@@ -113,10 +116,41 @@ export default class App extends Component {
         </section>
 
         <section>
-          <h3>Overriding with `Toggler.withStyles`:</h3>
+          <h2>Overriding with <code>Toggler.withStyles</code>:</h2>
           <RedToggler />
           <GreenToggler defaultToggled={true} />
           <BlueToggler />
+        </section>
+
+        <section>
+          <h2>Discouraging old habits:</h2>
+          <style>
+          {`
+            .CustomToggler {
+              width: 50px;
+              height: 50px;
+              background-color: orange;
+              border-radius: 25px;
+            }
+          `}
+          </style>
+          
+          <p>
+            If we explicitly set <code>props.className</code>, it throws out
+            what <code>this.getStyles()</code> would otherwise return, and
+            logs a warning to the console if we're not in production:
+          </p>
+          <Toggler className={'CustomToggler'} />
+
+          <p>
+            The same goes for explicitly setting <code>props.style</code>:
+          </p>
+          <Toggler style={{
+            width: '30px',
+            height: '30px',
+            borderColor: '#b0b',
+            backgroundColor: '#f0f',
+          }} />
         </section>
       </div>
     );

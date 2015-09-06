@@ -12,6 +12,7 @@ export class Styles extends Component {
       margin: 5px;
       border: 2px solid #aaa;
       background-color: #eee;
+      display: inline-block;
     }
 
     .Toggler_toggled {
@@ -59,7 +60,7 @@ export default class Toggler extends Component {
 
   render () {
     return (
-      <div {...this.getStyleProps()} onClick={() => {
+      <div {...this.getStyles()} onClick={() => {
         this.setState({
           toggled: !this.state.toggled,
         });

@@ -17,8 +17,8 @@ class DropDown extends React.Component {
 
   render () {
     return (
-      <div {...this.getStyleProps()}>
-        <div {...this.getStylePropsFor('indicator')} />
+      <div {...this.getStyles()}>
+        <div {...this.getStylesFor('indicator')} />
         {
           // ...
         }
@@ -93,7 +93,7 @@ class Indicator extends React.Component {
   }
 
   render () {
-    return <div {...getStyleProps()} />;
+    return <div {...getStyles()} />;
   }
 }
 
@@ -115,9 +115,9 @@ class DropDown extends React.Component {
 
   render () {
     return (
-      <div {...getStyleProps()}>
+      <div {...getStyles()}>
         <Indicator
-          {...this.getStylePropsFor('indicator')}
+          {...this.getStylesFor('indicator')}
         />
       </div>
     );
