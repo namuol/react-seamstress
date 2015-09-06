@@ -14,6 +14,10 @@ export default function HasDeclarativeStyles (Component) {
   const displayName = Component.displayName || Component.name;
   
   function validateStyles (props, propName, component) {
+    if (!Component.styleStateTypes) {
+      return;
+    }
+
     const {style} = mergeStyles(arrayify(props[propName]));
     const invalidStyleStates = getInvalidStyleStates({
       style,
@@ -52,12 +56,17 @@ export default function HasDeclarativeStyles (Component) {
 
     getStyles () {
       const state = this.getStyleState();
-      if (__DEV__) {
+      if (__DEV__ && Component.styleStateTypes) {
         checkPropTypes(displayName, Component.styleStateTypes, state, 'prop', 'styleStateType',
           `Check the \`getStyleState\` method of \`${displayName}\`.`);
       }
 
-      if (this.props.className || this.props.style) {
+      if (!(this.props.className || this.props.style)) {
+        return mergeStyles(filterStylesFromState({
+          state,
+          styles: [...arrayify(this.constructor.baseStyles), ...arrayify(this.props.styles)],
+        }));
+      } else {
         if (__DEV__) {
           const propNames = ['className', 'style']
             .filter(n => !!this.props[n])
@@ -72,11 +81,6 @@ export default function HasDeclarativeStyles (Component) {
           style: this.props.style,
           className: this.props.className,
         };
-      } else {
-        return mergeStyles(filterStylesFromState({
-          state,
-          styles: [...arrayify(this.constructor.baseStyles), ...arrayify(this.props.styles), this.props.className, this.props.style],
-        }));
       }
     }
 

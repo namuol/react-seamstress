@@ -51,7 +51,7 @@ Component authors can utilize the spread operator (`...`) to apply
 `className` and `style` props all at once:
 
 ```js
-<div {...getStyles()} />
+<div {...this.getStyles()} />
 ```
 
 ### Gotchas

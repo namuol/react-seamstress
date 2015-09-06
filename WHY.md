@@ -11,12 +11,8 @@ Imagine a `<Combobox>` that can asynchronously fetch its options.
 It has many specific internal states (such as `busy`, `expanded`, etc.), each of
 which will need a different look & feel.
 
-Here's how the thoughtful author of `<Combobox>` would provide style hooks to users,
+Here's how a thoughtful author of `<Combobox>` would provide style hooks to users,
 using the tools React already gives us:
-
-(**Note:** For the sake of simplicity, let's also pretend that the
-[style array syntax](https://github.com/reactjs/react-future/blob/fc5b7ac89effaea4c00143cb4d3bd3daa0f81f5d/04%20-%20Layout/04%20-%20Inline%20Styles.md#using-styles)
-is a standard part of React)
 
 ```js
 // Inside Combobox.js - render():
@@ -25,32 +21,41 @@ const expanded = this.state.expanded;
 const busy = this.state.options === undefined;
 const error = this.state.options === null;
 
-<div style={[
-  // Default styles:
-  DEFAULT_STYLE,
-  // User styles:  
-  this.props.style,
+<div className={classnames(
+  classes.base,
+  this.props.className,
   
-  // Default expanded styles:
-  expanded && EXPANDED_STYLE,
-  // User expanded styles:
-  expanded && this.this.props.expandedStyle,
+  expanded && classes.expanded,
+  expanded && this.props.expandedClassName,
 
-  // Default busy styles:
-  busy && BUSY_STYLE,
-  // User busy styles:
-  busy && this.this.props.busyStyle,
+  busy && classes.busy,
+  busy && this.props.busyClassName,
 
-  // Default error styles:
-  error && ERROR_STYLE,
-  // User error styles:
-  error && this.this.props.errorStyle,
-]} />
+  error && classes.error,
+  error && this.props.errorClassName,
+)} />
 ```
+
+Oh, don't forget about inline styles! Not everyone wants to use CSS.
+
+```js
+<div
+  className={classnames(...)}
+
+  style={[
+    this.props.style,    
+    expanded && this.props.expandedStyle,
+    busy && this.props.busyStyle,
+    error && this.props.errorStyle,
+  ]}
+/>
+```
+
 
 This is somewhat tedious, but manageble for this relatively simple Component.
 
-The users of `<Combobox>` now have a convenient, declarative way to control how it looks:
+The users of `<Combobox>` now have a convenient, declarative way to control how it looks,
+using inline styles or CSS!
 
 ```js
 <Combobox
@@ -69,7 +74,8 @@ The users of `<Combobox>` now have a convenient, declarative way to control how 
 
 Again, slightly verbose, but gets the job done and it's easy to understand.
 
-This is the current "state of the art", but I think we could do better.
+This is the current "state of the art", but not very many third-party component authors
+provide flexibility at this level.
 
 ### A novel, yet familiar approach
 
@@ -99,6 +105,15 @@ a way to obtain the state of these "pseudo-selectors":
 ```js
 @HasDeclarativeStyles
 class Combobox extends React.Component {
+  static baseStyles = [
+    classes.base,
+    {
+      ':expanded': classes.expanded,
+      ':busy': classes.busy,
+      ':error': classes.error,
+    },
+  ];
+
   getStyleState () {
     return {
       expanded: this.state.expanded,
@@ -108,11 +123,7 @@ class Combobox extends React.Component {
   }
 
   render () {
-    <div {...getStyles()}>
-      {
-        // ... etc
-      }
-    </div>
+    <div {...this.getStyles()} />
   }
 }
 ```
@@ -129,7 +140,7 @@ operations.
 This method might first only seem like sugar for the `<Combobox>` author, but 
 there are other subtle but powerful benefits.
 
-Suppose I publish `<Combobox>` on NPM, using the canonical `props` approach to specify styles.
+Suppose you publish `<Combobox>` on NPM, using the canonical `props` approach to specify styles.
 
 People start using it in their projects, and someone creates a new issue on GitHub:
 
@@ -161,7 +172,7 @@ param to be overridden when the user needs it to be the other way around.
 
 Rather than reordering the styles in the array and potentially breaking
 other people's projects, you decide the only way around this is to
-provide yet another, *weirdly-specific* style prop: `expandedAndBusyStyle`:
+provide yet another, *weirdly-specific* style prop: `expandedAndBusyStyle`/`expandedAndBusyClassName`:
 
 ```js
 <Combobox
@@ -182,12 +193,16 @@ Your `Combobox` implementation would need to be updated to support this, of cour
 ```js
 // Inside Combobox.js - render():
 
-<div style={[
-  
-  // ... a bunch of other styles ...
-
-  (expanded && busy) && this.props.expandedAndBusyStyle
-]} />
+<div
+  className={classnames(
+    // ... a bunch of other classes ...
+    (expanded && busy) && this.props.expandedAndBusyClassName,
+  )}
+  style={[
+    // ... a bunch of other styles ...
+    (expanded && busy) && this.props.expandedAndBusyStyle
+  ]}
+/>
 ```
 
 Your gut tells you something's not quite right here, but it solves the problem without breaking anyone else's code.
@@ -211,11 +226,11 @@ Nothing would need to change in our implementation of `<Combobox>`.
 
 How does this work?
 
-`@HasDeclarativeStyles` was written such that styles are applied
+`@HasDeclarativeStyles` ensures that styles are applied
 *in the order they are iterated over in the original style object*, meaning that
 "whatever comes last" always overrides what was described earlier.
 
-Alternatively, this behavior be expressed more directly using `:composed:pseudo-selectors`, like so:
+This behavior could also be expressed using `:composed:pseudo-selectors`:
 
 ```js
 <Combobox style={{
@@ -224,9 +239,6 @@ Alternatively, this behavior be expressed more directly using `:composed:pseudo-
   }
 }} />
 ```
-
-This makes composed styles much easier to reason about, and more closely resembles
-the actual behavior of the syntax that inspired it.
 
 ### The Pit of Success
 
@@ -244,8 +256,7 @@ one of the pseudo-selectors:
 Component authors can take advantage of a special static field, `styleStateTypes`, which
 declares the values that `getStyleState` returns.
 
-This is intentionally very similar to the way `childContextTypes` and `getChildContext`
-already work, so this should already be a familiar pattern for sophisticated component authors.
+This pattern should look familiar to those who've used `propTypes` before:
 
 ```js
 @HasDeclarativeStyles
@@ -260,14 +271,15 @@ class Combobox extends React.Component {
 }
 ```
 
-Now, the user who made the typo will see this friendly message:
+The big difference from `propTypes` is that we are *strict*; specifying a psuedo-element
+that doesn't correspond to an entry in `styleStateTypes` leads to this friendly message:
 
 ```
 Warning: Failed propType: Style state `:expand` was not specified in `Combobox`. Available states are: [`:expanded`, `:busy`, `:error`].  Check the render method of `MyApp`.
 ```
 
-We can take this one step further: component authors that forget to specify a required
-field from `styleStateTypes` in their `getStyleState` can also receive helpful warnings at runtime:
+We can take this one step further: component authors that forget to specify any `isRequired`
+fields from `styleStateTypes` in their `getStyleState` will also receive helpful warnings at runtime:
 
 ```
 Warning: Failed styleStateType: Required prop `expanded` was not specified in the `getStyleState` method of `Combobox`.
@@ -275,12 +287,12 @@ Warning: Failed styleStateType: Required prop `expanded` was not specified in th
 
 ### What about Theming/Skinning?
 
-Passing in custom styles to every component via props is not ideal when you
+Passing in custom `styles` to every component via props is not ideal when you
 use the same style everywhere. This is the common use-case for "skinning" a
 third-party component to be used with your project.
 
 What we ***really*** want is a way to simply get a version of 
-`SomeThirdPartyComponent` that has our styles as its default styles.
+`SomeThirdPartyComponent` that uses our styles as its default styles.
 
 Here's how that looks, as it is currently implemented:
 
@@ -290,10 +302,6 @@ import SomeThirdPartyComponent from 'some-third-party-component';
 // SomeThirdPartyComponent uses HasDeclarativeStyles
 
 const MY_STYLES = {
-  ':error': {
-    color: '#faa',
-    backgroundColor: '#b00',
-  },
   ':busy': {
     opacity: 0.5,
   },
@@ -301,6 +309,3 @@ const MY_STYLES = {
 
 export default const MyComponent = SomeThirdPartyComponent.withStyles(MY_STYLES);
 ```
-
-The only downside I can think of is that we'd have to manually override
-`displayName` if we want it to show up in devtools/error messages as `MyComponent`.
