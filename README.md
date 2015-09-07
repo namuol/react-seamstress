@@ -10,17 +10,13 @@ result in changes in its style:
 ```js
 @HasDeclarativeStyles
 class Combobox extends React.Component {
-  // Set default styles:
-  static baseStyles = [
-    // Base/default style class
-    'Combobox',
-    {
-      // Classes that get applied based on the results of `this.getStyleState()`:
-      ':expanded': 'Combobox_expanded',
-      ':busy': 'Combobox_busy',
-      ':error': 'Combobox_error',
-    },
-  ];
+  // Set default styles (these classNames could come from CSS modules, etc):
+  static styles = {
+    ':base': 'Combobox',
+    ':expanded': 'Combobox_expanded',
+    ':busy': 'Combobox_busy',
+    ':error': 'Combobox_error',
+  };
 
   // Declare what style states are available (optional, recommended)
   static styleStateTypes = {
@@ -49,9 +45,11 @@ Here's what it looks like to re-style your component with inline styles:
 
 ```js
 <Combobox styles={{
+  // "Top level" styles are applied by default.
   color: 'white',
   backgroundColor: '#333',
 
+  // :state styles only apply when the associated state is active:
   ':expanded': {
     border: '1px solid black',
   },
@@ -67,21 +65,20 @@ Here's what it looks like to re-style your component with inline styles:
 }} />
 ```
 
-...or with CSS classes:
+You can also override styles with CSS classes by providing strings instead of
+style objects:
 
 ```js
-<Combobox styles={[
-  'MyCombobox', // <-- Base styles
-  {
-    ':expanded': 'MyCombobox_expanded',
-    ':busy': 'MyCombobox_busy',
-    ':error': 'MyCombobox_error',
-  }
-]} />
+<Combobox styles={{
+  ':base': 'MyCombobox',
+  ':expanded': 'MyCombobox_expanded',
+  ':busy': 'MyCombobox_busy',
+  ':error': 'MyCombobox_error',
+}} />
 ```
 
-You can also create a pre-skinned version of your component so you don't have to
-keep repeating yourself:
+Avoid repeating yourself by creating a copy of the component
+that uses your styles by default:
 
 ```js
 const MY_STYLES = { ...etc };
@@ -125,14 +122,17 @@ YourComponent = HasDeclarativeStyles(YourComponent);
 export default YourComponent;
 ```
 
-#### `YourComponent.baseStyles`
+#### `YourComponent.styles`
 
 (optional)
 
 A static property defined on your component.
 
-These are the default styles for your component. Takes the same form 
-as the [`styles`](#propsstyles) prop.
+These are the default styles for your component. Think of these styles
+as the default userstyles in the browser if your Component were a first-class
+DOM element such as `<select>`.
+
+Takes the same form as the [`styles`](#propsstyles) prop.
 
 #### `YourComponent.styleStateTypes`
 
@@ -145,13 +145,13 @@ Takes a form similar to React's canonical `propTypes`.
 A set of `PropType` definitions that are used to describe what states are
 available for styling. Currently, it really only makes sense for these to be `PropTypes.bool`.
 
-[In the future](OTHER_IDEAS.md#advanced-queries), we may also support different types.
+[In the future](OTHER_IDEAS.md#advanced-queries), we may support additional types (numbers, strings, etc).
 
-If `styleStateTypes` is defined on your class, any `:pseudo-selector` that isn't
+If `styleStateTypes` is defined on your class, any `:state` that isn't
 explicitly defined will trigger a [helpful warning message](WHY.md#the-pit-of-success).
 
-If the author of `YourComponent` fails to supply any of the `isRequired` properties,
-a different helpful warning message will be triggered.
+If the author of `YourComponent` fails to supply any `isRequired` properties,
+a helpful warning message will be triggered.
 
 ```js
 @HasDeclarativeStyles
@@ -192,7 +192,7 @@ Returns an object that contains the appropriate style
 props -- both `className` and `style` -- based on the contents
 returned from `YourComponent::getStyleState`.
 
-The easiest way to apply these props is to use the new spread operator (`...`):
+The easiest way to apply these props is to use the spread operator (`...`):
 
 ```js
 <div {...this.getStyles()} />
@@ -209,7 +209,10 @@ const styleProps = this.getStyles();
 A special prop used to define style overrides.
 
 Can be a single `className` string, an object of raw inline styles, or an array of any
-combination of these.
+combination thereof.
+
+Object properties that take the form `:some-component-state` are used to define
+styles that apply when the corresponding condition is met.
 
 Examples:
 
@@ -219,7 +222,7 @@ Examples:
   // style properties of the component:
   color: 'black',
 
-  // :pseudo-selector style objects are conditionally merged with
+  // :state style objects are conditionally merged
   // in the order they appear in this object:
   ':expanded': {
     border: '1px solid black',
@@ -237,10 +240,20 @@ Examples:
   // Standalone strings in the array are unconditionally applied:
   'MyComponent',
   {
-    // :pseudo-selectors conditionally apply classes based on internal state:
+    // :states conditionally apply classes based on internal state:
     ':expanded': 'MyComponent_expanded',
   },
 ]} />
+```
+
+Alternatively, you can use the special `:base` state to unconditionally apply
+classNames without the need to use an array:
+
+```js
+<YourComponent styles={{
+  ':base': 'MyComponent',
+  ':expanded': 'MyComponent_expanded',
+}} />
 ```
 
 ## Running examples

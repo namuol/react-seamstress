@@ -41,9 +41,9 @@ export default function HasDeclarativeStyles (Component) {
   }
 
   if (__DEV__) {
-    let error = validateStyles(Component, 'baseStyles')
+    let error = validateStyles(Component, 'styles')
     if (!!error) {
-      console.error(error.message + ` Check the definition of \`${displayName}.baseStyles\``);
+      console.error(error.message + ` Check the definition of \`${displayName}.styles\``);
     }
   }
 
@@ -56,6 +56,15 @@ export default function HasDeclarativeStyles (Component) {
 
     getStyles () {
       const state = this.getStyleState();
+
+      if (__DEV__) {
+        warning(!state.hasOwnProperty('base'),
+                `\`:base\` is a reserved styleState that is always \`true\`; please use a different name. ` +
+                `Check the \`getStyleState\` method of \`${displayName}\`.`);
+      }
+
+      state.base = true;
+
       if (__DEV__ && Component.styleStateTypes) {
         checkPropTypes(displayName, Component.styleStateTypes, state, 'prop', 'styleStateType',
           `Check the \`getStyleState\` method of \`${displayName}\`.`);
@@ -64,7 +73,7 @@ export default function HasDeclarativeStyles (Component) {
       if (!(this.props.className || this.props.style)) {
         return mergeStyles(filterStylesFromState({
           state,
-          styles: [...arrayify(this.constructor.baseStyles), ...arrayify(this.props.styles)],
+          styles: [...arrayify(this.constructor.styles), ...arrayify(this.props.styles)],
         }));
       } else {
         if (__DEV__) {
@@ -86,7 +95,7 @@ export default function HasDeclarativeStyles (Component) {
 
     static withStyles (myStyles) {
       return class TailoredComponent extends ComponentWithDeclarativeStyles {
-        static baseStyles = [...arrayify(Component.baseStyles), ...arrayify(myStyles)];
+        static styles = [...arrayify(Component.styles), ...arrayify(myStyles)];
       };
     }
   }

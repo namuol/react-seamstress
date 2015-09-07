@@ -105,7 +105,7 @@ a way to obtain the state of these "pseudo-selectors":
 ```js
 @HasDeclarativeStyles
 class Combobox extends React.Component {
-  static baseStyles = [
+  static styles = [
     classes.base,
     {
       ':expanded': classes.expanded,

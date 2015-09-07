@@ -1,7 +1,7 @@
 import HasDeclarativeStyles from '../../src/HasDeclarativeStyles';
 import React, { PropTypes, Component } from 'react';
 
-export class Styles extends Component {
+export class StyleElement extends Component {
   render () {
     return <style>{
     `
@@ -13,6 +13,10 @@ export class Styles extends Component {
       border: 2px solid #aaa;
       background-color: #eee;
       display: inline-block;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
 
     .Toggler_toggled {
@@ -25,9 +29,9 @@ export class Styles extends Component {
 
 @HasDeclarativeStyles
 export default class Toggler extends Component {
-  static Styles = Styles;
+  static StyleElement = StyleElement;
 
-  static baseStyles = [
+  static styles = [
     'Toggler',
     {
       ':toggled': 'Toggler_toggled'

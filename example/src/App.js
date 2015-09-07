@@ -55,7 +55,11 @@ export default class App extends Component {
   render () {
     return (
       <div>
-        <Toggler.Styles />
+        {/*
+          Note: This is not the recommended way to include CSS styles from a component
+          in your project; I'm just using this for the simplcity of this demo.
+        */}
+        <Toggler.StyleElement />
 
         <section>
           <h2>Default styles:</h2>
