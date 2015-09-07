@@ -11,13 +11,16 @@ export default function filterStylesFromState ({styles=[], state={}}) {
     }
 
     if (type === 'object') {
-      const defaultStyles = {};
+      const topLevelStyles = {};
       let hasDefaultStyles = false;
       const stylesToAdd = [];
 
       Object.keys(style).forEach((propName) => {
         if (!(/^:/).test(propName)) {
-          defaultStyles[propName] = style[propName];
+          topLevelStyles[propName] = style[propName];
+          hasDefaultStyles = true;
+        } else if (propName === ':base') {
+          Object.assign(topLevelStyles, style[propName]);
           hasDefaultStyles = true;
         } else if (!!state[propName.substr(1)]) {
           stylesToAdd.push(style[propName]);
@@ -25,7 +28,7 @@ export default function filterStylesFromState ({styles=[], state={}}) {
       });
 
       if (hasDefaultStyles) {
-        stylesToAdd.unshift(defaultStyles)
+        stylesToAdd.unshift(topLevelStyles)
       }
 
       return result.concat(stylesToAdd);

@@ -161,13 +161,39 @@ runTests({
     },
 
     {
-      capability: 'should "hoist" toplevel (default) styles',
+      capability: 'should "hoist" toplevel styles',
       input: {
         styles: [
           {
             color: 'black',
             ':test': {color: 'red'},
             backgroundColor: 'orange',
+          },
+        ],
+
+        state: {
+          test: true,
+        }
+      },
+      expected: [
+        {
+          color: 'black',
+          backgroundColor: 'orange',
+        },
+        {color: 'red'},
+      ],
+    },
+
+    {
+      capability: 'should "hoist" :base styles and assume :base to be true',
+      input: {
+        styles: [
+          {
+            ':test': {color: 'red'},
+            ':base': {
+              color: 'black',
+              backgroundColor: 'orange',
+            },
           },
         ],
 
