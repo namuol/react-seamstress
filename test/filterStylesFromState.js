@@ -211,6 +211,26 @@ runTests({
     },
 
     {
+      capability: 'should "hoist" :base classNames and assume :base to be true',
+      input: {
+        styles: [
+          {
+            ':test': {color: 'red'},
+            ':base': 'MyComponent',
+          },
+        ],
+
+        state: {
+          test: true,
+        }
+      },
+      expected: [
+        'MyComponent',
+        {color: 'red'},
+      ],
+    },
+
+    {
       capability: 'should straight-up *ignore* non-string, non-object values inside the array',
       input: {
         styles: [

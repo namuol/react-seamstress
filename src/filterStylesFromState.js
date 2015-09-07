@@ -12,6 +12,8 @@ export default function filterStylesFromState ({styles=[], state={}}) {
 
     if (type === 'object') {
       const topLevelStyles = {};
+      const baseClassNames = [];
+
       let hasDefaultStyles = false;
       const stylesToAdd = [];
 
@@ -20,8 +22,12 @@ export default function filterStylesFromState ({styles=[], state={}}) {
           topLevelStyles[propName] = style[propName];
           hasDefaultStyles = true;
         } else if (propName === ':base') {
-          Object.assign(topLevelStyles, style[propName]);
-          hasDefaultStyles = true;
+          if (typeof style[propName] === 'string') {
+            baseClassNames.push(style[propName]);
+          } else {
+            Object.assign(topLevelStyles, style[propName]);
+            hasDefaultStyles = true;
+          }
         } else if (!!state[propName.substr(1)]) {
           stylesToAdd.push(style[propName]);
         }
@@ -29,6 +35,10 @@ export default function filterStylesFromState ({styles=[], state={}}) {
 
       if (hasDefaultStyles) {
         stylesToAdd.unshift(topLevelStyles)
+      }
+
+      if (baseClassNames.length > 0) {
+        stylesToAdd.unshift(...baseClassNames);
       }
 
       return result.concat(stylesToAdd);
