@@ -1,14 +1,12 @@
 function _mergeStyles (styles, depth=0) {
   const classNames = {};
-  let classNameCount = 0;
 
-  const style = styles.reduce((result, style) => {
+  const inlineStyles = styles.reduce((result, style) => {
     const typeofStyle = typeof style;
     if (typeofStyle !== 'object') {
       if (depth === 0 && typeofStyle === 'string') {
         style.split(/\s+/).forEach((className) => {
-          classNames[className] = classNameCount;
-          classNameCount += 1;
+          classNames[className] = true;
         })
       }
       return result;
@@ -32,12 +30,12 @@ function _mergeStyles (styles, depth=0) {
   }, {});
 
   if (depth > 0) {
-    return style;
+    return inlineStyles;
   }
 
   return {
     className: Object.keys(classNames).join(' '),
-    style,
+    style: inlineStyles,
   };
 };
 

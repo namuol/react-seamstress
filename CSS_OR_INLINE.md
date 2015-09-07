@@ -7,29 +7,16 @@ with `@HasDeclarativeStyles`; [skip ahead](#conclusions) to see why.
 
 That said, both approaches are supported.
 
-`className` can be composed of any strings we encounter in the `props.styles` array,
+`className` can be composed of any strings we encounter in `props.styles`,
 and everything else can be assumed to be a `style` object.
 
 Users can specify `className` styles simply by using strings instead of objects inside
-a `styles` object, and top-level (i.e. "default") `className`s can be specified by composing it
-into an array, like so:
-
-```js
-const MY_STYLES = [
-  'myFancyClass',
-  {
-    ':hover': 'myFancyClass_hover',
-    ':active': 'myFancyClass_active',
-  },
-];
-```
-
-An alternative, perhaps more succinct API might be to reserve something like `:default` for
-applying "top-level" styles (this is not currently implemented):
+a `styles` object, and top-level (i.e. "default") `className`s can be specified by using
+the special `:base` style state:
 
 ```js
 const MY_STYLES = {
-  ':default': 'myFancyClass',
+  ':base': 'myFancyClass',
   ':hover': 'myFancyClass_hover',
   ':active': 'myFancyClass_active',
 };
@@ -56,7 +43,7 @@ Component authors can utilize the spread operator (`...`) to apply
 
 ### Gotchas
 
-#### inline trumps CSS
+#### Inline trumps CSS
 
 It's possible to supply inline styles before attempting to override them
 with classes, which may lead to unexpected behavior.

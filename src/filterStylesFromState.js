@@ -28,8 +28,12 @@ export default function filterStylesFromState ({styles=[], state={}}) {
             Object.assign(topLevelStyles, style[propName]);
             hasDefaultStyles = true;
           }
-        } else if (!!state[propName.substr(1)]) {
-          stylesToAdd.push(style[propName]);
+        } else {
+          const propNames = propName.split(/:/).filter(n => n.length > 0);
+
+          if (propNames.every(prop => !!state[prop])) {
+            stylesToAdd.push(style[propName]);
+          }
         }
       });
 

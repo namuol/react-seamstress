@@ -279,5 +279,50 @@ runTests({
       },
       expected: [],
     },
+
+    {
+      capability: 'should handle :composed:selectors',
+      input: {
+        styles: [
+          {
+            ':test': {color: 'red'},
+            ':test2': {color: 'white'},
+            ':test:test2': {color: 'black'},
+          },
+        ],
+
+        state: {
+          test: true,
+          test2: true,
+        }
+      },
+      expected: [
+        {color: 'red'},
+        {color: 'white'},
+        {color: 'black'},
+      ],
+    },
+
+    {
+      capability: 'should only pass :composed:selectors whose every selector is true',
+      input: {
+        styles: [
+          {
+            ':test': {color: 'red'},
+            ':test2': {color: 'white'},
+            ':test:test2': {color: 'black'},
+          },
+        ],
+
+        state: {
+          test: true,
+          test2: false,
+        }
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
+
   ],
 });

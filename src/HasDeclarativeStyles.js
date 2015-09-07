@@ -41,9 +41,9 @@ export default function HasDeclarativeStyles (Component) {
   }
 
   if (__DEV__) {
-    let error = validateStyles(Component, 'styles')
+    let error = validateStyles(Component, 'styles');
     if (!!error) {
-      console.error(error.message + ` Check the definition of \`${displayName}.styles\``);
+      console.error(error.message + ` Check the definition of \`${displayName}.styles\`.`);
     }
   }
 
@@ -57,13 +57,9 @@ export default function HasDeclarativeStyles (Component) {
     getStyles () {
       const state = this.getStyleState();
 
-      if (__DEV__) {
-        warning(!state.hasOwnProperty('base'),
-                `\`:base\` is a reserved styleState that is always \`true\`; please use a different name. ` +
-                `Check the \`getStyleState\` method of \`${displayName}\`.`);
-      }
-
-      state.base = true;
+      warning(!state.hasOwnProperty('base'),
+              `\`:base\` is a reserved styleState that is always \`true\`; please use a different name. ` +
+              `Check the \`getStyleState\` method of \`${displayName}\`.`);
 
       if (__DEV__ && Component.styleStateTypes) {
         checkPropTypes(displayName, Component.styleStateTypes, state, 'prop', 'styleStateType',

@@ -145,6 +145,12 @@ This makes expressing complex variations much easier:
 
 ### `:composed:pseudo:selectors`
 
+----
+
+**Note**: Basic non-nested `:composed:selectors` are now implemented.
+
+----
+
 It could be useful to provide a mechanism to switch on multiple
 pseudo selectors.
 
@@ -224,4 +230,3 @@ Queries that make no sense (i.e. comparing a `PropType.string` to a
 Warning: Numeric comparison query attempted in `string` defined on `CountryChooser`.
 Check the render method of `SomeComponent`.
 ```
-
