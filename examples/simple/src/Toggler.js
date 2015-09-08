@@ -1,4 +1,4 @@
-import HasDeclarativeStyles from '../../src/HasDeclarativeStyles';
+import HasDeclarativeStyles from '../../../src/HasDeclarativeStyles';
 import React, { PropTypes, Component } from 'react';
 
 export class StyleElement extends Component {
@@ -42,13 +42,11 @@ export class StyleElement extends Component {
 export default class Toggler extends Component {
   static StyleElement = StyleElement;
 
-  static styles = [
-    'Toggler',
-    {
-      ':toggled': 'Toggler_toggled',
-      '::indicator': 'TogglerIndicator',
-    }
-  ];
+  static styles = {
+    ':base': 'Toggler',
+    ':toggled': 'Toggler_toggled',
+    '::indicator': 'TogglerIndicator',
+  };
   
   static propTypes = {
     defaultToggled: PropTypes.bool,

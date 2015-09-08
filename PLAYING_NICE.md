@@ -54,7 +54,7 @@ we'd need to provide a desugaring function that produces something like this fro
 
 ```js
 {
-  ':default': Style.registerStyle({
+  ':base': Style.registerStyle({
     color: 'cyan',
     '@media only screen and (max-width: 800px)': {
       color: 'yellow',
@@ -79,7 +79,7 @@ CSS modules should work pretty well right out of the box:
 ```css
 /* MyComponent.css */
 
-.default {
+.base {
   color: cyan;
 }
 
@@ -88,7 +88,7 @@ CSS modules should work pretty well right out of the box:
 }
 
 @media only screen and (max-width: 800px) {
-  .default {
+  .base {
     color: yellow;
   }
 
@@ -106,7 +106,7 @@ import classes from './MyComponent.css';
 // ...
 
 <Component styles={{
-  ':default': classes.default,
+  ':base': classes.base,
   ':expanded': classes.expanded,
 }} />
 ```
@@ -127,8 +127,7 @@ import classes from './MyComponent.css';
 <Component styles={stylize(classes)} />
 ```
 
-Thought: Given how close this is to being "perfect", we might just want to change the syntax
-to remove the preceding `:` altogether...
+Thought: Given how close this is to being "perfect", we might just want to change the syntax to remove the preceding `:` altogether...
 
 #### Using `composes`
 

@@ -2,6 +2,12 @@
 
 ### `::sub-component`
 
+----
+
+**Note**: `::sub-component` support is now implemented.
+
+----
+
 Sub-component styling could be achieved with a `::pseudo-element`-inspired
 interface.
 

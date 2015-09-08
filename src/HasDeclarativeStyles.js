@@ -25,6 +25,10 @@ export default function HasDeclarativeStyles (Component) {
     }).__root || [];
 
     const {style} = mergeStyles(styles);
+    
+    // HACKish:
+    delete style[':base'];
+
     const invalidStyleStates = getInvalidStyleStates({
       style,
       styleStateTypes: Component.styleStateTypes,

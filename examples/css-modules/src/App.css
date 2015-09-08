@@ -1,0 +1,24 @@
+
+
+.GreenToggler {
+  border: 2px solid #6c6;
+  background-color: #bfb;
+}
+
+.GreenTogglerIndicator {
+  color: #272;
+}
+
+.GreenToggler_toggled {
+  background-color: #6c6;
+}
+
+
+.BlueToggler {
+  border: 2px solid #66c;
+  background-color: #bbf;
+}
+
+.BlueToggler_toggled {
+  background-color: #66c;
+}
