@@ -6,8 +6,8 @@
   "scripts": {
     "test": "babel-node test | tap-difflet",
     "hack": "nodemon -w src -w test -w package.json --exec npm test & npm run example",
-    "example": "cd example && npm install && npm start",
-    "start": "npm run hack"
+    "example": "cd examples/simple && npm install && npm start",
+    "start": "npm run example"
   },
   "author": "Louis Acresti <louis.acresti@gmail.com> (http://namuol.github.io)",
   "license": "MIT",

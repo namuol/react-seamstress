@@ -264,11 +264,10 @@ clone this repo, then run:
 ```shell
 npm install
 npm start
+open http://localhost:3000/
 ```
 
-A debug server should now be running on http://localhost:3000/
-
-The source code of this demo can be found in `./example`.
+The source code of this demo can be found in `./example/simple`.
 
 ## Usage with other styling tools/libraries
 

@@ -6,8 +6,8 @@ export class StyleElement extends Component {
     return <style>{
     `
     .Toggler {
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       cursor: pointer;
       margin: 5px;
       border: 2px solid #aaa;
