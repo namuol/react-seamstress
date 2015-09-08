@@ -31,6 +31,7 @@ export class StyleElement extends Component {
       width: 100%;
       height: 100%;
       text-align: center;
+      font-size: 16pt;
     }
     `
     }</style>
