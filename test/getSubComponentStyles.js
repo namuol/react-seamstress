@@ -82,5 +82,45 @@ runTests({
         ],
       },
     },
+
+    {
+      capability: 'should put :root-state::sub-component into result["sub-component"][":root-state"]',
+      input: {
+        styles: [
+          {
+            ':root-state::sub-component': {
+              color: 'red',
+            },
+          },
+        ],
+      },
+      expected: {
+        "sub-component": [
+          {
+            ':root-state': {color: 'red'},
+          },
+        ],
+      },
+    },
+
+    {
+      capability: 'should handle :many:state:selectors:before:the::sub-component',
+      input: {
+        styles: [
+          {
+            ':many:state:selectors:before:the::sub-component': {
+              color: 'red',
+            },
+          },
+        ],
+      },
+      expected: {
+        "sub-component": [
+          {
+            ':many:state:selectors:before:the': {color: 'red'},
+          },
+        ],
+      },
+    },
   ],
 });

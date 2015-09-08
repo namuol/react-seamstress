@@ -65,17 +65,5 @@ runTests({
       },
       expected: ['invalid'],
     },
-
-    {
-      capability: 'should not include ::sub-components',
-      input: {
-        style: {
-          '::valid-sub-component': {},
-        },
-        styleStateTypes: {
-        },
-      },
-      expected: undefined,
-    },
   ],
 });

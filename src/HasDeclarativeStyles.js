@@ -18,8 +18,13 @@ export default function HasDeclarativeStyles (Component) {
     if (!Component.styleStateTypes) {
       return;
     }
+    
+    // We're only concerned with root styles:
+    const styles = getSubComponentStyles({
+      styles: arrayify(props.styles),
+    }).__root || [];
 
-    const {style} = mergeStyles(arrayify(props[propName]));
+    const {style} = mergeStyles(styles);
     const invalidStyleStates = getInvalidStyleStates({
       style,
       styleStateTypes: Component.styleStateTypes,

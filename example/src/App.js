@@ -40,7 +40,7 @@ const GREEN_STYLE_CSS = [
   'GreenToggler',
   {
     ':toggled': 'GreenToggler_toggled',
-    '::indicator': 'GreenTogglerIndicator',
+    ':toggled::indicator': 'GreenTogglerIndicator',
   }
 ];
 

@@ -15,13 +15,24 @@ export default function getSubComponentStyles ({styles=[]}) {
 
     const sorted = Object.keys(style).reduce((subResult, propName) => {
       let subComponentName;
-      if ((/^::/).test(propName)) {
-        subComponentName = propName.substr(2);
+      if ((/::/).test(propName)) {
+        let value = style[propName];
+        if ((/^::/).test(propName)) {
+          subComponentName = propName.substr(2);
+        } else if ((/^:/).test(propName)) {
+          const subComponentIndicatorIdx = propName.indexOf('::');
+          const selector = propName.substr(0, subComponentIndicatorIdx);
+          subComponentName = propName.substr(subComponentIndicatorIdx + 2);
+          value = {
+            [selector]: value,
+          };
+        }
+        
         if (!subResult[subComponentName]) {
           subResult[subComponentName] = {};
         }
 
-        subResult[subComponentName] = style[propName];
+        subResult[subComponentName] = value;
       } else {
         if (!subResult.__root) {
           subResult.__root = {};
