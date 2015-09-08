@@ -3,6 +3,7 @@ import mergeStyles from './mergeStyles';
 import filterStylesFromState from './filterStylesFromState';
 import getInvalidStyleStates from './getInvalidStyleStates';
 import checkPropTypes from './checkPropTypes';
+import getSubComponentStyles from './getSubComponentStyles';
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
 
@@ -12,7 +13,7 @@ function arrayify (obj) {
 
 export default function HasDeclarativeStyles (Component) {
   const displayName = Component.displayName || Component.name;
-  
+
   function validateStyles (props, propName, component) {
     if (!Component.styleStateTypes) {
       return;
@@ -48,13 +49,34 @@ export default function HasDeclarativeStyles (Component) {
   }
 
   return class ComponentWithDeclarativeStyles extends Component {
+    __calculatedStylesBySubComponent = null;
+
     static displayName = displayName;
 
     static propTypes = Object.assign({
       styles: validateStyles,
     }, Component.propTypes);
 
-    getStyles () {
+    componentWillReceiveProps (nextProps) {
+      // TODO: nullify this ONLY when props.styles changes:
+      this.__calculatedStylesBySubComponent = null;
+    }
+
+    __splitStylesBySubComponent () {
+      if (!!this.__calculatedStylesBySubComponent) {
+        return;
+      }
+
+      this.__calculatedStylesBySubComponent = getSubComponentStyles({
+        styles: [...arrayify(this.constructor.styles), ...arrayify(this.props.styles)]
+      });
+
+      console.log('__calculatedStylesBySubComponent', this.__calculatedStylesBySubComponent);
+    }
+
+    getStylesFor (subComponentName) {
+      this.__splitStylesBySubComponent();
+
       const state = this.getStyleState();
 
       warning(!state.hasOwnProperty('base'),
@@ -66,11 +88,16 @@ export default function HasDeclarativeStyles (Component) {
           `Check the \`getStyleState\` method of \`${displayName}\`.`);
       }
 
+      // HACKish: ensures :base:composed:selectors work as expected:
+      state.base = true;
+
       if (!(this.props.className || this.props.style)) {
-        return mergeStyles(filterStylesFromState({
+        const styles = filterStylesFromState({
           state,
-          styles: [...arrayify(this.constructor.styles), ...arrayify(this.props.styles)],
-        }));
+          styles: this.__calculatedStylesBySubComponent[subComponentName] || [],
+        });
+
+        return mergeStyles(styles);
       } else {
         if (__DEV__) {
           const propNames = ['className', 'style']
@@ -87,6 +114,12 @@ export default function HasDeclarativeStyles (Component) {
           className: this.props.className,
         };
       }
+    }
+
+    getStyles () {
+      this.__splitStylesBySubComponent();
+
+      return this.getStylesFor('__root');
     }
 
     static withStyles (myStyles) {

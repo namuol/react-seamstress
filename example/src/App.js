@@ -15,6 +15,9 @@ const GREEN_STYLE_INLINE = {
   ':toggled': {
     backgroundColor: '#6c6',
   },
+  '::indicator': {
+    color: '#272',
+  },
 };
 
 const BLUE_STYLE_INLINE = {
@@ -37,6 +40,7 @@ const GREEN_STYLE_CSS = [
   'GreenToggler',
   {
     ':toggled': 'GreenToggler_toggled',
+    '::indicator': 'GreenTogglerIndicator',
   }
 ];
 
@@ -96,6 +100,10 @@ export default class App extends Component {
               .GreenToggler {
                 border: 2px solid #6c6;
                 background-color: #bfb;
+              }
+
+              .GreenTogglerIndicator {
+                color: #272;
               }
 
               .GreenToggler_toggled {

@@ -17,10 +17,20 @@ export class StyleElement extends Component {
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+      overflow: hidden;
     }
 
     .Toggler_toggled {
       background-color: #aaa;
+    }
+
+    .TogglerIndicator {
+      color: white;
+      display: block;
+      line-height: 20px;
+      width: 100%;
+      height: 100%;
+      text-align: center;
     }
     `
     }</style>
@@ -34,7 +44,8 @@ export default class Toggler extends Component {
   static styles = [
     'Toggler',
     {
-      ':toggled': 'Toggler_toggled'
+      ':toggled': 'Toggler_toggled',
+      '::indicator': 'TogglerIndicator',
     }
   ];
   
@@ -68,7 +79,9 @@ export default class Toggler extends Component {
         this.setState({
           toggled: !this.state.toggled,
         });
-      }} />
+      }}>
+        {this.state.toggled && <span {...this.getStylesFor('indicator')}>✓</span>}
+      </div>
     );
   }
 }
