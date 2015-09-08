@@ -70,8 +70,6 @@ export default function HasDeclarativeStyles (Component) {
       this.__calculatedStylesBySubComponent = getSubComponentStyles({
         styles: [...arrayify(this.constructor.styles), ...arrayify(this.props.styles)]
       });
-
-      console.log('__calculatedStylesBySubComponent', this.__calculatedStylesBySubComponent);
     }
 
     getStylesFor (subComponentName) {
