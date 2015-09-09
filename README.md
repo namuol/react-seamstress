@@ -267,7 +267,7 @@ npm start
 open http://localhost:3000/
 ```
 
-The source code of this demo can be found in `./example/simple`.
+The source code of this demo can be found in [`./examples/simple`](examples/simple).
 
 ## Usage with other styling tools/libraries
 

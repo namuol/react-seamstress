@@ -236,3 +236,34 @@ Queries that make no sense (i.e. comparing a `PropType.string` to a
 Warning: Numeric comparison query attempted in `string` defined on `CountryChooser`.
 Check the render method of `SomeComponent`.
 ```
+
+### Computed values
+
+Supply a function to compute the value of an inline style rule.
+
+The result of `getStyleState()` is passed as the first argument.
+
+The value returned is the value associated with the style rule,
+applied as an inline style.
+
+```js
+// Gradually fade the text of a Tachometer (measures engine RPMs)
+//  based on how many RPMs
+import chroma from 'chroma-js';
+
+const colorScale = chroma.scale([
+  'white',
+  'yellow',
+  'orange',
+  'red',
+]).domain([
+  0,
+  5000,
+  6000,
+  7000,
+]);
+
+<Tachometer styles={{
+  color: ({rpm}) => { return colorScale(rpm).hex() }
+}} />
+```
