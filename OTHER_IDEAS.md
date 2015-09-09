@@ -267,3 +267,33 @@ const colorScale = chroma.scale([
   color: ({rpm}) => { return colorScale(rpm).hex() }
 }} />
 ```
+
+In many cases it might make sense to return an entire `styles` object.
+
+This is particularly useful if you need to change the style of `::sub-components`
+based on the state of the root component:
+
+```js
+import chroma from 'chroma-js';
+
+const colorScale = chroma.scale([
+  'white',
+  'yellow',
+  'orange',
+  'red',
+]).domain([
+  0,
+  5000,
+  6000,
+  7000,
+]);
+
+
+<Dashboard styles={({rpm} => {
+  return {
+    '::tachometer': {
+      color: colorScale(rpm).hex(),
+    },
+  };
+})} />
+```
