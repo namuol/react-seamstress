@@ -2,12 +2,17 @@
   "name": "react-seamstress",
   "version": "0.1.0",
   "description": "Experimental interface for exposing style-related state inside complex React components",
-  "main": "index.js",
+  "main": "lib/seamstress.js",
+  "files": [
+    "lib/"
+  ],
   "scripts": {
     "test": "babel-node test | tap-difflet",
     "hack": "nodemon -w src -w test -w package.json --exec npm test & npm run example",
+    "build": "babel src -d lib",
     "example": "cd examples/simple && npm install && npm start",
-    "start": "npm run example"
+    "start": "npm run example",
+    "prepublish": "npm run build"
   },
   "author": "Louis Acresti <louis.acresti@gmail.com> (http://namuol.github.io)",
   "license": "MIT",
