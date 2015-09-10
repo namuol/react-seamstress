@@ -1,4 +1,4 @@
-import HasDeclarativeStyles from '../../../src/HasDeclarativeStyles';
+import seamstress from '../../../src/seamstress';
 import React, { PropTypes, Component } from 'react';
 
 export class StyleElement extends Component {
@@ -38,7 +38,7 @@ export class StyleElement extends Component {
   }
 }
 
-@HasDeclarativeStyles
+@seamstress
 export default class Toggler extends Component {
   static StyleElement = StyleElement;
 
@@ -74,12 +74,12 @@ export default class Toggler extends Component {
 
   render () {
     return (
-      <div {...this.getStyles()} onClick={() => {
+      <div {...this.getStyleProps()} onClick={() => {
         this.setState({
           toggled: !this.state.toggled,
         });
       }}>
-        {this.state.toggled && <span {...this.getStylesFor('indicator')}>✓</span>}
+        {this.state.toggled && <span {...this.getStylePropsFor('indicator')}>✓</span>}
       </div>
     );
   }

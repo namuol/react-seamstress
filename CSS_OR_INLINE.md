@@ -1,16 +1,10 @@
-# Should you use CSS or inline styles?
+# CSS or inline styles; which should you use?
 
-This experiment is **not** concerned with the debate over using `props.className` or `props.style`.
+Either! (With the exception of [publishable components](#conclusions))
 
-However, in general I'd recommend using a CSS-based solution if you intend to ***publish*** your component
-with `@HasDeclarativeStyles`; [skip ahead](#conclusions) to see why.
+Seamstress is **not** concerned with the debate over using `props.className` or `props.style`.
 
-That said, both approaches are supported.
-
-`className` can be composed of any strings we encounter in `props.styles`,
-and everything else can be assumed to be a `style` object.
-
-Users can specify `className` styles simply by using strings instead of objects inside
+Users can specify `classNames` simply by using strings instead of objects inside
 a `styles` object, and top-level (i.e. "default") `className`s can be specified by using
 the special `:base` style state:
 
@@ -22,7 +16,7 @@ const MY_STYLES = {
 };
 ```
 
-The `getStyles()` method then returns an object that looks like this:
+The `getStyleProps()` method then returns an object that looks like this:
 
 ```js
 {
@@ -35,15 +29,15 @@ The `getStyles()` method then returns an object that looks like this:
 ```
 
 Component authors can utilize the spread operator (`...`) to apply
-`className` and `style` props all at once:
+`className` and `style` props in one fell swoop:
 
 ```js
-<div {...this.getStyles()} />
+<div {...this.getStyleProps()} />
 ```
 
-### Gotchas
+## Gotchas
 
-#### Inline trumps CSS
+### Inline trumps CSS
 
 It's possible to supply inline styles before attempting to override them
 with classes, which may lead to unexpected behavior.
@@ -76,7 +70,10 @@ a style definition:
 Warning: Attempted to override inline styles with className styles; this may lead to unexpected styling behavior. Check the render method of `MyComponent`.
 ```
 
-#### Rule order matters with CSS
+This is a yet-to-be-implemented feature, but I think it's important, in particular for
+third-party components.
+
+### Rule order matters with CSS
 
 CSS rules are applied in the order they appear, and thus the mechanism
 that controls their order is critically important.
@@ -89,7 +86,7 @@ users need to be extra careful when combining different approaches.
 Inline styles don't have the ordering problem, but are problematic for reasons
 mentioned above.
 
-### The need for a standard
+## The need for a standard
 
 [react-future](https://github.com/reactjs/react-future/blob/fc5b7ac89effaea4c00143cb4d3bd3daa0f81f5d/04%20-%20Layout/04%20-%20Inline%20Styles.md)
 uses `StyleSheet.create` in its examples, which is also [the standard with React Native](https://facebook.github.io/react-native/docs/style.html),
@@ -99,7 +96,7 @@ Whether `StyleSheet.create` uses `props.className` or `props.style` under the ho
 really just an *implementation detail*. Ideally the behavior would transparently
 mimic the desired behavior using the most sensible/performant approach, not unlike the VDOM.
 
-### Conclusions?
+## Conclusions?
 
 If you're only using your components internally in your project, choose the approach
 that best suits your project's needs.

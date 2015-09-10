@@ -1,6 +1,6 @@
 ## Why make this?
 
-1. I needed a better way to provide styling hooks into components that have a complex set of states.
+1. I needed a better way to provide styling hooks into components that have a complex set of states and sub-components.
 2. The declarativeness of pseudo-selectors (i.e. `:hover`, `:disabled`) is one of the most powerful things about CSS.
 3. Components are much more than the DOM primitives they're comprised of, so **why limit ourselves to CSS's default set of pseudo-selectors?**
 
@@ -42,20 +42,19 @@ Oh, don't forget about inline styles! Not everyone wants to use CSS.
 <div
   className={classnames(...)}
 
-  style={[
+  style={mergeStyles(
     this.props.style,    
     expanded && this.props.expandedStyle,
     busy && this.props.busyStyle,
     error && this.props.errorStyle,
-  ]}
+  )}
 />
 ```
-
 
 This is somewhat tedious, but manageble for this relatively simple Component.
 
 The users of `<Combobox>` now have a convenient, declarative way to control how it looks,
-using inline styles or CSS!
+using inline styles *or* CSS!
 
 ```js
 <Combobox
@@ -75,7 +74,8 @@ using inline styles or CSS!
 Again, slightly verbose, but gets the job done and it's easy to understand.
 
 This is the current "state of the art", but not very many third-party component authors
-provide flexibility at this level.
+provide flexibility at this level, presumably because it's rather cumbersome, or because
+they use a proprietary set of CSS classnames to provide styling hooks.
 
 ### A novel, yet familiar approach
 
@@ -103,19 +103,18 @@ Now, inside our `<Combobox>` implementation, all we need to do is provide
 a way to obtain the state of these "pseudo-selectors":
 
 ```js
-@HasDeclarativeStyles
+@seamstress
 class Combobox extends React.Component {
-  static styles = [
-    classes.base,
-    {
-      ':expanded': classes.expanded,
-      ':busy': classes.busy,
-      ':error': classes.error,
-    },
-  ];
+  static styles = {
+    ':base': classes.base,
+    ':expanded': classes.expanded,
+    ':busy': classes.busy,
+    ':error': classes.error,
+  };
 
   getStyleState () {
     return {
+      /* :base is a special style state that is unconditionally true */
       expanded: this.state.expanded,
       busy: this.state.options === undefined,
       error: this.state.options === null,
@@ -123,16 +122,16 @@ class Combobox extends React.Component {
   }
 
   render () {
-    <div {...this.getStyles()} />
+    <div {...this.getStyleProps()} />
   }
 }
 ```
 
-Under the hood, `@HasDeclarativeStyles` uses the result of `getStyleState()` to 
+Under the hood, `@seamstress` uses the result of `getStyleState()` to 
 determine which `:pseudo-selector` styles should be applied.
 
 Now, the `<Combobox>` author can simply *describe* how their component can be styled
-with `getStyleState()`, rather than by manually implementing a big list of short-circuited boolean
+with `getStyleState()`, rather than by manually implementing a list of short-circuited boolean
 operations.
 
 ### Not just "syntactic sugar"
@@ -207,7 +206,7 @@ Your `Combobox` implementation would need to be updated to support this, of cour
 
 Your gut tells you something's not quite right here, but it solves the problem without breaking anyone else's code.
 
-What if we chose to use `@HasDeclarativeStyles` instead?
+What if we chose to use `@seamstress` instead?
 
 This scenario already works as expected; `:expanded`'s opacity of 1 overrides `:busy`'s 0.5:
 
@@ -226,9 +225,9 @@ Nothing would need to change in our implementation of `<Combobox>`.
 
 How does this work?
 
-`@HasDeclarativeStyles` ensures that styles are applied
+`@seamstress` ensures that styles are applied
 *in the order they are iterated over in the original style object*, meaning that
-"whatever comes last" always overrides what was described earlier.
+"whatever comes last" always overrides what was described earlier -- as we'd expect.
 
 This behavior could also be expressed using `:composed:pseudo-selectors`:
 
@@ -254,12 +253,12 @@ one of the pseudo-selectors:
 ```
 
 Component authors can take advantage of a special static field, `styleStateTypes`, which
-declares the values that `getStyleState` returns.
+declares the values that `getStyleState()` returns.
 
 This pattern should look familiar to those who've used `propTypes` before:
 
 ```js
-@HasDeclarativeStyles
+@seamstress
 class Combobox extends React.Component {
   static styleStateTypes = {
     expanded: React.PropTypes.bool.isRequired,
@@ -299,7 +298,7 @@ Here's how that looks, as it is currently implemented:
 ```js
 import SomeThirdPartyComponent from 'some-third-party-component';
 
-// SomeThirdPartyComponent uses HasDeclarativeStyles
+// SomeThirdPartyComponent uses seamstress
 
 const MY_STYLES = {
   ':busy': {

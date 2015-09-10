@@ -149,7 +149,7 @@ export default class App extends Component {
           
           <p>
             If we explicitly set <code>props.className</code>, it throws out
-            what <code>this.getStyles()</code> would otherwise return, and
+            what <code>this.getStyleProps()</code> would otherwise return, and
             logs a warning to the console if we're not in production:
           </p>
           <Toggler className={'CustomToggler'} />

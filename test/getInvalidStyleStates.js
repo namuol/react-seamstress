@@ -1,4 +1,4 @@
-import {PropTypes} from 'react';
+import { PropTypes } from 'react';
 
 import getInvalidStyleStates from '../src/getInvalidStyleStates';
 import runTests from './runTests';
@@ -80,6 +80,32 @@ runTests({
         },
       },
       expected: ['invalid'],
+    },
+
+    {
+      capability: 'should consider non-boolean props as invalid',
+      input: {
+        style: {
+          ':invalid': {},
+        },
+        styleStateTypes: {
+          invalid: PropTypes.number,
+        },
+      },
+      expected: ['invalid'],
+    },
+
+    {
+      capability: 'should consider bool.isRequired props as valid',
+      input: {
+        style: {
+          ':valid': {},
+        },
+        styleStateTypes: {
+          valid: PropTypes.bool.isRequired,
+        },
+      },
+      expected: undefined,
     },
   ],
 });

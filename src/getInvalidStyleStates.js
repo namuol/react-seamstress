@@ -1,3 +1,8 @@
+function isBool (propTypeFunction) {
+  // HACKish:
+  return !propTypeFunction({a:true}, 'a');
+}
+
 export default function getInvalidStyleStates ({style={}, styleStateTypes={}}) {
   const invalidSet = Object.keys(style)
     .filter(k => (/^:[^:]/).test(k))
@@ -6,7 +11,7 @@ export default function getInvalidStyleStates ({style={}, styleStateTypes={}}) {
                                       .filter(n => n.length > 0);
 
       styleStateNames.forEach((styleStateName) => {
-        if (!styleStateTypes.hasOwnProperty(styleStateName)) {
+        if (!styleStateTypes.hasOwnProperty(styleStateName) || !isBool(styleStateTypes[styleStateName])) {
           invalids[styleStateName] = true;
         }
       });

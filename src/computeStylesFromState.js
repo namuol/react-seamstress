@@ -48,7 +48,7 @@ export default function computeStylesFromState ({styles=[], state={}}) {
               // TODO: Should we maybe just print a warning instead of throw, in this case?
               // Can we actually just support nested functions? Seems like a can of worms.
               throw new Error(
-                'HasDeclarativeStyles: Nested style functions are not supported.'
+                'seamstress: Nested style functions are not supported.'
               );
 
             } else if (typeof styleValue === 'object') {
@@ -62,7 +62,7 @@ export default function computeStylesFromState ({styles=[], state={}}) {
               }, {});
             } else if (typeof styleValue !== 'string') {
               throw new Error(
-                `HasDeclarativeStyles: Unsupported style type: \`${typeof styleValue}\`; ` +
+                `seamstress: Unsupported style type: \`${typeof styleValue}\`; ` +
                 `supported types are: \`string\`, \`object\``
               );
             }

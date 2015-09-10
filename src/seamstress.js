@@ -11,7 +11,7 @@ function arrayify (obj) {
   return Array.isArray(obj) ? obj : [obj];
 }
 
-export default function HasDeclarativeStyles (Component) {
+export default function seamstress (Component) {
   const displayName = Component.displayName || Component.name;
 
   function validateStyles (props, propName, component) {
@@ -71,18 +71,12 @@ export default function HasDeclarativeStyles (Component) {
       this.__calculatedStylesBySubComponent = null;
     }
 
-    __splitStylesBySubComponent () {
-      if (!!this.__calculatedStylesBySubComponent) {
-        return;
-      }
-
-      this.__calculatedStylesBySubComponent = getSubComponentStyles({
-        styles: [...arrayify(this.constructor.styles), ...arrayify(this.props.styles)]
-      });
-    }
-
     getStylesFor (subComponentName) {
-      this.__splitStylesBySubComponent();
+      if (!this.__calculatedStylesBySubComponent) {
+        this.__calculatedStylesBySubComponent = getSubComponentStyles({
+          styles: [...arrayify(this.constructor.styles), ...arrayify(this.props.styles)]
+        });
+      }
 
       const state = this.getStyleState();
 
@@ -98,13 +92,19 @@ export default function HasDeclarativeStyles (Component) {
       // HACKish: ensures :base:composed:selectors work as expected:
       state.base = true;
 
-      if (!(this.props.className || this.props.style)) {
-        const styles = computeStylesFromState({
-          state,
-          styles: this.__calculatedStylesBySubComponent[subComponentName] || [],
-        });
+      return computeStylesFromState({
+        state,
+        styles: this.__calculatedStylesBySubComponent[subComponentName] || [],
+      });
+    }
 
-        return mergeStyles(styles);
+    getStylePropsFor (subComponentName) {
+      return mergeStyles(this.getStylesFor(subComponentName));
+    }
+
+    getStyleProps () {
+      if (!(this.props.className || this.props.style)) {
+        return this.getStylePropsFor('__root');
       } else {
         if (__DEV__) {
           const propNames = ['className', 'style']
@@ -121,12 +121,6 @@ export default function HasDeclarativeStyles (Component) {
           className: this.props.className,
         };
       }
-    }
-
-    getStyles () {
-      this.__splitStylesBySubComponent();
-
-      return this.getStylesFor('__root');
     }
 
     static withStyles (myStyles) {
