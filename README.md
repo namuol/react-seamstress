@@ -51,7 +51,7 @@ class names.
 }} />
 ```
 
-This works quite well with [CSS Modules](), for instance.
+This works quite well with [CSS Modules](PLAYING_NICE.md#css-modules), for instance.
 
 You can even mix `classNames` and `style` objects within a single object.
 
