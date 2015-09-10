@@ -2,10 +2,10 @@
 
 ### `@seamstress`
 
-The main (and currently, only) export of the library.
+The main (and only) export of the library.
 
-A component decorator function. Accepts your component class as its first argument, and extends it
-with the behaviors listed below.
+A component decorator function. Accepts your component class
+as its first argument, and extends it with the behaviors listed in this document.
 
 This works great with ES7 decorators (available with [`babel --stage 1`](https://babeljs.io/docs/usage/experimental/)):
 
@@ -194,7 +194,7 @@ Returns an object that contains the appropriate style props
 (`{className, style}`) based on the contents returned from
 `YourComponent::getStyleState`.
 
-The easiest way to apply these props is to use the spread operator (`...`):
+The easiest way to apply these props is to use the [spread operator](https://babeljs.io/docs/learn-es2015/#default-rest-spread) (`...`):
 
 ```js
 <div {...this.getStyleProps()} />
@@ -218,8 +218,6 @@ Like [`getStyleProps()`](#thisgetstyles), but for a specific `::sub-component`.
   <div {...this.getStylePropsFor('indicator')} />
 </div>
 ```
-
-See also: [`this.getStylesFor(subComponent)`](#thisgetstylepropsforsubcomponent)
 
 ### `this.getStylesFor(subComponent)`
 
@@ -251,9 +249,7 @@ It prevents the need to pass `props.styles` everywhere you need this
 particular flavor of `YourComponent`.
 
 ```js
-import SomeThirdPartyComponent from 'some-third-party-component';
-
-// SomeThirdPartyComponent uses seamstress
+import YourComponent from 'your-component';
 
 const MY_STYLES = {
   ':busy': {
@@ -261,5 +257,5 @@ const MY_STYLES = {
   },
 };
 
-export default const MyComponent = SomeThirdPartyComponent.withStyles(MY_STYLES);
+export default const MyComponent = YourComponent.withStyles(MY_STYLES);
 ```
