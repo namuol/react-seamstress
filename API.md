@@ -1,4 +1,4 @@
-# API [![Module Version](http://img.shields.io/npm/v/react-seamstress.svg)](https://www.npmjs.org/package/react-seamstress)
+# API - 0.1.0
 
 ### `@seamstress`
 
