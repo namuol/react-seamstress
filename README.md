@@ -170,7 +170,7 @@ Check the render method of `MyApp`.
 */
 ```
 
-# Stability & Feedback
+## Stability & Feedback
 
 This project is still in the **experimental** phase, and I need feedback.
 
