@@ -8,33 +8,14 @@ A **powerful**, **declarative** interface for styling **React** components in th
 
 - Inspired by CSS's `:pseudo-selectors` and React's developer-friendly `propTypes`.
 - Replaces [`props.className` & `props.style`](CSS_OR_INLINE.md) with a unified `styles` prop.
-- Works with what [you're already using](PLAYING_NICE.md) to style your components.
+- [Works with what you're already using](PLAYING_NICE.md) to style your components.
 
 ```
 npm install react-seamstress --save
 ```
 
-For a detailed overview of the problems this project aims to solve
+For an overview of the problems this project aims to solve
 (and why you should care), read [WHY.md](WHY.md).
-
-## Stability & Feedback
-
-This project is still in the **experimental** phase, and I need feedback.
-
-If you have any issues or ideas please [open a new issue](issues).
-
-I can also be reached [via email](mailto:louis.acresti@gmail.com),
-on Twitter as [@louroboros](http://twitter.com/louroboros),
-or on [reactiflux](http://reactiflux.com) as [@namuol](https://reactiflux.slack.com/messages/@namuol/).
-
-Thanks! :beers:
-
-## Getting Started
-
-Until a proper guide is written, take a look at the contents
-of the [`./examples`](examples) directory.
-
-There's also an [API reference](API.md).
 
 ## Features
 
@@ -42,6 +23,9 @@ There's also an [API reference](API.md).
 
 React components are so much more than their DOM counterparts, so
 why limit ourselves to the DOM's pseudo-selectors (i.e `:hover`)?
+
+Seamstress allows you to define custom pseudo-selectors
+that refer to an internal state of the component.
 
 ```js
 <Combobox styles={{
@@ -53,38 +37,10 @@ why limit ourselves to the DOM's pseudo-selectors (i.e `:hover`)?
 }} />
 ```
 
-The author of `Combobox` only needs to supply the component's
-"style state", and the resulting style is computed for them by
-calling `this.getStyleProps()`:
-
-```js
-@seamstress
-class Combobox extends React.Component {
-  getStyleState () {
-    return {
-      busy: this.state.busy
-    }
-  }
-
-  // Default styles:
-  static styles = {
-    backgroundColor: 'white',
-    color: 'black',
-    ':busy': {
-      cursor: 'no-drop',
-    },
-  };
-
-  render () {
-    return <div {...this.getStyleProps()} />
-  }
-}
-```
-
-The `getStyleProps` method conditionally applies the contents of `props.styles`
-and merges them with the default styles (provided with the static `styles` property).
-
 ### Transparent support for `className` and `style`
+
+Using CSS? No problem. Just use simple strings to denote
+class names.
 
 ```js
 <Combobox styles={{
@@ -95,8 +51,7 @@ and merges them with the default styles (provided with the static `styles` prope
 }} />
 ```
 
-`this.getStyleProps()` computes both `className` and `style` props according
-to your style-state.
+This works quite well with [CSS Modules](), for instance.
 
 You can even mix `classNames` and `style` objects within a single object.
 
@@ -110,7 +65,7 @@ You can even mix `classNames` and `style` objects within a single object.
 ### Automatically merge **arrays**
 
 Styles can be specified in an array, and styles are carefully merged
-based on their order.
+based on the order they appear.
 
 ```js
 <Combobox styles={[
@@ -122,9 +77,10 @@ based on their order.
 ### Custom `::pseudo-elements`
 
 Components tend to be composed of other components, those
-of which probably also need to be re-styled.
+of which also need to be styled.
 
-Seamstress uses a syntax inspired by CSS's `::pseudo-element` for this scenario.
+Seamstress uses a syntax inspired by CSS's `::pseudo-elements`
+for succinctness:
 
 ```js
 <Combobox styles={{
@@ -151,6 +107,14 @@ See the [API reference](API.md#thisgetstylepropsfor) for details.
 ```
 
 ### Computed styles
+
+Seamstress aims to replace a lot of boilerplate code
+with declarative style declarations, however sometimes
+you need to dynamically generate your styles.
+
+Component authors can explicity choose what state
+to expose, which can then be used in style callbacks
+inside `props.styles`, if necessary.
 
 ```js
 import chroma from 'chroma-js';
@@ -183,7 +147,7 @@ for providing outer style-state values to `::sub-components`:
 })} />
 ```
 
-### Get nudged toward [The Pit of Success](http://blog.codinghorror.com/falling-into-the-pit-of-success/)
+### Fall into the *Pit of Success*
 
 Component authors can use `styleStateTypes` to explicitly declare
 what the result of `getStyleState()` should look like.
