@@ -1,8 +1,8 @@
-import filterStylesFromState from '../src/filterStylesFromState';
+import computeStylesFromState from '../src/computeStylesFromState';
 import runTests from './runTests';
 
 runTests({
-  func: filterStylesFromState,
+  func: computeStylesFromState,
   tests: [
     {
       capability: 'should return an empty array when supplied null/undefined',
@@ -324,5 +324,108 @@ runTests({
       ],
     },
 
+    {
+      capability: 'should include the return value from root-level functions in results',
+      input: {
+        styles: [
+          () => {
+            return {
+              color: 'red',
+            };
+          },
+        ],
+
+        state: {}
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
+
+    {
+      capability: 'should pass styleState as the first argument',
+      input: {
+        styles: [
+          ({favoriteColor}) => {
+            return {
+              color: favoriteColor,
+            };
+          },
+        ],
+
+        state: {
+          favoriteColor: 'red',
+        }
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
+
+    {
+      capability: 'should call functions to compute the value of style properties',
+      input: {
+        styles: [
+          {
+            color: ({favoriteColor}) => {
+              return favoriteColor;
+            },
+          }
+        ],
+
+        state: {
+          favoriteColor: 'red',
+        }
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
+
+    {
+      capability: 'should call functions to get value with conditional keys',
+      input: {
+        styles: [
+          {
+            ':test': ({favoriteColor}) => {
+              return {
+                color: favoriteColor,
+              };
+            },
+          },
+        ],
+
+        state: {
+          test: true,
+          favoriteColor: 'red',
+        }
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
+
+    {
+      capability: 'should call functions to determine the value of individual style properties in objects of conditional keys',
+      input: {
+        styles: [
+          {
+            ':test': {
+              color: ({favoriteColor}) => {
+                return favoriteColor;
+              },
+            }
+          }
+        ],
+
+        state: {
+          test: true,
+          favoriteColor: 'red',
+        }
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
   ],
 });

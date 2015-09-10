@@ -1,6 +1,6 @@
 import warning from 'fbjs/lib/warning';
 import mergeStyles from './mergeStyles';
-import filterStylesFromState from './filterStylesFromState';
+import computeStylesFromState from './computeStylesFromState';
 import getInvalidStyleStates from './getInvalidStyleStates';
 import checkPropTypes from './checkPropTypes';
 import getSubComponentStyles from './getSubComponentStyles';
@@ -99,7 +99,7 @@ export default function HasDeclarativeStyles (Component) {
       state.base = true;
 
       if (!(this.props.className || this.props.style)) {
-        const styles = filterStylesFromState({
+        const styles = computeStylesFromState({
           state,
           styles: this.__calculatedStylesBySubComponent[subComponentName] || [],
         });

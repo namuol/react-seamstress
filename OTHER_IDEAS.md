@@ -247,8 +247,10 @@ The value returned is the value associated with the style rule,
 applied as an inline style.
 
 ```js
-// Gradually fade the text of a Tachometer (measures engine RPMs)
-//  based on how many RPMs
+// A tachometer measures the RPMs of an engine.
+//
+// Let's gradually fade the color of the component's text
+//  based on the RPMs:
 import chroma from 'chroma-js';
 
 const colorScale = chroma.scale([
@@ -264,6 +266,7 @@ const colorScale = chroma.scale([
 ]);
 
 <Tachometer styles={{
+  backgroundColor: 'black',
   color: ({rpm}) => { return colorScale(rpm).hex() }
 }} />
 ```
@@ -274,24 +277,10 @@ This is particularly useful if you need to change the style of `::sub-components
 based on the state of the root component:
 
 ```js
-import chroma from 'chroma-js';
-
-const colorScale = chroma.scale([
-  'white',
-  'yellow',
-  'orange',
-  'red',
-]).domain([
-  0,
-  5000,
-  6000,
-  7000,
-]);
-
-
 <Dashboard styles={({rpm} => {
   return {
     '::tachometer': {
+      backgroundColor: 'black',
       color: colorScale(rpm).hex(),
     },
   };
