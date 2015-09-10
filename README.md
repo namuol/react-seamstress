@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="http://i.imgur.com/vcLe9jD.png"/>
+  <img src="http://i.imgur.com/fkaQtsM.png" alt="Seamstress" />
 </p>
 
-# Seamstress [![Module Version](http://img.shields.io/npm/v/react-seamstress.svg)](https://www.npmjs.org/package/react-seamstress)
+[![Module Version](http://img.shields.io/npm/v/react-seamstress.svg)](https://www.npmjs.org/package/react-seamstress)
 
 A **powerful**, **declarative** interface for styling **React** components in the real world.
 
