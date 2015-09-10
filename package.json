@@ -4,7 +4,8 @@
   "description": "Experimental interface for exposing style-related state inside complex React components",
   "main": "lib/seamstress.js",
   "files": [
-    "lib/"
+    "lib/",
+    "LICENSE"
   ],
   "scripts": {
     "test": "babel-node test | tap-difflet",
