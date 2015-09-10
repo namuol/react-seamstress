@@ -92,8 +92,8 @@ classNames without the need to use an array:
 }} />
 ```
 
-Passing a function anywhere allows you to compute the value
-in place.
+You can specify a callback to compute the value of an
+inline style rule:
 
 ```js
 import chroma from 'chroma-js';
@@ -146,6 +146,8 @@ A **static property** defined on your component.
 
 Takes a form similar to React's `propTypes`.
 
+Explicitly defines the types/shape of the result returned by [`getStyleState()`](#yourcomponentgetstylestate).
+
 ```js
 @seamstress
 class YourComponent extends React.Component {
@@ -155,14 +157,11 @@ class YourComponent extends React.Component {
 }
 ```
 
-Explicitly defines the types/shape of the result returned by [`getStyleState()`](#yourcomponentgetstylestate).
-
 Use `PropTypes.bool` to indicate that a specific state can be styled with
 a `:psuedo-selector`-like syntax inside [`props.styles`](#propsstyles).
 
 It's recommended that you define this property, because it provides
-[helpful warning messages](WHY.md#the-pit-of-success) to both users and authors
-of the component.
+[helpful warning messages](WHY.md#the-pit-of-success).
 
 ### `YourComponent::getStyleState()`
 
@@ -173,7 +172,7 @@ An **instance function** you must define on your component.
 Should return the current "style state" of your component.
 
 The style state is used to compute the final `className` and `style`
-props returned from [`this.getStyleProps()`](#thisgetstyles).
+props returned from [`this.getStyleProps()`](#thisgetstyleprops).
 
 ```js
 @seamstress
@@ -191,10 +190,11 @@ class YourComponent extends React.Component {
 (provided by [`@seamstress`](#seamstress))
 
 Returns an object that contains the appropriate style props
-(`{className, style}`) based on the contents returned from
-`YourComponent::getStyleState`.
+(`{className, style}`) based on the resulting contents of
+[`YourComponent::getStyleState()`](#yourcomponentgetstylestate).
 
-The easiest way to apply these props is to use the [spread operator](https://babeljs.io/docs/learn-es2015/#default-rest-spread) (`...`):
+The easiest way to apply these props is to use the
+[spread operator](https://babeljs.io/docs/learn-es2015/#default-rest-spread) (`...`):
 
 ```js
 <div {...this.getStyleProps()} />
@@ -211,7 +211,7 @@ var styleProps = this.getStyleProps();
 
 (provided by [`@seamstress`](#seamstress))
 
-Like [`getStyleProps()`](#thisgetstyles), but for a specific `::sub-component`.
+Like [`getStyleProps()`](#thisgetstyleprops), but for a specific `::sub-component`.
 
 ```js
 <div {...this.getStyleProps()}>
@@ -239,14 +239,10 @@ a [`@seamstress`](#seamstress)-decorated component.
 
 (provided by [`@seamstress`](#seamstress))
 
-A **static method** that creates a new version of your component
-with new default styles applied.
+A **static method** that creates a new "skinned" version of your component.
 
-In most cases of using a third-party component, this is what
-the user really wants: their own version of your component.
-
-It prevents the need to pass `props.styles` everywhere you need this
-particular flavor of `YourComponent`.
+The `styles` argument takes the same form as [`props.styles`](#propsstyles) and is merged with
+[`YourComponent.styles`](#yourcomponentstyles) to form a new default set of styles.
 
 ```js
 import YourComponent from 'your-component';
@@ -257,5 +253,9 @@ const MY_STYLES = {
   },
 };
 
-export default const MyComponent = YourComponent.withStyles(MY_STYLES);
+const MyComponent = YourComponent.withStyles(MY_STYLES);
+
+// These are equivalent:
+<MyComponent />
+<YourComponent styles={MY_STYLES} />
 ```

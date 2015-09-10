@@ -37,6 +37,8 @@ that refer to an internal state of the component.
 }} />
 ```
 
+See the [API reference](API.md#thisgetstyleprops) for details.
+
 ### Transparent support for `className` and `style`
 
 Using CSS? No problem. Just use simple strings to denote
@@ -81,7 +83,7 @@ for succinctness:
 }} />
 ```
 
-See the [API reference](API.md#thisgetstylepropsfor) for details.
+See the [API reference](API.md#thisgetstylesforsubcomponent) for details.
 
 ### `:composed:pseudo:selectors`
 
@@ -122,7 +124,7 @@ const colorScale = chroma.scale([
 }} />
 ```
 
-You can also build an entire `styles` object in a function; useful
+You can also return an entire `styles` object from a top-level function; useful
 for providing outer style-state values to `::sub-components`:
 
 ```js
@@ -167,6 +169,18 @@ specified in `Combobox`. Available states are: [`:expanded`].
 Check the render method of `MyApp`.
 */
 ```
+
+# Stability & Feedback
+
+This project is still in the **experimental** phase, and I need feedback.
+
+If you have any issues or ideas please open a new issue.
+
+I can also be reached [via email](mailto:louis.acresti@gmail.com),
+on Twitter as [@louroboros](http://twitter.com/louroboros),
+or on [reactiflux](http://reactiflux.com) as **@namuol**.
+
+Thanks! :beers:
 
 ## Prior Art/Acknowledgements
 
