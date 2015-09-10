@@ -62,18 +62,6 @@ You can even mix `classNames` and `style` objects within a single object.
 }} />
 ```
 
-### Automatically merge **arrays**
-
-Styles can be specified in an array, and styles are carefully merged
-based on the order they appear.
-
-```js
-<Combobox styles={[
-  'MyCombobox',
-  this.props.styles,
-]} />
-```
-
 ### Custom `::pseudo-elements`
 
 Components tend to be composed of other components, those
