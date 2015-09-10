@@ -65,5 +65,21 @@ runTests({
       },
       expected: ['invalid'],
     },
+
+    {
+      capability: 'should include :composed:selectors in its tests',
+      input: {
+        style: {
+          ':valid': {},
+          ':invalid': {},
+          ':valid:invalid': {},
+          ':invalid:valid': {},
+        },
+        styleStateTypes: {
+          valid: PropTypes.bool,
+        },
+      },
+      expected: ['invalid'],
+    },
   ],
 });

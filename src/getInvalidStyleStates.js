@@ -1,11 +1,20 @@
 export default function getInvalidStyleStates ({style={}, styleStateTypes={}}) {
-  const invalids = Object.keys(style).filter(k => (/^:[^:]/).test(k)).reduce((invalids, propName) => {
-    const styleStateName = propName.substr(1);
-    if (!styleStateTypes.hasOwnProperty(styleStateName)) {
-      invalids.push(styleStateName);
-    }
-    return invalids;
-  }, []);
+  const invalidSet = Object.keys(style)
+    .filter(k => (/^:[^:]/).test(k))
+    .reduce((invalids, propName) => {
+      const styleStateNames = propName.split(/:/)
+                                      .filter(n => n.length > 0);
+
+      styleStateNames.forEach((styleStateName) => {
+        if (!styleStateTypes.hasOwnProperty(styleStateName)) {
+          invalids[styleStateName] = true;
+        }
+      });
+
+      return invalids;
+    }, {});
+
+  const invalids = Object.keys(invalidSet);
 
   if (invalids.length === 0) {
     return;
