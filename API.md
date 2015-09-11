@@ -1,4 +1,4 @@
-# API - 0.2.0
+# API - 0.2
 
 ### `@seamstress`
 
