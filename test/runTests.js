@@ -7,12 +7,11 @@ function isFunc (obj) {
 export default function runTests ({funcName, func, tests, expandArguments=false}) {
   funcName = funcName || func.name;
   
-  tests.forEach(({input, expected, capability}, testNum) => {
-    tape.test(`${funcName} ${capability || `#${testNum}`}`, (t) => {
+  tape.test(`${funcName}`, (t) => {
+    tests.forEach(({input, expected, capability}, testNum) => {
       const result = expandArguments ? func(...input) : func(input);
-      
-      t.deepEqual(result, expected);
-      t.end();
+      t.deepEqual(result, expected, capability || `#${testNum}`);
     });
+    t.end();
   });
 }
