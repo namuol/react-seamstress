@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "babel-node test | tap-difflet",
-    "hack": "nodemon -w src -w test -w package.json --exec npm test & npm run example",
+    "hack": "nodemon -w src -w test -w package.json --exec \"npm run build && npm test\" & npm run example",
     "build": "babel src -d lib",
     "example": "cd examples/simple && npm install && npm start",
     "start": "npm run example",

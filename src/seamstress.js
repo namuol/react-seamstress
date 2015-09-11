@@ -66,7 +66,9 @@ export default function seamstress (Component) {
       styles: validateStyles,
     }, Component.propTypes);
 
-    componentWillReceiveProps (nextProps) {
+    componentWillReceiveProps (...args) {
+      super.componentWillReceiveProps && super.componentWillReceiveProps(...args);
+      
       // TODO: nullify this ONLY when props.styles changes:
       this.__calculatedStylesBySubComponent = null;
     }
