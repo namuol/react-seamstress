@@ -102,29 +102,12 @@ export default function seamstress (Component) {
       });
     }
 
-    getStylePropsFor (subComponentName) {
-      return mergeStyles(this.getStylesFor(subComponentName));
+    getStylePropsFor (subComponentName, extraStyles=[]) {
+      return mergeStyles([...this.getStylesFor(subComponentName), ...extraStyles]);
     }
 
     getStyleProps () {
-      if (!(this.props.className || this.props.style)) {
-        return this.getStylePropsFor('__root');
-      } else {
-        if (__DEV__) {
-          const propNames = ['className', 'style']
-            .filter(n => !!this.props[n])
-            .map(n=>'`'+n+'`')
-            .join(' and ');
-
-          warning(false, `Replacing ALL styles of \`${displayName}\` with the ${propNames} you supplied. ` +
-                         `The preferred way to customize the styles of \`${displayName}\` is to use the \`styles\` property.`);
-        }
-
-        return {
-          style: this.props.style,
-          className: this.props.className,
-        };
-      }
+      return this.getStylePropsFor('__root', [this.props.className, this.props.style]);
     }
 
     static withStyles (myStyles) {

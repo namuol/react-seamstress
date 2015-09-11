@@ -13,7 +13,7 @@ This works great with ES7 decorators (available with [`babel --stage 1`](https:/
 import seamstress from 'react-seamstress';
 
 @seamstress
-class YourComponent extends React.Component {
+export default class YourComponent extends React.Component {
   // ...
 }
 ```
@@ -25,17 +25,23 @@ class YourComponent extends React.Component {
   // ...
 }
 
-YourComponent = seamstress(YourComponent);
+export default YourComponent = seamstress(YourComponent);
 ```
 
-Here's how you might do it with ES5:
+ES5 with `React.createClass` is also supported:
 
 ```js
 var seamstress = require('react-seamstress');
 
-var YourComponent = seamstress(React.createClass({
+var YourComponent = React.createClass({
   // ...
-}));
+});
+
+// Note: Static properties must be set **before** calling `seamstress(...)`
+YourComponent.styles = { ... };
+YourComponent.styleStateTypes = { ... };
+
+module.exports = YourComponent = seamstress(YourComponent);
 ```
 
 ### `props.styles`
@@ -126,6 +132,12 @@ for providing outer style-state values to `::sub-components`:
 })} />
 ```
 
+**Note**: the `className` and `style` props still work; they are merged
+last into `props.styles` before computing the result of [`getStyleProps()`](#thisgetstyleprops).
+
+This behavior will probably change in future versions, as it's unclear what most users
+expect to happen in this scenario.
+
 ### `YourComponent.styles`
 
 (optional)
@@ -189,11 +201,18 @@ class YourComponent extends React.Component {
 
 (provided by [`@seamstress`](#seamstress))
 
-Returns an object that contains the appropriate style props
-(`{className, style}`) based on the resulting contents of
-[`YourComponent::getStyleState()`](#yourcomponentgetstylestate).
+Returns a computed `{className, style}` based on the merged result of `YourComponent.styles` with
+`props.styles` (`props.className` and `props.style` are also merged in lastly, but
+this is generally not the favored why to style a component with Seamstress).
 
-The easiest way to apply these props is to use the
+These resulting merged styles are filtered to only include styles that apply based on the
+result of [`YourComponent::getStyleState()`](#yourcomponentgetstylestate).
+
+For instance, if `getStyleState()` returns `{ loading: false }`, then 
+any styles under the `:loading` pseudo-selector will *not* be applied,
+and vice-versa.
+
+The easiest way to apply these props is to use the experimental
 [spread operator](https://babeljs.io/docs/learn-es2015/#default-rest-spread) (`...`):
 
 ```js

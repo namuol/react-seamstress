@@ -133,37 +133,6 @@ export default class App extends Component {
           <GreenToggler defaultToggled={true} />
           <BlueToggler />
         </section>
-
-        <section>
-          <h2>Discouraging old habits:</h2>
-          <style>
-          {`
-            .CustomToggler {
-              width: 50px;
-              height: 50px;
-              background-color: orange;
-              border-radius: 25px;
-            }
-          `}
-          </style>
-          
-          <p>
-            If we explicitly set <code>props.className</code>, it throws out
-            what <code>this.getStyleProps()</code> would otherwise return, and
-            logs a warning to the console if we're not in production:
-          </p>
-          <Toggler className={'CustomToggler'} />
-
-          <p>
-            The same goes for explicitly setting <code>props.style</code>:
-          </p>
-          <Toggler style={{
-            width: '30px',
-            height: '30px',
-            borderColor: '#b0b',
-            backgroundColor: '#f0f',
-          }} />
-        </section>
       </div>
     );
   }
