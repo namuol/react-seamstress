@@ -4,12 +4,9 @@ import computeStylesFromState from './computeStylesFromState';
 import getInvalidStyleStates from './getInvalidStyleStates';
 import checkPropTypes from './checkPropTypes';
 import getSubComponentStyles from './getSubComponentStyles';
+import arrayify from './arrayify';
 
 const __DEV__ = process.env.NODE_ENV !== 'production';
-
-function arrayify (obj) {
-  return Array.isArray(obj) ? obj : [obj];
-}
 
 export default function seamstress (Component) {
   const displayName = Component.displayName || Component.name;
@@ -58,7 +55,8 @@ export default function seamstress (Component) {
   }
 
   return class ComponentWithDeclarativeStyles extends Component {
-    __calculatedStylesBySubComponent = null;
+    __computedStyles = null;
+    __subComponentStyles = null;
 
     static displayName = displayName;
 
@@ -68,38 +66,41 @@ export default function seamstress (Component) {
 
     getStyleState = Component.prototype.getStyleState || () => { return {}; };
 
-    componentWillReceiveProps (...args) {
-      super.componentWillReceiveProps && super.componentWillReceiveProps(...args);
+    componentWillUpdate (...args) {
+      super.componentWillUpdate && super.componentWillUpdate(...args);
       
-      // TODO: nullify this ONLY when props.styles changes:
-      this.__calculatedStylesBySubComponent = null;
+      // PERF TODO: nullify this ONLY when result of this.getStyleState or props.styles changes.
+      this.__computedStyles = null;
+      this.__subComponentStyles = null;
     }
 
     getStylesFor (subComponentName) {
-      if (!this.__calculatedStylesBySubComponent) {
-        this.__calculatedStylesBySubComponent = getSubComponentStyles({
-          styles: [...arrayify(this.constructor.styles), ...arrayify(this.props.styles)]
+      if (!this.__computedStyles) {
+        const state = this.getStyleState();
+
+        warning(!state.hasOwnProperty('base'),
+                `\`:base\` is a reserved styleState that is always \`true\`; please use a different name. ` +
+                `Check the \`getStyleState\` method of \`${displayName}\`.`);
+
+        if (__DEV__ && Component.styleStateTypes) {
+          checkPropTypes(displayName, Component.styleStateTypes, state, 'prop', 'styleStateType',
+            `Check the \`getStyleState\` method of \`${displayName}\`.`);
+        }
+
+        // HACKish: ensures :base:composed:selectors work as expected:
+        state.base = true;
+
+        this.__computedStyles = computeStylesFromState({
+          state,
+          styles: [...arrayify(this.constructor.styles), ...arrayify(this.props.styles)],
+        });
+
+        this.__subComponentStyles = getSubComponentStyles({
+          styles: this.__computedStyles,
         });
       }
 
-      const state = this.getStyleState();
-
-      warning(!state.hasOwnProperty('base'),
-              `\`:base\` is a reserved styleState that is always \`true\`; please use a different name. ` +
-              `Check the \`getStyleState\` method of \`${displayName}\`.`);
-
-      if (__DEV__ && Component.styleStateTypes) {
-        checkPropTypes(displayName, Component.styleStateTypes, state, 'prop', 'styleStateType',
-          `Check the \`getStyleState\` method of \`${displayName}\`.`);
-      }
-
-      // HACKish: ensures :base:composed:selectors work as expected:
-      state.base = true;
-
-      return computeStylesFromState({
-        state,
-        styles: this.__calculatedStylesBySubComponent[subComponentName] || [],
-      });
+      return this.__subComponentStyles[subComponentName] || [];
     }
 
     getStylePropsFor (subComponentName, extraStyles=[]) {

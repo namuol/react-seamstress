@@ -427,5 +427,150 @@ runTests({
         {color: 'red'},
       ],
     },
+    
+    {
+      capability: 'should ignore null, false, and undefined',
+      input: {
+        styles: [
+          null,
+          false,
+          undefined,
+        ],
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'should ignore null, false, and undefined results from callbacks',
+      input: {
+        styles: [
+          () => {return null},
+          () => {return false},
+          () => {return undefined},
+        ],
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'should concat array results from top-level callbacks',
+      input: {
+        styles: [
+          () => {return ['aaa', 'bbb', 'ccc']},
+        ],
+      },
+      expected: [
+        'aaa',
+        'bbb',
+        'ccc',
+      ],
+    },
+
+    {
+      capability: 'should compute second-order :selectors from top-level callbacks',
+      input: {
+        styles: [
+          () => {
+            return {
+              ':test': {color: 'red'},
+            }
+          },
+        ],
+
+        state: {
+          test: true,
+        },
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
+
+    {
+      capability: 'should retain ::pseudo-elements objects',
+      input: {
+        styles: [
+          {
+            '::pseudo-element': { color: 'red' },
+          }
+        ],
+      },
+      expected: [
+        {
+          '::pseudo-element': { color: 'red' },
+        }
+      ],
+    },
+
+    {
+      capability: 'should retain ::pseudo-elements strings',
+      input: {
+        styles: [
+          {
+            '::pseudo-element': 'MySubComponent',
+          }
+        ],
+      },
+      expected: [
+        {
+          '::pseudo-element': 'MySubComponent',
+        }
+      ],
+    },
+
+    {
+      capability: 'should compute ::pseudo-elements top-level functions',
+      input: {
+        styles: [
+          {
+            '::pseudo-element': ({currentSubColor}) => { return {color: currentSubColor} },
+          }
+        ],
+
+        state: {
+          currentSubColor: 'red',
+        }
+      },
+      expected: [
+        {
+          '::pseudo-element': {
+            color: 'red',
+          },
+        }
+      ],
+    },
+
+    {
+      capability: 'should not include :invalid::pseudo-elements',
+      input: {
+        styles: [
+          {
+            ':invalid::pseudo-element': 'Nope',
+          }
+        ],
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'should include :valid::pseudo-elements',
+      input: {
+        styles: [
+          {
+            ':valid::pseudo-element': 'Yep',
+          }
+        ],
+
+        state: {
+          valid: true,
+        },
+      },
+      expected: [
+        {'::pseudo-element': 'Yep'},
+      ],
+    },
   ],
 });

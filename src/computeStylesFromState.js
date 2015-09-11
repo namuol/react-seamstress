@@ -1,11 +1,13 @@
+import arrayify from './arrayify';
+
 // TODO: This could use some refactoring for clarity and performance.
 
-export default function computeStylesFromState ({styles=[], state={}}) {
+export default function computeStylesFromState ({styles, state={}}) {
   if (!styles) {
     return [];
   }
 
-  return styles.filter(s => !!s).reduce((result, style) => {
+  return arrayify(styles).filter(s => !!s).reduce((result, style) => {
     const type = (typeof style);
 
     if (type === 'string') {
@@ -22,7 +24,7 @@ export default function computeStylesFromState ({styles=[], state={}}) {
       Object.keys(style).forEach((propName) => {
         let styleValue = style[propName];
 
-        if (!(/^:/).test(propName)) {
+        if (!(/^:[^:]+/).test(propName)) {
           if (typeof styleValue === 'function') {
             styleValue = styleValue(state);
           }
@@ -36,6 +38,13 @@ export default function computeStylesFromState ({styles=[], state={}}) {
             hasDefaultStyles = true;
           }
         } else {
+          let pseudoElementNameIdx, pseudoElementName;
+
+          if ((pseudoElementNameIdx = propName.indexOf('::')) > 0) {
+            pseudoElementName = propName.substr(pseudoElementNameIdx);
+            propName = propName.substr(0, pseudoElementNameIdx);
+          }
+
           const propNames = propName.split(/:/).filter(n => n.length > 0);
 
           if (propNames.every(prop => !!state[prop])) {
@@ -67,7 +76,11 @@ export default function computeStylesFromState ({styles=[], state={}}) {
               );
             }
 
-            stylesToAdd.push(styleValue);
+            if (pseudoElementName) {
+              stylesToAdd.push({[pseudoElementName]: styleValue});
+            } else {
+              stylesToAdd.push(styleValue);
+            }
           }
         }
       });
@@ -84,7 +97,10 @@ export default function computeStylesFromState ({styles=[], state={}}) {
     }
 
     if (type === 'function') {
-      result.push(style(state));
+      result.push(...computeStylesFromState({
+        styles: style(state),
+        state,
+      }));
     }
 
     return result;
