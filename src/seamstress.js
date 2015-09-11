@@ -66,6 +66,8 @@ export default function seamstress (Component) {
       styles: validateStyles,
     }, Component.propTypes);
 
+    getStyleState = Component.prototype.getStyleState || () => { return {}; };
+
     componentWillReceiveProps (...args) {
       super.componentWillReceiveProps && super.componentWillReceiveProps(...args);
       
