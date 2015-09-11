@@ -11,7 +11,8 @@ export default function computeStylesFromState ({styles, state={}}) {
     const type = (typeof style);
 
     if (type === 'string') {
-      return result.concat(style);
+      result.push(style);
+      return result;
     }
 
     if (type === 'object') {
@@ -52,14 +53,9 @@ export default function computeStylesFromState ({styles, state={}}) {
               styleValue = styleValue(state);
             }
 
-            if (typeof styleValue === 'function') {
-
-              // TODO: Should we maybe just print a warning instead of throw, in this case?
-              // Can we actually just support nested functions? Seems like a can of worms.
-              throw new Error(
-                'seamstress: Nested style functions are not supported.'
-              );
-
+            if (Array.isArray(styleValue)) {
+              stylesToAdd.push(...styleValue);
+              return;
             } else if (typeof styleValue === 'object') {
               styleValue = Object.keys(styleValue).reduce((result, key) => {
                 if (typeof styleValue[key] === 'function') {
@@ -73,6 +69,12 @@ export default function computeStylesFromState ({styles, state={}}) {
               throw new Error(
                 `seamstress: Unsupported style type: \`${typeof styleValue}\`; ` +
                 `supported types are: \`string\`, \`object\``
+              );
+            } else if (typeof styleValue === 'function') {
+              // TODO: Should we maybe just print a warning instead of throw, in this case?
+              // Can we actually just support nested functions? Seems like a can of worms.
+              throw new Error(
+                'seamstress: Nested style functions are not supported.'
               );
             }
 

@@ -469,6 +469,26 @@ runTests({
     },
 
     {
+      capability: 'should concat array results from :valid top-level callbacks',
+      input: {
+        styles: [
+          {
+            ':valid': () => {return ['aaa', 'bbb', 'ccc']}
+          },
+        ],
+
+        state: {
+          valid: true,
+        },
+      },
+      expected: [
+        'aaa',
+        'bbb',
+        'ccc',
+      ],
+    },
+
+    {
       capability: 'should compute second-order :selectors from top-level callbacks',
       input: {
         styles: [
