@@ -71,7 +71,7 @@ runTests({
     },
 
     {
-      capability: 'include mutliple style objects',
+      capability: 'include multiple style objects',
       input: {
         styles: [
           {
@@ -93,7 +93,7 @@ runTests({
     },
 
     {
-      capability: 'include mutliple style objects mixed with strings (classNames)',
+      capability: 'include multiple style objects mixed with strings (classNames)',
       input: {
         styles: [
           {
@@ -406,20 +406,19 @@ runTests({
     },
 
     {
-      capability: 'call functions to determine the value of individual style properties in objects of conditional keys',
+      capability: 'call functions to get value of :base',
       input: {
         styles: [
           {
-            ':test': {
-              color: ({favoriteColor}) => {
-                return favoriteColor;
-              },
-            }
-          }
+            ':base': ({favoriteColor}) => {
+              return {
+                color: favoriteColor,
+              };
+            },
+          },
         ],
 
         state: {
-          test: true,
           favoriteColor: 'red',
         }
       },
@@ -428,6 +427,50 @@ runTests({
       ],
     },
     
+    {
+      capability: 'call functions to determine the value of individual style properties in :base objects',
+      input: {
+        styles: [
+          {
+            ':base': {
+              color: ({favoriteColor}) => {
+                return favoriteColor;
+              },
+            }
+          }
+        ],
+
+        state: {
+          favoriteColor: 'red',
+        }
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
+
+    {
+      capability: 'call functions to determine the value of individual style properties in :base objects',
+      input: {
+        styles: [
+          {
+            ':base': {
+              color: ({favoriteColor}) => {
+                return favoriteColor;
+              },
+            }
+          }
+        ],
+
+        state: {
+          favoriteColor: 'red',
+        }
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
+
     {
       capability: 'ignore null, false, and undefined',
       input: {
