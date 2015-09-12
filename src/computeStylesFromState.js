@@ -15,6 +15,16 @@ function getPseudoElementName (fullString) {
   return fullString.substr(fullString.indexOf('::'));
 }
 
+function getValue (style, k, state) {
+  const value = style[k];
+
+  if (typeof value === 'function') {
+    return value(state);
+  }
+
+  return value;
+}
+
 export default function computeStylesFromState ({styles, state={}}) {
   if (!styles) {
     return [];
@@ -80,30 +90,17 @@ export default function computeStylesFromState ({styles, state={}}) {
       pseudoElements: [],
     });
 
-    let hasTopLevelStyles = false;
     const topLevelStyles = topLevel.reduce((result, k) => {
-      let value = style[k];
-
-      if (typeof value === 'function') {
-        value = value(state);
-      }
-
-      hasTopLevelStyles = true;
-      
-      result[k] = value;
+      result[k] = getValue(style, k, state);
       return result;
     }, {});
 
-    if (hasTopLevelStyles) {
+    if (topLevel.length > 0) {
       computedStyles.push(topLevelStyles);
     }
 
     conditionals.filter(satisfiesState).forEach((k) => {
-      let value = style[k];
-
-      if (typeof value === 'function') {
-        value = value(state);
-      }
+      const value = getValue(style, k, state);
 
       if (Array.isArray(value)) {
         computedStyles.push(...value);
@@ -112,14 +109,10 @@ export default function computeStylesFromState ({styles, state={}}) {
       }
     });
 
-    pseudoElements.map(k => [k, getPropString(k)]).filter(([k,propString]) => {return satisfiesState(propString)}).forEach(([k]) => {
-      let value = style[k];
-      
-      if (typeof value === 'function') {
-        value = value(state);
-      }
-
-      computedStyles.push({[getPseudoElementName(k)]: value});
+    pseudoElements.map(k => [k, getPropString(k)])
+    .filter(([k,propString]) => { return satisfiesState(propString) })
+    .forEach(([k]) => {
+      computedStyles.push({[getPseudoElementName(k)]: getValue(style, k, state)});
     });
 
     return computedStyles;
