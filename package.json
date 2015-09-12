@@ -1,6 +1,6 @@
 {
   "name": "react-seamstress",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Experimental interface for exposing style-related state inside complex React components",
   "main": "lib/seamstress.js",
   "files": [
