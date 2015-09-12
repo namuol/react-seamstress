@@ -5,13 +5,13 @@ runTests({
   func: computeStylesFromState,
   tests: [
     {
-      capability: 'should return an empty array when supplied null/undefined',
+      capability: 'return an empty array when supplied null/undefined',
       input: {},
       expected: [],
     },
 
     {
-      capability: 'should include any strings (classNames) from the input styles array',
+      capability: 'include any strings (classNames) from the input styles array',
       input: {
         styles: [
           'aaa',
@@ -23,7 +23,7 @@ runTests({
     },
 
     {
-      capability: 'should not include any objects when no state is supplied (we assume false)',
+      capability: 'not include any objects when no state is supplied (we assume false)',
       input: {
         styles: [
           {
@@ -36,7 +36,7 @@ runTests({
     },
 
     {
-      capability: 'should filter out style objects whose corresponding state is false',
+      capability: 'filter out style objects whose corresponding state is false',
       input: {
         styles: [
           {
@@ -53,7 +53,7 @@ runTests({
     },
 
     {
-      capability: 'should include style objects whose corresponding state is true',
+      capability: 'include style objects whose corresponding state is true',
       input: {
         styles: [
           {
@@ -71,7 +71,7 @@ runTests({
     },
 
     {
-      capability: 'should include mutliple style objects',
+      capability: 'include mutliple style objects',
       input: {
         styles: [
           {
@@ -93,7 +93,7 @@ runTests({
     },
 
     {
-      capability: 'should include mutliple style objects mixed with strings (classNames)',
+      capability: 'include mutliple style objects mixed with strings (classNames)',
       input: {
         styles: [
           {
@@ -119,7 +119,7 @@ runTests({
     },
 
     {
-      capability: 'should maintain order of key iteration',
+      capability: 'maintain order of key iteration',
       input: {
         styles: [
           {
@@ -140,7 +140,7 @@ runTests({
     },
 
     {
-      capability: 'should maintain order of key iteration (different order)',
+      capability: 'maintain order of key iteration (different order)',
       input: {
         styles: [
           {
@@ -161,7 +161,7 @@ runTests({
     },
 
     {
-      capability: 'should "hoist" toplevel styles',
+      capability: '"hoist" toplevel styles',
       input: {
         styles: [
           {
@@ -185,7 +185,7 @@ runTests({
     },
 
     {
-      capability: 'should "hoist" :base styles and assume :base to be true',
+      capability: '"hoist" :base styles and assume :base to be true',
       input: {
         styles: [
           {
@@ -211,7 +211,7 @@ runTests({
     },
 
     {
-      capability: 'should "hoist" :base classNames and assume :base to be true',
+      capability: '"hoist" :base classNames and assume :base to be true',
       input: {
         styles: [
           {
@@ -231,7 +231,7 @@ runTests({
     },
 
     {
-      capability: 'should straight-up *ignore* non-string, non-object values inside the array',
+      capability: 'straight-up *ignore* non-string, non-object values inside the array',
       input: {
         styles: [
           true,
@@ -247,7 +247,7 @@ runTests({
     },
 
     {
-      capability: 'should handle false style instead of array',
+      capability: 'handle false style instead of array',
       input: {
         styles: false,
         state: {}
@@ -256,7 +256,7 @@ runTests({
     },
 
     {
-      capability: 'should handle null style instead of array',
+      capability: 'handle null style instead of array',
       input: {
         styles: null,
         state: {}
@@ -265,7 +265,7 @@ runTests({
     },
 
     {
-      capability: 'should handle undefined style instead of array',
+      capability: 'handle undefined style instead of array',
       input: {
         styles: undefined,
         state: {}
@@ -274,14 +274,14 @@ runTests({
     },
 
     {
-      capability: 'should handle totally unspecified style instead of array',
+      capability: 'handle totally unspecified style instead of array',
       input: {
       },
       expected: [],
     },
 
     {
-      capability: 'should handle :composed:selectors',
+      capability: 'handle :composed:selectors',
       input: {
         styles: [
           {
@@ -304,7 +304,7 @@ runTests({
     },
 
     {
-      capability: 'should only pass :composed:selectors whose every selector is true',
+      capability: 'only pass :composed:selectors whose every selector is true',
       input: {
         styles: [
           {
@@ -325,7 +325,7 @@ runTests({
     },
 
     {
-      capability: 'should include the return value from root-level functions in results',
+      capability: 'include the return value from root-level functions in results',
       input: {
         styles: [
           () => {
@@ -343,7 +343,7 @@ runTests({
     },
 
     {
-      capability: 'should pass styleState as the first argument',
+      capability: 'pass styleState as the first argument',
       input: {
         styles: [
           ({favoriteColor}) => {
@@ -363,7 +363,7 @@ runTests({
     },
 
     {
-      capability: 'should call functions to compute the value of style properties',
+      capability: 'call functions to compute the value of style properties',
       input: {
         styles: [
           {
@@ -383,7 +383,7 @@ runTests({
     },
 
     {
-      capability: 'should call functions to get value with conditional keys',
+      capability: 'call functions to get value with conditional keys',
       input: {
         styles: [
           {
@@ -406,7 +406,7 @@ runTests({
     },
 
     {
-      capability: 'should call functions to determine the value of individual style properties in objects of conditional keys',
+      capability: 'call functions to determine the value of individual style properties in objects of conditional keys',
       input: {
         styles: [
           {
@@ -429,7 +429,7 @@ runTests({
     },
     
     {
-      capability: 'should ignore null, false, and undefined',
+      capability: 'ignore null, false, and undefined',
       input: {
         styles: [
           null,
@@ -442,7 +442,7 @@ runTests({
     },
 
     {
-      capability: 'should ignore null, false, and undefined results from callbacks',
+      capability: 'ignore null, false, and undefined results from callbacks',
       input: {
         styles: [
           () => {return null},
@@ -455,7 +455,7 @@ runTests({
     },
 
     {
-      capability: 'should concat array results from top-level callbacks',
+      capability: 'concat array results from top-level callbacks',
       input: {
         styles: [
           () => {return ['aaa', 'bbb', 'ccc']},
@@ -469,7 +469,7 @@ runTests({
     },
 
     {
-      capability: 'should concat array results from :valid top-level callbacks',
+      capability: 'concat array results from :valid top-level callbacks',
       input: {
         styles: [
           {
@@ -489,7 +489,7 @@ runTests({
     },
 
     {
-      capability: 'should compute second-order :selectors from top-level callbacks',
+      capability: 'compute second-order :selectors from top-level callbacks',
       input: {
         styles: [
           () => {
@@ -509,7 +509,7 @@ runTests({
     },
 
     {
-      capability: 'should retain ::pseudo-elements objects',
+      capability: 'retain ::pseudo-elements objects',
       input: {
         styles: [
           {
@@ -525,7 +525,7 @@ runTests({
     },
 
     {
-      capability: 'should retain ::pseudo-elements strings',
+      capability: 'retain ::pseudo-elements strings',
       input: {
         styles: [
           {
@@ -541,7 +541,7 @@ runTests({
     },
 
     {
-      capability: 'should compute ::pseudo-elements top-level functions',
+      capability: 'compute ::pseudo-elements top-level functions',
       input: {
         styles: [
           {
@@ -563,7 +563,7 @@ runTests({
     },
 
     {
-      capability: 'should not include :invalid::pseudo-elements',
+      capability: 'not include :invalid::pseudo-elements',
       input: {
         styles: [
           {
@@ -576,7 +576,7 @@ runTests({
     },
 
     {
-      capability: 'should include :valid::pseudo-elements',
+      capability: 'include :valid::pseudo-elements',
       input: {
         styles: [
           {

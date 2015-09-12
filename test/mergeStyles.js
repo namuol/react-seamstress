@@ -11,7 +11,7 @@ function orderedMap (val) {
 
 const tests = [
   {
-    capability: 'should override styles in the order they appear',
+    capability: 'override styles in the order they appear',
     input: [
       {color:'red'},
       {color:'black'},
@@ -26,7 +26,7 @@ const tests = [
   },
 
   {
-    capability: 'should override nested styles in the order they appear',
+    capability: 'override nested styles in the order they appear',
     input: [
       {':hover': {color:'red'}},
       {':hover': {color:'black'}},
@@ -42,7 +42,7 @@ const tests = [
   },
 
   {
-    capability: 'should "push" nested styles down when a sub-style is overridden',
+    capability: '"push" nested styles down when a sub-style is overridden',
     input: [
       {
         '@media': {},
@@ -78,7 +78,7 @@ const tests = [
   },
 
   {
-    capability: 'should "push" toplevel styles down when they are overridden',
+    capability: '"push" toplevel styles down when they are overridden',
     input: [
       {color:'red', backgroundColor: 'blue'},
       {color:'black'},
@@ -93,7 +93,7 @@ const tests = [
   },
 
   {
-    capability: 'should merge nested styles into a single object',
+    capability: 'merge nested styles into a single object',
     input: [
       {
         '@media': {
@@ -123,7 +123,7 @@ const tests = [
   },
 
   {
-    capability: 'should handle a complex example where nested styles "change" order',
+    capability: 'handle a complex example where nested styles "change" order',
     input: [
       {
         '@media1': {
@@ -173,7 +173,7 @@ const tests = [
   },
 
   {
-    capability: 'should handle a single className',
+    capability: 'handle a single className',
     input: [
       'aaa',
     ],
@@ -185,7 +185,7 @@ const tests = [
   },
 
   {
-    capability: 'should handle multiple classNames',
+    capability: 'handle multiple classNames',
     input: [
       'aaa',
       'bbb',
@@ -199,7 +199,7 @@ const tests = [
   },
 
   {
-    capability: 'should ignore duplicate classNames',
+    capability: 'ignore duplicate classNames',
     input: [
       'aaa',
       'bbb',
@@ -214,7 +214,7 @@ const tests = [
   },
 
   {
-    capability: 'should be able to combine styles with classNames',
+    capability: 'be able to combine styles with classNames',
     input: [
       'aaa',
       'bbb',
@@ -232,7 +232,7 @@ const tests = [
   },
 
   {
-    capability: 'should treat whitespace-delimited classNames uniquely',
+    capability: 'treat whitespace-delimited classNames uniquely',
     input: [
       'aaa',
       'bbb ccc',

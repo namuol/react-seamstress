@@ -5,14 +5,14 @@ runTests({
   func: getSubComponentStyles,
   tests: [
     {
-      capability: 'should return {__root: []} for empty input',
+      capability: 'return {__root: []} for empty input',
       input: {},
       expected: {
       },
     },
 
     {
-      capability: 'should put all non-::sub-component styles in __root',
+      capability: 'put all non-::sub-component styles in __root',
       input: {
         styles: [
           {
@@ -36,7 +36,7 @@ runTests({
     },
 
     {
-      capability: 'should put ::sub-component into result["sub-component"]',
+      capability: 'put ::sub-component into result["sub-component"]',
       input: {
         styles: [
           {
@@ -56,7 +56,7 @@ runTests({
     },
 
     {
-      capability: 'should ignore nonsense',
+      capability: 'ignore nonsense',
       input: {
         styles: [
           false,
@@ -70,7 +70,7 @@ runTests({
     },
 
     {
-      capability: 'should simply append strings to __root',
+      capability: 'simply append strings to __root',
       input: {
         styles: [
           'test',
@@ -84,7 +84,7 @@ runTests({
     },
 
     {
-      capability: 'should put :root-state::sub-component into result["sub-component"][":root-state"]',
+      capability: 'put :root-state::sub-component into result["sub-component"][":root-state"]',
       input: {
         styles: [
           {
@@ -104,7 +104,7 @@ runTests({
     },
 
     {
-      capability: 'should handle :many:state:selectors:before:the::sub-component',
+      capability: 'handle :many:state:selectors:before:the::sub-component',
       input: {
         styles: [
           {

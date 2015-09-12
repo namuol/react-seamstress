@@ -7,14 +7,14 @@ runTests({
   func: getInvalidStyleStates,
   tests: [
     {
-      capability: 'should return undefined when there are no style or styleStateTypes are specified',
+      capability: 'return undefined when there are no style or styleStateTypes are specified',
       input: {
       },
       expected: undefined,
     },
 
     {
-      capability: 'should return an array of each :style-state that wasn\'t specified on `styleStateTypes`',
+      capability: 'return an array of each :style-state that wasn\'t specified on `styleStateTypes`',
       input: {
         style: {
           ':invalid': {},
@@ -25,7 +25,7 @@ runTests({
     },
 
     {
-      capability: 'should not include any :style-state items that are specified on `styleStateTypes`',
+      capability: 'not include any :style-state items that are specified on `styleStateTypes`',
       input: {
         style: {
           ':valid': {},
@@ -38,7 +38,7 @@ runTests({
     },
 
     {
-      capability: 'should correctly handle a mixture of valid and invalid :style-state items',
+      capability: 'correctly handle a mixture of valid and invalid :style-state items',
       input: {
         style: {
           ':valid': {},
@@ -52,7 +52,7 @@ runTests({
     },
 
     {
-      capability: 'should not include "toplevel" style items',
+      capability: 'not include "toplevel" style items',
       input: {
         style: {
           ':valid': {},
@@ -67,7 +67,7 @@ runTests({
     },
 
     {
-      capability: 'should include :composed:selectors in its tests',
+      capability: 'include :composed:selectors in its tests',
       input: {
         style: {
           ':valid': {},
@@ -83,7 +83,7 @@ runTests({
     },
 
     {
-      capability: 'should consider non-boolean props as invalid',
+      capability: 'consider non-boolean props as invalid',
       input: {
         style: {
           ':invalid': {},
@@ -96,7 +96,7 @@ runTests({
     },
 
     {
-      capability: 'should consider bool.isRequired props as valid',
+      capability: 'consider bool.isRequired props as valid',
       input: {
         style: {
           ':valid': {},
