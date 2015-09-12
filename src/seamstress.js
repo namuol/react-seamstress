@@ -112,9 +112,18 @@ export default function seamstress (Component) {
     }
 
     static withStyles (myStyles) {
-      return class TailoredComponent extends ComponentWithDeclarativeStyles {
+      class TailoredComponent extends ComponentWithDeclarativeStyles {
         static styles = [...arrayify(Component.styles), ...arrayify(myStyles)];
       };
+
+      if (__DEV__) {
+        let error = validateStyles(TailoredComponent, 'styles');
+        if (!!error) {
+          console.error(error.message + ` Check the value passed to \`${displayName}.withStyles(...)\`.`);
+        }
+      }
+
+      return TailoredComponent;
     }
   }
 }
