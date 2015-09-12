@@ -21,7 +21,7 @@
     "webpack-hot-middleware": "^2.0.0"
   },
   "dependencies": {
-    "react": "^0.14.0-beta3",
-    "react-dom": "^0.14.0-beta3"
+    "react": "^0.14.0-rc1",
+    "react-dom": "^0.14.0-rc1"
   }
 }
