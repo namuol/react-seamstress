@@ -7,12 +7,9 @@ function satisfies (state) {
   }
 }
 
-function getPropString (fullString) {
-  return fullString.substr(0, fullString.indexOf('::'));
-}
-
-function getPseudoElementName (fullString) {
-  return fullString.substr(fullString.indexOf('::'));
+function splitPseudoElementString (fullString) {
+  const idx = fullString.indexOf('::');
+  return [fullString, fullString.substr(0, idx), fullString.substr(idx)];
 }
 
 function getValue (style, k, state) {
@@ -109,10 +106,11 @@ export default function computeStylesFromState ({styles, state={}}) {
       }
     });
 
-    pseudoElements.map(k => [k, getPropString(k)])
-    .filter(([k,propString]) => { return satisfiesState(propString) })
-    .forEach(([k]) => {
-      computedStyles.push({[getPseudoElementName(k)]: getValue(style, k, state)});
+    pseudoElements.map(splitPseudoElementString)
+    .filter(([k, propString]) => {
+      return satisfiesState(propString);
+    }).forEach(([k, _, pseudoElementName]) => {
+      computedStyles.push({[pseudoElementName]: getValue(style, k, state)});
     });
 
     return computedStyles;
