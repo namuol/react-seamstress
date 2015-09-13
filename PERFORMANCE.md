@@ -18,7 +18,7 @@ This means we can *memoize* `getStyleProps()`, and its cousins, `getStylePropsFo
 
 Why might this be awesome?
 
-The benefits would be seen if we need re-run `render()`, but all of our style
+The benefits would be seen if we need to re-run `render()`, but all of our style
 calculations have already been computed.
 
 In practice, this may only be beneficial for components with very large `Component.style`

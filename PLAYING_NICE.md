@@ -86,7 +86,7 @@ be removed.
 Media queries are *terribly* useful for web developers.
 
 free-style uses a pure CSS-based approach to support native `@media`
-queries, and for that it's awesome.
+queries with CSS-in-JS, and for that it's awesome.
 
 In order for free-style's `@media` implementation to work as-expected with `@seamstress`,
 we'd need to provide some kind of sugaring function.

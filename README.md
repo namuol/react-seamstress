@@ -19,10 +19,10 @@ For an overview of the problems this project aims to solve
 
 ## Features
 
-### Custom `:pseudo-selectors`
+#### Custom `:pseudo-selectors`
 
-React components are so much more than their DOM counterparts, so
-why limit ourselves to the DOM's pseudo-selectors (i.e `:hover`)?
+React components are so much more than their DOM counterparts,
+**so why limit ourselves to the DOM's pseudo-selectors (i.e `:hover`)**?
 
 Seamstress allows you to define custom pseudo-selectors
 that refer to an internal state of the component.
@@ -39,7 +39,7 @@ that refer to an internal state of the component.
 
 See the [API reference](API.md#thisgetstyleprops) for details.
 
-### Transparent support for `className` and `style`
+#### Transparent support for `className` and `style`
 
 Using CSS? No problem. Just use simple strings to denote
 class names.
@@ -64,7 +64,7 @@ You can even mix `classNames` and `style` objects within a single object.
 }} />
 ```
 
-### Custom `::pseudo-elements`
+#### Custom `::pseudo-elements`
 
 Components tend to be composed of other components, those
 of which also need to be styled.
@@ -85,7 +85,7 @@ for succinctness:
 
 See the [API reference](API.md#thisgetstylesforsubcomponent) for details.
 
-### `:composed:pseudo:selectors`
+#### `:composed:pseudo:selectors`
 
 ```js
 <Combobox styles={{
@@ -96,7 +96,7 @@ See the [API reference](API.md#thisgetstylesforsubcomponent) for details.
 }} />
 ```
 
-### Computed styles
+#### Computed styles
 
 Seamstress aims to replace a lot of boilerplate code
 with declarative style declarations, however sometimes
@@ -137,10 +137,11 @@ for providing outer style-state values to `::sub-components`:
 })} />
 ```
 
-### Fall into the *Pit of Success*
+#### Fall into the "Pit of Success"
 
-Component authors can use `styleStateTypes` to explicitly declare
-what the result of `getStyleState()` should look like.
+If component authors use [`styleStateTypes`](API.md#yourcomponentstylestatetypes) to explicitly declare
+what the result of [`getStyleState()`](API.md#yourcomponentgetstylestate) should look like, component users
+get nice error messages (inspired by `propTypes` and it's `context`-related cousins).
 
 ```js
 @seamstress
@@ -170,11 +171,21 @@ Check the render method of `MyApp`.
 */
 ```
 
+## Examples
+
+See the [`examples`](examples) directory for complete examples of authoring and re-styling
+a simple Seamstress-styled component.
+
+For a more complex component-authoring example, take a look at
+[this fork of `react-select`](https://github.com/namuol/react-select-seamstress/tree/seamstress) that replaces
+most of its styling logic with Seamstress, as an exercise (it was easier than I expected!). This is also a good
+example of using Seamstress with `React.createClass`.
+
 ## Stability & Feedback
 
 This project is still in the **experimental** phase, and I need feedback.
 
-If you have any issues or ideas please open a new issue.
+If you have any issues or ideas please [open a new issue](https://github.com/namuol/react-seamstress/issues).
 
 I can also be reached [via email](mailto:louis.acresti@gmail.com),
 on Twitter as [@louroboros](http://twitter.com/louroboros),
