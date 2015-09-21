@@ -10,176 +10,19 @@ A **powerful**, **declarative** interface for styling **React** components in th
 - Replaces [`props.className` & `props.style`](CSS_OR_INLINE.md) with a unified `styles` prop.
 - [Works with what you're already using](PLAYING_NICE.md) to style your components.
 
+For an overview of the problems this project aims to solve (and why you should care), read [WHY.md](WHY.md).
+
+## Installation
+
 ```
 npm install react-seamstress --save
 ```
 
-For an overview of the problems this project aims to solve
-(and why you should care), read [WHY.md](WHY.md).
-
-## Features
-
-#### Custom `:pseudo-selectors`
-
-React components are so much more than their DOM counterparts,
-**so why limit ourselves to the DOM's pseudo-selectors (i.e `:hover`)**?
-
-Seamstress allows you to define custom pseudo-selectors
-that refer to an internal state of the component.
-
-```js
-<Combobox styles={{
-  backgroundColor: 'black',
-  color: 'whitesmoke',
-  ':busy': {
-    opacity: 0.5,
-  }
-}} />
-```
-
-See the [API reference](API.md#thisgetstyleprops) for details.
-
-#### Transparent support for `className` and `style`
-
-Using CSS? No problem. Just use simple strings to denote
-class names.
-
-```js
-<Combobox styles={{
-  // The `:base` selector is for "default" classes/styles:
-  ':base': 'MyCombobox',
-
-  ':busy': 'MyCombobox_busy',
-}} />
-```
-
-This works quite well with [CSS Modules](PLAYING_NICE.md#css-modules), for instance.
-
-You can even mix `classNames` and `style` objects within a single object.
-
-```js
-<Combobox styles={{
-  ':base': 'MyCombobox',
-  ':busy': { opacity: 0.5 },
-}} />
-```
-
-#### Custom `::pseudo-elements`
-
-Components tend to be composed of other components, those
-of which also need to be styled.
-
-Seamstress uses a syntax inspired by CSS's `::pseudo-elements`
-for succinctness:
-
-```js
-<Combobox styles={{
-  '::indicator': {
-    backgroundImage: 'url(down-arrow.svg)',
-  },
-  ':busy::indicator': {
-    backgroundImage: 'url(spinner.svg)',
-  },
-}} />
-```
-
-See the [API reference](API.md#thisgetstylesforsubcomponent) for details.
-
-#### `:composed:pseudo:selectors`
-
-```js
-<Combobox styles={{
-  ':busy:expanded': {
-    // ...styles for when the combobox is
-    // busy *and* expanded...
-  }
-}} />
-```
-
-#### Computed styles
-
-Seamstress aims to replace a lot of boilerplate code
-with declarative style declarations, however sometimes
-you need to dynamically generate your styles.
-
-Component authors can explicity choose what state
-to expose, which can then be used in style callbacks
-inside `props.styles`, if necessary.
-
-```js
-import chroma from 'chroma-js';
-
-const colorScale = chroma.scale([
-  'white',
-  'yellow',
-  'red',
-]).domain([
-  0,
-  5000,
-  7000,
-]);
-
-<Tachometer styles={{
-  color: ({rpm}) => { return colorScale(rpm).hex() }
-}} />
-```
-
-You can also return an entire `styles` object from a top-level function; useful
-for providing outer style-state values to `::sub-components`:
-
-```js
-<Dashboard styles={({rpm} => {
-  return {
-    '::tachometer': {
-      color: colorScale(rpm).hex(),
-    },
-  };
-})} />
-```
-
-#### Fall into the "Pit of Success"
-
-If component authors use [`styleStateTypes`](API.md#yourcomponentstylestatetypes) to explicitly declare
-what the result of [`getStyleState()`](API.md#yourcomponentgetstylestate) should look like, component users
-get nice error messages (inspired by `propTypes` and it's `context`-related cousins).
-
-```js
-@seamstress
-class Combobox extends React.Component {
-  static styleStateTypes = {
-    expanded: React.PropTypes.bool,
-  };
-
-  getStyleState () {
-    return { expanded: this.state.expanded };
-  }
-}
-```
-
-Now, if a user tries to style a state that doesn't exist,
-they see a friendly warning:
-
-```js
-<Combobox style={{
-  ':expand': { ...etc }
-}} />
-
-/*
-Warning: Failed propType: Style state `:expand` was not
-specified in `Combobox`. Available states are: [`:expanded`].
-Check the render method of `MyApp`.
-*/
-```
-
 ## Examples
 
-See the [`examples`](examples) directory for complete examples of authoring and re-styling
-a simple Seamstress-styled component.
+See the [`examples`](examples) directory for complete examples of authoring and re-styling a simple Seamstress-styled component.
 
-For a more complex component-authoring example, take a look at
-[this fork of `react-select`](https://github.com/namuol/react-select-seamstress/tree/seamstress) that replaces
-most of its styling logic with Seamstress, as an exercise (it was easier than I expected!). This is also a good
-example of using Seamstress with `React.createClass`.
+For a more complex component-authoring example, take a look at [this fork of `react-select`](https://github.com/namuol/react-select-seamstress/tree/seamstress) that replaces most of its styling logic with Seamstress, as an exercise (it was easier than I expected!). This is also a good example of using Seamstress with `React.createClass`.
 
 ## Stability & Feedback
 
@@ -187,9 +30,7 @@ This project is still in the **experimental** phase, and I need feedback.
 
 If you have any issues or ideas please [open a new issue](https://github.com/namuol/react-seamstress/issues).
 
-I can also be reached [via email](mailto:louis.acresti@gmail.com),
-on Twitter as [@louroboros](http://twitter.com/louroboros),
-or on [reactiflux](http://reactiflux.com) as **@namuol**.
+I can also be reached [via email](mailto:louis.acresti@gmail.com), on Twitter as [@louroboros](http://twitter.com/louroboros), or on [reactiflux](http://reactiflux.com) as **@namuol**.
 
 Thanks! :beers:
 

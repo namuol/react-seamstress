@@ -1,280 +1,268 @@
-# API - 0.2
+# Seamstress API Reference - 0.3
 
-### `@seamstress`
-
-The main (and only) export of the library.
-
-A component decorator function. Accepts your component class
-as its first argument, and extends it with the behaviors listed in this document.
-
-This works great with ES7 decorators (available with [`babel --stage 1`](https://babeljs.io/docs/usage/experimental/)):
+## Seamstress
 
 ```js
-import seamstress from 'react-seamstress';
+import Seamstress from 'react-seamstress';
+```
 
-@seamstress
-export default class YourComponent extends React.Component {
-  // ...
+The entry point into the Seamstress library.
+
+## Seamstress.createContainer
+
+```js
+HigherOrderComponent createContainer(
+  ReactClass/Component/Function WrappedComponent,
+  object config
+)
+```
+
+Returns a higher-order component that processes [`props.styles`](#propsstyles)and passes the result as [`props.computedStyles`](#propscomputedstyles) to `WrappedComponent`.
+
+The [configuration object](#config) passed as the second argument determines how the input styles are processed.
+
+> Note:
+>
+> If your [`config.getStyleState()`](#configgetstylestate) function needs access to `this.state`, or your component's API exposes any instance properties or methods, use [**`createDecorator`**](#seamstresscreatedecorator), instead.
+
+## Seamstress.createDecorator
+
+```js
+decoratorFunction createDecorator(object config)
+```
+
+Returns a decorator function that takes the following form:
+
+```js
+SeamstressComponent decoratorFunction(ReactClass/Component YourComponent)
+```
+
+The decorator returns a component that derives from `YourComponent` and supplies some additional behaviors:
+
+- `this.getComputedStyles()` provides [`computedStyles`](#computedstyles) to your component.
+- `propTypes` is enhanced with a custom `styles` validator if [`styleStateTypes`](#configstylestatetypes) or [`subComponentTypes`](#configsubcomponenttypes) were configured.
+
+> Note:
+>
+> If `YourComponent` is a stateless component, or your [`config.getStyleState()`](#configgetstylestate) function doesn't need access to component state, use [**`createContainer`**](#seamstresscreatecontainer), instead.
+
+## config
+
+```js
+{
+  styles: string/object/function/Array,
+  getStyleState: Function,
+  [styleStateTypes: object],
+  [subComponentTypes: object],
 }
 ```
 
-If you're not using experimental babel features, it's still pretty easy:
+### config.styles
+
+The "default" styles for your component.
+
+Takes the same form as the [`styles` prop](#propsstyles).
+
+These styles are applied unless explicitly overridden by `props.styles`.
+
+### config.getStyleState
 
 ```js
-class YourComponent extends React.Component {
-  // ...
-}
-
-export default YourComponent = seamstress(YourComponent);
-```
-
-ES5 with `React.createClass` is also supported:
-
-```js
-var seamstress = require('react-seamstress');
-
-var YourComponent = React.createClass({
-  // ...
-});
-
-// Note: Static properties must be set **before** calling `seamstress(...)`
-YourComponent.styles = { ... };
-YourComponent.styleStateTypes = { ... };
-
-module.exports = YourComponent = seamstress(YourComponent);
-```
-
-### `props.styles`
-
-(provided by [`@seamstress`](#seamstress))
-
-A special prop used to define style overrides.
-
-Can be a single `className` string, an object of raw inline styles, a function, or an array of any
-combination thereof.
-
-Object properties that take the form `:some-component-state` are used to define
-styles that apply when the corresponding style state is `true`.
-
-Examples:
-
-```js
-<YourComponent styles={{
-  // "top-level" styles are unconditionally merged with the final
-  // style properties of the component:
-  color: 'black',
-
-  // :state style objects are conditionally merged
-  // in the order they appear in this object:
-  ':expanded': {
-    border: '1px solid black',
-  },
-}} />
-```
-
-```js
-// This simply adds your class to the component's list of classes:
-<YourComponent styles={'MyComponent'} />
-```
-
-```js
-<YourComponent styles={[
-  // Standalone strings in the array are unconditionally applied:
-  'MyComponent',
-  {
-    // :states conditionally apply classes based on internal state:
-    ':expanded': 'MyComponent_expanded',
-  },
-]} />
-```
-
-Alternatively, you can use the special `:base` state to unconditionally apply
-classNames without the need to use an array:
-
-```js
-<YourComponent styles={{
-  ':base': 'MyComponent',
-  ':expanded': 'MyComponent_expanded',
-}} />
-```
-
-You can specify a callback to compute the value of an
-inline style rule:
-
-```js
-import chroma from 'chroma-js';
-
-const colorScale = chroma.scale([
-  'white',
-  'yellow',
-  'red',
-]).domain([
-  0,
-  5000,
-  7000,
-]);
-
-<Tachometer styles={{
-  color: ({rpm}) => { return colorScale(rpm).hex() }
-}} />
-```
-
-You can also build an entire `styles` object in a function; useful
-for providing outer style-state values to `::sub-components`:
-
-```js
-<Dashboard styles={({rpm} => {
+getStyleState: function ({
+  props: object,
+  context: object,
+  [state: object],
+}) {
   return {
-    '::tachometer': {
-      color: colorScale(rpm).hex(),
-    },
-  };
-})} />
-```
-
-**Note**: the `className` and `style` props still work; they are merged
-last into `props.styles` before computing the result of [`getStyleProps()`](#thisgetstyleprops).
-
-This behavior will probably change in future versions, as it's unclear what most users
-expect to happen in this scenario.
-
-### `YourComponent.styles`
-
-(optional)
-
-A **static property** defined on your component.
-
-These are the default styles for your component. Think of these styles
-as the default userstyles in the browser if your Component were a first-class
-DOM element such as `<select>`.
-
-Takes the same form as [`props.styles`](#propsstyles).
-
-### `YourComponent.styleStateTypes`
-
-(optional, recommended)
-
-A **static property** defined on your component.
-
-Takes a form similar to React's `propTypes`.
-
-Explicitly defines the types/shape of the result returned by [`getStyleState()`](#yourcomponentgetstylestate).
-
-```js
-@seamstress
-class YourComponent extends React.Component {
-  static styleStateTypes = {
-    expanded: React.PropTypes.bool,
+    // style-state values go here
   };
 }
 ```
 
-Use `PropTypes.bool` to indicate that a specific state can be styled with
-a `:psuedo-selector`-like syntax inside [`props.styles`](#propsstyles).
+A function that returns all style-related state of your component.
 
-It's recommended that you define this property, because it provides
-[helpful warning messages](WHY.md#the-pit-of-success).
+This should be a **pure function** of the `props`, `context`, and if applicable, the `state` of your component.
 
-### `YourComponent::getStyleState()`
+The `state` parameter is only specified when using [`Seamstress.createDecorator()`](#seamstresscreatedecorator).
 
-(required)
-
-An **instance function** you must define on your component.
-
-Should return the current "style state" of your component.
-
-The style state is used to compute the final `className` and `style`
-props returned from [`this.getStyleProps()`](#thisgetstyleprops).
+### config.styleStateTypes
 
 ```js
-@seamstress
-class YourComponent extends React.Component {
-  getStyleState () {
-    return {
-      expanded: this.state.expanded,
-    };
-  }
+styleStateTypes: {
+  ['style-state': React.PropType],
+  ...,
 }
 ```
 
-### `this.getStyleProps()`
+An optional (but recommended) way to declare the state your component exposes for styling purposes.
 
-(provided by [`@seamstress`](#seamstress))
+Takes the same form as [`propTypes`](https://facebook.github.io/react/docs/reusable-components.html#prop-validation).
 
-Returns a computed `{className, style}` based on the merged result of `YourComponent.styles` with
-`props.styles` (`props.className` and `props.style` are also merged in lastly, but
-this is generally not the favored why to style a component with Seamstress).
+In a nutshell, `bool` style-state items correspond to a single [`:pseudo-selector`](#pseudo-selectors), and all other types are only accessible via [style callbacks](#stylecallbacks).
 
-These resulting merged styles are filtered to only include styles that apply based on the
-result of [`YourComponent::getStyleState()`](#yourcomponentgetstylestate).
+Much like `propTypes`, `styleStateTypes` will help ensure your component is being styled correctly by providing warnings whenever unspecified or non-boolean style-states are used as `:pseudo-selectors`.
 
-For instance, if `getStyleState()` returns `{ loading: false }`, then 
-any styles under the `:loading` pseudo-selector will *not* be applied,
-and vice-versa.
+The result of `config.getStyleState()` is also validated using these prop-types.
 
-The easiest way to apply these props is to use the experimental
-[spread operator](https://babeljs.io/docs/learn-es2015/#default-rest-spread) (`...`):
+> Note:
+> 
+> Validations are skipped and warnings will be suppressed when executing in a production environment.
+
+### config.subComponentTypes
 
 ```js
-<div {...this.getStyleProps()} />
+styleStateTypes: {
+  ['sub-component': Seamstress.SubComponentType],
+  ...,
+}
 ```
 
-This is just shorthand for applying the props by hand:
+An optional (but recommended) way to declare the styleable sub-components (if any) that your component contains.
+
+In a nutshell, each named sub-component corresponds to a single [`::pseudo-element`](#pseudo-element).
+
+Values must come from [`Seamstress.SubComponentTypes`](#seamstresssubcomponenttypes).
+
+If specified, `props.styles` will warn the user if any unspecified `::sub-component` is used.
+
+If unspecified, all `::sub-components` are assumed to be `SubComponentTypes.simple`.
+
+> Note:
+> 
+> Validations are skipped and warnings will be suppressed when executing in a production environment.
+
+## Seamstress.SubComponentTypes
 
 ```js
-var styleProps = this.getStyleProps();
-<div className={styleProps.className} style={styleProps.style} />
+// A simple sub-component that expects `className` and `style` props:
+Seamstress.SubComponentTypes.simple
+
+// A Seamstress-enabled sub-component that expects a `styles` prop:
+Seamstress.SubComponentTypes.composite
 ```
 
-### `this.getStylePropsFor(subComponent)`
+## computedStyles
 
-(provided by [`@seamstress`](#seamstress))
+The applicable style-related props for your component and any of its sub-components. Typically used inside a `render()` function.
 
-Like [`getStyleProps()`](#thisgetstyleprops), but for a specific `::sub-component`.
+Can be accessed in one of two ways, depending on how you created your Seamstress-enabled component:
+
+If (and **only** if) you're using [Seamstress.createDecorator](#seamstresscreatedecorator):
 
 ```js
-<div {...this.getStyleProps()}>
-  <div {...this.getStylePropsFor('indicator')} />
-</div>
+this.getComputedStyles()
 ```
 
-### `this.getStylesFor(subComponent)`
-
-(provided by [`@seamstress`](#seamstress))
-
-Like [`getStylePropsFor()`](#thisgetstylepropsforsubcomponent), but returns something
-in the form of [`props.styles`](#propsstyles) rather than `{className, style}`.
-
-This is particularly useful for when `::sub-component` is also
-a [`@seamstress`](#seamstress)-decorated component.
+If (and **only** if) you're using [Seamstress.createContainer](#seamstresscreatecontainer):
 
 ```js
-<div {...this.getStyleProps()} />
-  <Indicator styles={this.getStylesFor('indicator')} />
-</div>
+props.computedStyles
 ```
 
-### `YourComponent.withStyles(styles)`
-
-(provided by [`@seamstress`](#seamstress))
-
-A **static method** that creates a new "skinned" version of your component.
-
-The `styles` argument takes the same form as [`props.styles`](#propsstyles) and is merged with
-[`YourComponent.styles`](#yourcomponentstyles) to form a new default set of styles.
+The `computedStyles` object takes on the following shape:
 
 ```js
-import YourComponent from 'your-component';
+{
+  root: { className, style },
 
-const MY_STYLES = {
-  ':busy': {
-    opacity: 0.5,
-  },
-};
-
-const MyComponent = YourComponent.withStyles(MY_STYLES);
-
-// These are equivalent:
-<MyComponent />
-<YourComponent styles={MY_STYLES} />
+  (simple sub-component): { className, style },
+  (composite sub-component): { styles },
+}
 ```
+
+The `root` property is always defined on `computedStyles`, because it corresponds to all "top-level" styles from [`props.styles`](#propsstyles). Typically, `root` props are passed to the outermost styleable element inside your component's `render()` method.
+
+All other items in `computedStyles` apply to the named sub-components of your component.
+
+[**`simple`** sub-components](#subcomponenttypessimple) are automatically merged into low-level style props (in the case of the DOM, `className` and `style`).
+
+[**`composite`** sub-components](#subcomponenttypescomposite) retain the original unprocessed [`styles`](#propsstyles) prop that should only be passed to other Seamstress-wrapped components.
+
+By default, all sub-components are assumed to be `simple`. Use [`config.subComponentTypes`](#configsubcomponenttypes) to control how each individual sub-component's style props are processed.
+
+## props.styles
+
+```js
+<SeamstressComponent styles={string/object/function/Array} />
+```
+
+A prop for expressing how a Seamstress component should be styled.
+
+Think of it as a combination of React inline styles with custom `:pseudo-selectors` and `::pseudo-elements`.
+
+Values can be a `string`, an `object`, a callback `function`, or an `Array` containing any combination of such types.
+
+All other value types (`boolean`, `null`, `undefined`, etc) are ignored.
+
+Default styles specified with [`config.styles`](#configstyles) are retained unless explicitly overridden by `props.styles`.
+
+See [STYLES_PROPS_EXAMPLES.md](STYLES_PROPS_EXAMPLES.md) for a comprehensive list of the forms `props.styles` can take.
+
+### Top-level styles
+
+All keys in a styles `object` that *don't* begin with `:` are considered "top-level" styles. These will be combined into [`computedStyles.root`](#computedstyles).
+
+Top-level CSS classes can be applied as a standalone `string`, a `string` in an array, or with the [`:base` pseudo-selector](#base).
+
+### :pseudo-selectors
+
+```js
+':some-style-state-name': string/object/Function
+```
+
+Inside any `object`, keys beginning with a single `:` correspond to styles that are only applied when the matching value returned from [`config.getStyleState()`](#configgetstylestate) is `true`.
+
+For instance, the key-value-pair `':busy': {opacity: 0.5}` translates to "When the component is busy, set `opacity` to `0.5`."
+
+If multiple style-state selectors are specified (i.e. `:busy:expanded`), the associated styles only apply when **all** correspinding style-states are `true`.
+
+To apply a specific CSS class, provide a `string` instead of an object (i.e. `':busy': 'MyComponent_busy'`).
+
+> Note:
+>
+> Seamstress `:pseudo-selectors` are **not** CSS pseudo-selectors.
+>
+> For instance, `:hover` will only apply if you explicitly keep track of the hover state and include it in the result of [`config.getStyleState()`](#configgetstylestate).
+>
+> However, ordinary CSS selectors may still be used within your actual CSS, of course! Seamstress merely combines and applies the applicable CSS classes for you.
+
+#### `:base`
+
+```js
+':base': string/object/Function
+```
+
+A special style-state used to *unconditionally* apply styles to a component. This is mostly useful for specifying a default classnames, (i.e. `':base': 'MyComponent'`).
+
+### ::pseudo-elements
+
+```js
+'::some-sub-component-name': string/object/Function
+```
+
+
+Inside any `object`, keys containing `::` correspond to styles that apply to nested sub-components (i.e. `'::indicator': 'Indicator'`).
+
+These can be used in combination with `:pseudo-selectors` to conditionally apply style properties to sub-components (i.e. `':busy::indicator': 'Indicator_busy'`).
+
+Use [`config.subComponentTypes`](#configsubcomponenttypes) to declare which `::sub-components` are valid, and how their style props should be processed inside [`computedStyles`](#computedstyles).
+
+> Note:
+>
+> Seamstress `::pseudo-elements` are **not** CSS pseudo-elements.
+>
+> For instance, `::first-letter` only means something if the component-author explicitly applies `computedStyles['first-letter]` to something like a `<span>` wrapped around the first letter of its internal content.
+>
+> However, ordinary CSS selectors may still be used within your actual CSS, of course! Seamstress merely combines and applies the applicable CSS classes for you.
+
+### Style callbacks
+
+When a `function` is encountered in a `styles` object, it is treated as a callback. This function will receive an object containing the results of [`config.getStyleState()`](#configgetstylestate) as its first and only argument.
+
+Such callbacks can be used to compute the entire `styles` prop, the `styles` pertaining to a specific `:pseudo-selector` or `::pseudo-element`, or a single inline-style value.
+
+Nested callbacks are not supported, but you may return a styles definition containing nested `:pseudo-selector` and `::pseudo-element` items.
+
+> Note:
+>
+> Callbacks should be avoided whenever possible. They are generally less predictable and need to be re-evaluated every `render()`, and purely-declarative styles can be [optimized](PERFORMANCE.md) by Seamstress, behind the scenes.

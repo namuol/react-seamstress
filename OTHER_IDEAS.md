@@ -1,9 +1,7 @@
 # Other Ideas
 
-Other potential features, development patterns, or general brain-dumps go
+Other potential features, development patterns, FIXMEs, or general brain-dumps go
 in this document.
-
-_**Note**: All the syntax here is very far from final ;)_
 
 ### Logic: `:foo, :bar` and `not()`
 
@@ -120,7 +118,7 @@ class MyComponent extends Component {
 ...but this is generally not a good idea, so long as `Component` adheres to a minimal
 set of base-styles.
 
-Using `Component.withStyles` will "keep" the existing styles and "tack on" any changes
+Using `Component.extendStyles` will "keep" the existing styles and "tack on" any changes
 you pass in. This is the preferred way to "skin" a component.
 
 The base styles of `Component` should only be concerned with the *behavior* of `Component`
@@ -139,3 +137,16 @@ these sorts of things are commonly :
 
 Basically, anything that affects the internal layout is generally stuff you would
 want to keep in place.
+
+### More SubComponentTypes
+
+Right now there's just `simple` and `composite` types, but we may want to support something like `:nth-child`, which would require us to declare that a sub-component appears multiple times.
+
+I'm thinking the best way to do this is with something like `.hasMany`:
+
+```js
+styleStateTypes = {
+  indicator: SubComponentTypes.simple,
+  row: SubComponentTypes.composite.hasMany,
+}
+```

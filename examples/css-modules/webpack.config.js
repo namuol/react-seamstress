@@ -38,6 +38,12 @@ module.exports = {
   postcss: [
     require('autoprefixer'),
   ],
+  resolve: {
+    root: path.join(__dirname, 'node_modules'),
+    alias: {
+      'react-seamstress': path.join(__dirname, '..', '..', 'src', 'index.js'),
+    },
+  },
   resolveLoader: {
     root: path.join(__dirname, 'node_modules'),
   },

@@ -23,6 +23,12 @@ module.exports = {
       include: [path.join(__dirname, 'src'), path.join(__dirname, '..', '..', 'src')],
     }]
   },
+  resolve: {
+    root: [path.join(__dirname, 'node_modules'), path.join(__dirname, '..', '..', 'node_modules')],
+    alias: {
+      'react-seamstress': path.join(__dirname, '..', '..', 'src', 'index.js'),
+    },
+  },
   resolveLoader: {
     root: path.join(__dirname, 'node_modules'),
   },

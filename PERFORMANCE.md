@@ -8,13 +8,13 @@ the most common use-cases, so there's probably a lot of room for optimization.
 Nonetheless, it's important to consider the potential performance ramifications
 that each feature has, and whether its benefits outweigh the inherent cost.
 
-### Optimization: `getStyleProps()` as a pure function
+### Optimization: `getComputedStyles()` as a pure function
 
-If we avoid callbacks (which may introduce side-effects), `getStyleProps()` can be thought
+If we avoid callbacks (which may introduce side-effects), `getComputedStyles()` can be thought
 of as a *pure function* that operates on the results of `getStyleState()`, which itself **should**
 be a pure function of `props`, `state`, and `context`.
 
-This means we can *memoize* `getStyleProps()`, and its cousins, `getStylePropsFor()` & `getStylesFor()`.
+This means we can *memoize* `getComputedStyles()`.
 
 Why might this be awesome?
 

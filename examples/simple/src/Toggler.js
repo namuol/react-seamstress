@@ -1,53 +1,25 @@
-import seamstress from '../../../src/seamstress';
+import Seamstress from 'react-seamstress';
 import React, { PropTypes, Component } from 'react';
 
-export class StyleElement extends Component {
-  render () {
-    return <style>{
-    `
-    .Toggler {
-      width: 24px;
-      height: 24px;
-      cursor: pointer;
-      margin: 5px;
-      border: 2px solid #aaa;
-      background-color: #eee;
-      display: inline-block;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-      overflow: hidden;
-    }
-
-    .Toggler_toggled {
-      background-color: #aaa;
-    }
-
-    .TogglerIndicator {
-      color: white;
-      display: block;
-      line-height: 20px;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      font-size: 16pt;
-    }
-    `
-    }</style>
-  }
-}
-
-@seamstress
-export default class Toggler extends Component {
-  static StyleElement = StyleElement;
-
-  static styles = {
+@Seamstress.createDecorator({
+  styles: {
     ':base': 'Toggler',
     ':toggled': 'Toggler_toggled',
     '::indicator': 'TogglerIndicator',
-  };
-  
+  },
+  subComponentTypes: {
+    indicator: Seamstress.SubComponentTypes.simple,
+  },
+  styleStateTypes: {
+    toggled: PropTypes.bool.isRequired,
+  },
+  getStyleState: ({props, context, state}) => {
+    return {
+      toggled: !!state.toggled,
+    };
+  },
+})
+export default class Toggler extends Component {
   static propTypes = {
     defaultToggled: PropTypes.bool,
   };
@@ -62,25 +34,17 @@ export default class Toggler extends Component {
     };
   }());
 
-  static styleStateTypes = {
-    toggled: PropTypes.bool.isRequired,
-  };
-
-  getStyleState () {
-    return {
-      toggled: this.state.toggled,
-    };
+  toggle () {
+    this.setState({ toggled: !this.state.toggled });
   }
 
   render () {
-    return (
-      <div {...this.getStyleProps()} onClick={() => {
-        this.setState({
-          toggled: !this.state.toggled,
-        });
-      }}>
-        {this.state.toggled && <span {...this.getStylePropsFor('indicator')}>✓</span>}
-      </div>
-    );
+    const computedStyles = this.getComputedStyles();
+
+    return <div {...computedStyles.root} onClick={::this.toggle}>
+      {this.state.toggled &&
+        <span {...computedStyles.indicator}>✓</span>
+      }
+    </div>;
   }
 }

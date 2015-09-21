@@ -21,9 +21,9 @@ const BLUE_STYLE_CSS = {
   ':toggled': BlueClasses.toggled,
 };
 
-const RedToggler = Toggler.withStyles(RED_STYLE_CSS);
-const GreenToggler = Toggler.withStyles(GREEN_STYLE_CSS);
-const BlueToggler = Toggler.withStyles(BLUE_STYLE_CSS);
+const RedToggler = Toggler.extendStyles(RED_STYLE_CSS);
+const GreenToggler = Toggler.extendStyles(GREEN_STYLE_CSS);
+const BlueToggler = Toggler.extendStyles(BLUE_STYLE_CSS);
 
 export default class App extends Component {
   render () {
@@ -48,7 +48,7 @@ export default class App extends Component {
         </section>
 
         <section>
-          <h2>Overriding with <code>Toggler.withStyles</code>:</h2>
+          <h2>Overriding with <code>Toggler.extendStyles</code>:</h2>
           <RedToggler />
           <GreenToggler defaultToggled={true} />
           <BlueToggler />

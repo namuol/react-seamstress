@@ -76,8 +76,8 @@ import classes from './MyComponent.css';
 
 #### Using `composes`
 
-Note that we aren't using `composes` in our example, since `@seamstress` composes
-classNames for us automatically. However, `composes` combined with `@seamstress` shouldn't
+Note that we aren't using `composes` in our example, since Seamstress composes
+classNames for us automatically. However, `composes` combined with Seamstress shouldn't
 break anything, since it would simply result in duplicate class names that could automatically
 be removed.
 
@@ -88,7 +88,7 @@ Media queries are *terribly* useful for web developers.
 free-style uses a pure CSS-based approach to support native `@media`
 queries with CSS-in-JS, and for that it's awesome.
 
-In order for free-style's `@media` implementation to work as-expected with `@seamstress`,
+In order for free-style's `@media` implementation to work as-expected with Seamstress,
 we'd need to provide some kind of sugaring function.
 
 For instance, ideally we'd be able to express our styles that need `@media` this way:
