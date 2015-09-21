@@ -43,7 +43,7 @@ runTests({
     },
 
     {
-      capability: '',
+      capability: 'returns multiple invalid subComponents in the order they appear',
       input: {
         subComponents: ['invalid', 'also-invalid'],
         subComponentTypes: {
