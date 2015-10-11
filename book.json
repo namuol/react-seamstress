@@ -3,5 +3,11 @@
   "structure": {
     "summary": "docs/README.md"
   },
-  "plugins": ["prism"]
+  "plugins": ["edit-link", "prism", "-highlight"],
+  "pluginsConfig": {
+    "edit-link": {
+      "base": "https://github.com/namuol/react-seamstress/tree/master",
+      "label": "Edit This Page"
+    }
+  }
 }

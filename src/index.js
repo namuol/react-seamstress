@@ -160,7 +160,7 @@ function configureSeamstress (config={}) {
 export function createDecorator (config) {
   return function (Component) {
     warning(!isReactClass(Component),
-      `\`Seamstress.createDecorator\` should only be used with class-based components (created via `extends React.Component` or `React.createClass`) ,` +
+      `\`Seamstress.createDecorator\` should only be used with class-based components (created via \`extends React.Component\` or \`React.createClass\`) ,` +
       ` but \`${getDisplayName(Component)}\` does not appear to be one; use \`Seamstress.createContainer\` instead.`
     );
 

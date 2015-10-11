@@ -22,6 +22,7 @@
   "devDependencies": {
     "babel": "^5.8.21",
     "gitbook-cli": "^0.3.6",
+    "gitbook-plugin-edit-link": "^1.4.1",
     "gitbook-plugin-prism": "^0.1.1",
     "nodemon": "^1.4.1",
     "react": "^0.14.0-rc1",

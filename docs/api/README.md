@@ -196,7 +196,7 @@ All other value types (`boolean`, `null`, `undefined`, etc) are ignored.
 
 Default styles specified with [`config.styles`](#configstyles) are retained unless explicitly overridden by `props.styles`.
 
-See [STYLES_PROPS_EXAMPLES.md](STYLES_PROPS_EXAMPLES.md) for a comprehensive list of the forms `props.styles` can take.
+See [Styles_Prop_Examples.md](../Styles_Prop_Examples.md) for a comprehensive list of the forms `props.styles` can take.
 
 ### Top-level styles
 
@@ -265,4 +265,4 @@ Nested callbacks are not supported, but you may return a styles definition conta
 
 > Note:
 >
-> Callbacks should be avoided whenever possible. They are generally less predictable and need to be re-evaluated every `render()`, and purely-declarative styles can be [optimized](/docs/PERFORMANCE.md) by Seamstress, behind the scenes.
+> Callbacks should be avoided whenever possible. They are generally less predictable and need to be re-evaluated every `render()`, and purely-declarative styles can be [optimized](../Performance.md) by Seamstress, behind the scenes.
