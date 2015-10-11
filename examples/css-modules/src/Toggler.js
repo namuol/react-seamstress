@@ -1,16 +1,28 @@
-import seamstress from '../../../src/seamstress';
+import Seamstress from 'react-seamstress';
 import React, { PropTypes, Component } from 'react';
 
 import classes from './Toggler.css';
 
-@seamstress
-export default class Toggler extends Component {
-  static styles = {
+const seamstressConfig = {
+  styles: {
     ':base': classes.base,
     ':toggled': classes.toggled,
     '::indicator': classes.indicator,
-  };
-  
+  },
+
+  styleStateTypes: {
+    toggled: PropTypes.bool.isRequired,
+  },
+
+  getStyleState: ({props, state, context}) => {
+    return {
+      toggled: state.toggled,
+    };
+  },
+};
+
+@Seamstress.createDecorator(seamstressConfig)
+export default class Toggler extends Component {
   static propTypes = {
     defaultToggled: PropTypes.bool,
   };
@@ -18,31 +30,21 @@ export default class Toggler extends Component {
   static defaultProps = {
     defaultToggled: false,
   };
-
-  state = (() => {
-    return {
-      toggled: this.props.defaultToggled,
-    };
-  }());
-
-  static styleStateTypes = {
-    toggled: PropTypes.bool.isRequired,
+  
+  state = {
+    toggled: this.props.defaultToggled,
   };
 
-  getStyleState () {
-    return {
-      toggled: this.state.toggled,
-    };
-  }
-
   render () {
+    const computedStyles = this.getComputedStyles();
+
     return (
-      <div {...this.getStyleProps()} onClick={() => {
+      <div {...computedStyles.root} onClick={() => {
         this.setState({
           toggled: !this.state.toggled,
         });
       }}>
-        {this.state.toggled && <span {...this.getStylePropsFor('indicator')}>✓</span>}
+        {this.state.toggled && <span {...computedStyles.indicator}>✓</span>}
       </div>
     );
   }

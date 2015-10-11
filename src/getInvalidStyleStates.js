@@ -4,7 +4,7 @@ function isBool (propTypeFunction) {
 }
 
 export default function getInvalidStyleStates ({style={}, styleStateTypes={}}) {
-  const invalidSet = Object.keys(style)
+  const invalids = Object.keys(Object.keys(style)
     .filter(k => (/^:[^:]/).test(k))
     .reduce((invalids, propName) => {
       const styleStateNames = propName.split(/:/)
@@ -17,9 +17,7 @@ export default function getInvalidStyleStates ({style={}, styleStateTypes={}}) {
       });
 
       return invalids;
-    }, {});
-
-  const invalids = Object.keys(invalidSet);
+    }, {}));
 
   if (invalids.length === 0) {
     return;

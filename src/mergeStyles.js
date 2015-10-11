@@ -1,7 +1,9 @@
-function _mergeStyles (styles, depth=0) {
+function _mergeStyles (styles=[], depth=0) {
   const classNames = {};
+  const inlineStyles = {};
+  const inlineStyleKeys = [];
 
-  const inlineStyles = styles.reduce((result, style) => {
+  styles.forEach((style) => {
     const typeofStyle = typeof style;
     if (typeofStyle !== 'object') {
       if (depth === 0 && typeofStyle === 'string') {
@@ -9,25 +11,28 @@ function _mergeStyles (styles, depth=0) {
           classNames[className] = true;
         })
       }
-      return result;
+      return;
     }
 
     Object.keys(style).forEach((key) => {
       const val = style[key];
       
       let finalVal;
-      if (typeof val === 'object' && result[key]) {
-        finalVal = _mergeStyles([result[key], val], depth+1);
+      if (typeof val === 'object' && inlineStyles[key]) {
+        finalVal = _mergeStyles([inlineStyles[key], val], depth+1);
       } else {
         finalVal = val;
       }
 
-      delete result[key];
-      result[key] = finalVal;
-    });
+      inlineStyles[key] = finalVal;
 
-    return result;
-  }, {});
+      const idx = inlineStyleKeys.indexOf(key);
+      if (idx > -1) {
+        inlineStyleKeys.splice(idx, 1);
+      }
+      inlineStyleKeys.push(key);
+    });
+  });
 
   if (depth > 0) {
     return inlineStyles;
@@ -35,10 +40,12 @@ function _mergeStyles (styles, depth=0) {
 
   return {
     className: Object.keys(classNames).join(' '),
-    style: inlineStyles,
+    style: inlineStyleKeys.reduce((result, key) => {
+      result[key] = inlineStyles[key];
+      return result;
+    }, {}),
   };
-};
-
+}
 
 export default function mergeStyles (styles) {
   return _mergeStyles(styles);

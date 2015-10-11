@@ -1,0 +1,7 @@
+{
+  "gitbook": "2.4.1",
+  "structure": {
+    "summary": "docs/README.md"
+  },
+  "plugins": ["prism"]
+}

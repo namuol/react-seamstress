@@ -5,14 +5,15 @@ runTests({
   func: getSubComponentStyles,
   tests: [
     {
-      capability: 'return {__root: []} for empty input',
+      capability: 'return {root: []} for empty input',
       input: {},
       expected: {
+        root: []
       },
     },
 
     {
-      capability: 'put all non-::sub-component styles in __root',
+      capability: 'put all non-::sub-component styles in `root`',
       input: {
         styles: [
           {
@@ -24,7 +25,7 @@ runTests({
         ],
       },
       expected: {
-        __root: [
+        root: [
           {
             color: 'red',
             ':expanded': {
@@ -47,6 +48,7 @@ runTests({
         ],
       },
       expected: {
+        root: [],
         "sub-component": [
           {
             color: 'red',
@@ -66,18 +68,19 @@ runTests({
         ],
       },
       expected: {
+        root: [],
       },
     },
 
     {
-      capability: 'simply append strings to __root',
+      capability: 'simply append strings to `root`',
       input: {
         styles: [
           'test',
         ],
       },
       expected: {
-        __root: [
+        root: [
           'test',
         ],
       },
@@ -95,6 +98,7 @@ runTests({
         ],
       },
       expected: {
+        root: [],
         "sub-component": [
           {
             ':root-state': {color: 'red'},
@@ -115,6 +119,7 @@ runTests({
         ],
       },
       expected: {
+        root: [],
         "sub-component": [
           {
             ':many:state:selectors:before:the': {color: 'red'},

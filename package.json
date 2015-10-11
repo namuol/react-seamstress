@@ -2,25 +2,30 @@
   "name": "react-seamstress",
   "version": "0.2.3",
   "description": "Experimental interface for exposing style-related state inside complex React components",
-  "main": "lib/seamstress.js",
-  "files": [
-    "lib/",
-    "LICENSE"
-  ],
+  "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
   "scripts": {
     "test": "babel-node test | tap-difflet",
-    "hack": "nodemon -w src -w test -w package.json --exec \"npm run build && npm test\" & npm run example",
+    "hack": "nodemon -w src -w test -w package.json --exec \"npm run build && npm test\" & npm run example & npm run docs:watch",
     "build": "babel src -d lib",
     "example": "cd examples/simple && npm install && npm start",
     "start": "npm run example",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "docs:clean": "rimraf _book",
+    "docs:prepare": "gitbook install",
+    "docs:build": "npm run docs:prepare && gitbook build -g namuol/react-seamstress",
+    "docs:watch": "npm run docs:prepare && gitbook serve",
+    "docs:publish": "./scripts/publish_book.sh"
   },
   "author": "Louis Acresti <louis.acresti@gmail.com> (http://namuol.github.io)",
   "license": "MIT",
   "devDependencies": {
     "babel": "^5.8.21",
+    "gitbook-cli": "^0.3.6",
+    "gitbook-plugin-prism": "^0.1.1",
     "nodemon": "^1.4.1",
-    "react": "^0.14.0-beta3",
+    "react": "^0.14.0-rc1",
+    "rimraf": "^2.4.3",
     "tap": "^1.3.2",
     "tap-difflet": "^0.3.0",
     "tape": "^4.2.0"

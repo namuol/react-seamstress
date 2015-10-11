@@ -1,0 +1,7 @@
+*.log
+docs
+examples
+test
+book.json
+.DS_Store
+_book

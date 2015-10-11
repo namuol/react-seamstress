@@ -5,7 +5,12 @@
 
 import warning from 'fbjs/lib/warning';
 import invariant from 'fbjs/lib/invariant';
-import ReactPropTypeLocationNames from 'react/lib/ReactPropTypeLocationNames';
+
+const ReactPropTypeLocationNames = {
+  prop: 'prop',
+  context: 'context',
+  childContext: 'child context'
+};
 
 const loggedTypeFailures = {};
 

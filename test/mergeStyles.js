@@ -232,10 +232,10 @@ const tests = [
   },
 
   {
-    capability: 'treat whitespace-delimited classNames uniquely',
+    capability: 'treat whitespace-delimited classNames as a list',
     input: [
       'aaa',
-      'bbb ccc',
+      'bbb   bbb  ccc',
       'ccc',
     ],
 
@@ -249,7 +249,7 @@ const tests = [
 runTests({
   // I convert results to array-tuple to ensure the key order is correct:
   func: function orderedMapMergeStyles (styles) {
-    const {style, className} = mergeStyles(styles);
+    const { style, className } = mergeStyles(styles);
     return {
       className,
       style: orderedMap(style),

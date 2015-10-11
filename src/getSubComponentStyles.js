@@ -6,10 +6,7 @@ export default function getSubComponentStyles ({styles=[]}) {
     }
 
     if (typeof style === 'string') {
-      if (!result.__root) {
-        result.__root = [];
-      }
-      result.__root.push(style);
+      result.root.push(style);
       return result;
     }
 
@@ -34,10 +31,10 @@ export default function getSubComponentStyles ({styles=[]}) {
 
         subResult[subComponentName] = value;
       } else {
-        if (!subResult.__root) {
-          subResult.__root = {};
+        if (!subResult.root) {
+          subResult.root = {};
         }
-        subResult.__root[propName] = style[propName];
+        subResult.root[propName] = style[propName];
       }
 
       return subResult;
@@ -51,5 +48,5 @@ export default function getSubComponentStyles ({styles=[]}) {
     });
 
     return result;
-  }, {});
+  }, {root: []});
 }

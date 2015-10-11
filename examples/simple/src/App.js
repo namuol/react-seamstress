@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Toggler from './Toggler';
+import StatelessToggler from './StatelessToggler';
 
 const RED_STYLE_INLINE = {
   border: '2px solid #c66',
@@ -28,7 +29,6 @@ const BLUE_STYLE_INLINE = {
   },
 };
 
-
 const RED_STYLE_CSS = [
   'RedToggler',
   {
@@ -51,20 +51,16 @@ const BLUE_STYLE_CSS = [
   }
 ];
 
-const RedToggler = Toggler.withStyles(RED_STYLE_CSS);
-const GreenToggler = Toggler.withStyles(GREEN_STYLE_CSS);
-const BlueToggler = Toggler.withStyles(BLUE_STYLE_CSS);
+const RedToggler = Toggler.extendStyles(RED_STYLE_CSS);
+const GreenToggler = Toggler.extendStyles(GREEN_STYLE_CSS);
+const BlueToggler = Toggler.extendStyles(BLUE_STYLE_CSS);
+
+const BlueStatelessToggler = StatelessToggler.extendStyles(BLUE_STYLE_CSS);
 
 export default class App extends Component {
   render () {
     return (
       <div>
-        {/*
-          Note: This is not the recommended way to include CSS styles from a component
-          in your project; I'm just using this for the simplcity of this demo.
-        */}
-        <Toggler.StyleElement />
-
         <section>
           <h2>Default styles:</h2>
           <div>
@@ -86,7 +82,7 @@ export default class App extends Component {
           <div>
             <p>With CSS:</p>
             <style>
-            {`
+            {`/* Let's "inject" some custom CSS: */
               .RedToggler {
                 border: 2px solid #c66;
                 background-color: #fbb;
@@ -128,10 +124,17 @@ export default class App extends Component {
         </section>
 
         <section>
-          <h2>Overriding with <code>Toggler.withStyles</code>:</h2>
+          <h2>Overriding with <code>Toggler.extendStyles</code>:</h2>
           <RedToggler />
           <GreenToggler defaultToggled={true} />
           <BlueToggler />
+        </section>
+
+        <section>
+          <h2>It also works with stateless components:</h2>
+          <StatelessToggler styles={RED_STYLE_INLINE} />
+          <StatelessToggler styles={GREEN_STYLE_CSS} toggled={true} />
+          <BlueStatelessToggler />
         </section>
       </div>
     );
