@@ -130,7 +130,7 @@ class Combobox extends React.Component {
 }
 ```
 
-Under the hood, Seamstress uses the result of [`getStyleState()`](API.md#configgetstylestate) to determine which `:pseudo-selector` styles should be applied. Adding a new state state is as simple as adding a field to this function's return value.
+Under the hood, Seamstress uses the result of [`getStyleState()`](/api/README.md#config-getstylestate) to determine which `:pseudo-selector` styles should be applied. Adding a new state state is as simple as adding a field to this function's return value.
 
 ### The Pit of Success
 
@@ -144,7 +144,7 @@ Suppose someone is using your `Combobox` for the first time, and they misspell o
 }} />
 ```
 
-Component authors can take advantage of a special config option, [`styleStateTypes`])(API.md#configstylestatetypes), which declares the values that [`getStyleState()`](API.md#configgetstylestate) returns.
+Component authors can take advantage of a special config option, [`styleStateTypes`](/api/README.md#config-stylestatetypes), which declares the values that [`getStyleState()`](/api/README.md#config-getstylestate) returns.
 
 This pattern should look familiar to those who've used `propTypes` before:
 
@@ -191,7 +191,7 @@ Naturally, users will want to change how this looks as well. Here's how that wou
 }} />
 ```
 
-Any `::sub-components` specified on the `styles` prop are automatically added to [`computedStyles`](API.md#computedstyles):
+Any `::sub-components` specified on the `styles` prop are automatically added to [`computedStyles`](/api/README.md#computedstyles):
 
 ```js
 @Seamstress.decorate({
