@@ -14,7 +14,8 @@
     "docs:clean": "rimraf _book",
     "docs:prepare": "gitbook install",
     "docs:build": "npm run docs:prepare && gitbook build -g namuol/react-seamstress",
-    "docs:watch": "npm run docs:prepare && gitbook serve"
+    "docs:watch": "npm run docs:prepare && gitbook serve",
+    "docs:publish": "./scripts/publish_book.sh"
   },
   "author": "Louis Acresti <louis.acresti@gmail.com> (http://namuol.github.io)",
   "license": "MIT",
