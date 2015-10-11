@@ -1,25 +1,26 @@
 import Seamstress from 'react-seamstress';
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 
-@Seamstress.createDecorator({
+const seamstressConfig = {
   styles: {
     ':base': 'Toggler',
     ':toggled': 'Toggler_toggled',
     '::indicator': 'TogglerIndicator',
   },
-  subComponentTypes: {
-    indicator: Seamstress.SubComponentTypes.simple,
-  },
+
   styleStateTypes: {
     toggled: PropTypes.bool.isRequired,
   },
-  getStyleState: ({props, context, state}) => {
+
+  getStyleState: ({props, state, context}) => {
     return {
       toggled: !!state.toggled,
     };
   },
-})
-export default class Toggler extends Component {
+};
+
+@Seamstress.createDecorator(seamstressConfig)
+export default class Toggler extends React.Component {
   static propTypes = {
     defaultToggled: PropTypes.bool,
   };
@@ -28,11 +29,9 @@ export default class Toggler extends Component {
     defaultToggled: false,
   };
 
-  state = (() => {
-    return {
-      toggled: this.props.defaultToggled,
-    };
-  }());
+  state = {
+    toggled: this.props.defaultToggled,
+  };
 
   toggle () {
     this.setState({ toggled: !this.state.toggled });

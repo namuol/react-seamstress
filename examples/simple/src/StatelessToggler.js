@@ -1,25 +1,7 @@
 import Seamstress from 'react-seamstress';
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 
-function StatelessToggler (props) {
-  const { computedStyles } = props;
-
-  return <div {...props} {...computedStyles.root}>
-    {props.toggled &&
-      <span {...computedStyles.indicator}>✓</span>
-    }
-  </div>;
-}
-
-StatelessToggler.propTypes = {
-  toggled: PropTypes.bool,
-};
-
-StatelessToggler.defaultProps = {
-  toggled: false,
-};
-
-export default Seamstress.createContainer(StatelessToggler, {
+const seamstressConfig = {
   styles: {
     ':base': 'Toggler',
     ':toggled': 'Toggler_toggled',
@@ -39,4 +21,28 @@ export default Seamstress.createContainer(StatelessToggler, {
       toggled: !!props.toggled,
     };
   },
-});
+};
+
+function StatelessToggler (props) {
+  const { computedStyles } = props;
+
+  return <div {...props} {...computedStyles.root}>
+    {props.toggled &&
+      <span {...computedStyles.indicator}>✓</span>
+    }
+  </div>;
+}
+
+StatelessToggler = Seamstress.createContainer(StatelessToggler, seamstressConfig);
+
+StatelessToggler.propTypes = {
+  toggled: PropTypes.bool,
+};
+
+StatelessToggler.defaultProps = {
+  toggled: false,
+};
+
+StatelessToggler.displayName = 'StatelessToggler';
+
+export default StatelessToggler;

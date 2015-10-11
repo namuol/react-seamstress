@@ -21,7 +21,7 @@ const seamstressConfig = {
   },
 };
 
-@Seamstress.decorate(seamstressConfig)
+@Seamstress.createDecorator(seamstressConfig)
 export default class Toggler extends Component {
   static propTypes = {
     defaultToggled: PropTypes.bool,
@@ -30,23 +30,21 @@ export default class Toggler extends Component {
   static defaultProps = {
     defaultToggled: false,
   };
-
-  state = (() => {
-    return {
-      toggled: this.props.defaultToggled,
-    };
-  }());
+  
+  state = {
+    toggled: this.props.defaultToggled,
+  };
 
   render () {
     const computedStyles = this.getComputedStyles();
 
     return (
-      <div {...mergeStyles(computedStyles.root)} onClick={() => {
+      <div {...computedStyles.root} onClick={() => {
         this.setState({
           toggled: !this.state.toggled,
         });
       }}>
-        {this.state.toggled && <span {...mergeStyles(computedStyles.indicator)}>✓</span>}
+        {this.state.toggled && <span {...computedStyles.indicator}>✓</span>}
       </div>
     );
   }

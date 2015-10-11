@@ -1,4 +1,4 @@
-# Seamstress API Reference - 0.3
+# API Reference
 
 ## Seamstress
 
@@ -17,13 +17,13 @@ HigherOrderComponent createContainer(
 )
 ```
 
-Returns a higher-order component that processes [`props.styles`](#propsstyles)and passes the result as [`props.computedStyles`](#propscomputedstyles) to `WrappedComponent`.
+Returns a higher-order component that processes [`props.styles`](#props-styles)and passes the result as [`props.computedStyles`](#computedstyles) to `WrappedComponent`.
 
 The [configuration object](#config) passed as the second argument determines how the input styles are processed.
 
 > Note:
 >
-> If your [`config.getStyleState()`](#configgetstylestate) function needs access to `this.state`, or your component's API exposes any instance properties or methods, use [**`createDecorator`**](#seamstresscreatedecorator), instead.
+> If your [`config.getStyleState()`](#config-getstylestate) function needs access to `this.state`, or your component's API exposes any instance properties or methods, use [**`createDecorator`**](#seamstress-createdecorator), instead.
 
 ## Seamstress.createDecorator
 
@@ -40,11 +40,11 @@ SeamstressComponent decoratorFunction(ReactClass/Component YourComponent)
 The decorator returns a component that derives from `YourComponent` and supplies some additional behaviors:
 
 - `this.getComputedStyles()` provides [`computedStyles`](#computedstyles) to your component.
-- `propTypes` is enhanced with a custom `styles` validator if [`styleStateTypes`](#configstylestatetypes) or [`subComponentTypes`](#configsubcomponenttypes) were configured.
+- `propTypes` is enhanced with a custom `styles` validator if [`styleStateTypes`](#config-stylestatetypes) or [`subComponentTypes`](#config-subcomponenttypes) were configured.
 
 > Note:
 >
-> If `YourComponent` is a stateless component, or your [`config.getStyleState()`](#configgetstylestate) function doesn't need access to component state, use [**`createContainer`**](#seamstresscreatecontainer), instead.
+> If `YourComponent` is a stateless component, or your [`config.getStyleState()`](#config-getstylestate) function doesn't need access to component state, use [**`createContainer`**](#seamstress-createcontainer), instead.
 
 ## config
 
@@ -61,7 +61,7 @@ The decorator returns a component that derives from `YourComponent` and supplies
 
 The "default" styles for your component.
 
-Takes the same form as the [`styles` prop](#propsstyles).
+Takes the same form as the [`styles` prop](#props-styles).
 
 These styles are applied unless explicitly overridden by `props.styles`.
 
@@ -83,7 +83,7 @@ A function that returns all style-related state of your component.
 
 This should be a **pure function** of the `props`, `context`, and if applicable, the `state` of your component.
 
-The `state` parameter is only specified when using [`Seamstress.createDecorator()`](#seamstresscreatedecorator).
+The `state` parameter is only specified when using [`Seamstress.createDecorator()`](#seamstress-createdecorator).
 
 ### config.styleStateTypes
 
@@ -147,13 +147,13 @@ The applicable style-related props for your component and any of its sub-compone
 
 Can be accessed in one of two ways, depending on how you created your Seamstress-enabled component:
 
-If (and **only** if) you're using [Seamstress.createDecorator](#seamstresscreatedecorator):
+If (and **only** if) you're using [Seamstress.createDecorator](#seamstress-createdecorator):
 
 ```js
 this.getComputedStyles()
 ```
 
-If (and **only** if) you're using [Seamstress.createContainer](#seamstresscreatecontainer):
+If (and **only** if) you're using [Seamstress.createContainer](#seamstress-createcontainer):
 
 ```js
 props.computedStyles
@@ -170,15 +170,15 @@ The `computedStyles` object takes on the following shape:
 }
 ```
 
-The `root` property is always defined on `computedStyles`, because it corresponds to all "top-level" styles from [`props.styles`](#propsstyles). Typically, `root` props are passed to the outermost styleable element inside your component's `render()` method.
+The `root` property is always defined on `computedStyles`, because it corresponds to all "top-level" styles from [`props.styles`](#props-styles). Typically, `root` props are passed to the outermost styleable element inside your component's `render()` method.
 
 All other items in `computedStyles` apply to the named sub-components of your component.
 
 [**`simple`** sub-components](#subcomponenttypessimple) are automatically merged into low-level style props (in the case of the DOM, `className` and `style`).
 
-[**`composite`** sub-components](#subcomponenttypescomposite) retain the original unprocessed [`styles`](#propsstyles) prop that should only be passed to other Seamstress-wrapped components.
+[**`composite`** sub-components](#subcomponenttypescomposite) retain the original unprocessed [`styles`](#props-styles) prop that should only be passed to other Seamstress-wrapped components.
 
-By default, all sub-components are assumed to be `simple`. Use [`config.subComponentTypes`](#configsubcomponenttypes) to control how each individual sub-component's style props are processed.
+By default, all sub-components are assumed to be `simple`. Use [`config.subComponentTypes`](#config-subcomponenttypes) to control how each individual sub-component's style props are processed.
 
 ## props.styles
 
@@ -210,7 +210,7 @@ Top-level CSS classes can be applied as a standalone `string`, a `string` in an 
 ':some-style-state-name': string/object/Function
 ```
 
-Inside any `object`, keys beginning with a single `:` correspond to styles that are only applied when the matching value returned from [`config.getStyleState()`](#configgetstylestate) is `true`.
+Inside any `object`, keys beginning with a single `:` correspond to styles that are only applied when the matching value returned from [`config.getStyleState()`](#config-getstylestate) is `true`.
 
 For instance, the key-value-pair `':busy': {opacity: 0.5}` translates to "When the component is busy, set `opacity` to `0.5`."
 
@@ -222,7 +222,7 @@ To apply a specific CSS class, provide a `string` instead of an object (i.e. `':
 >
 > Seamstress `:pseudo-selectors` are **not** CSS pseudo-selectors.
 >
-> For instance, `:hover` will only apply if you explicitly keep track of the hover state and include it in the result of [`config.getStyleState()`](#configgetstylestate).
+> For instance, `:hover` will only apply if you explicitly keep track of the hover state and include it in the result of [`config.getStyleState()`](#config-getstylestate).
 >
 > However, ordinary CSS selectors may still be used within your actual CSS, of course! Seamstress merely combines and applies the applicable CSS classes for you.
 
@@ -245,7 +245,7 @@ Inside any `object`, keys containing `::` correspond to styles that apply to nes
 
 These can be used in combination with `:pseudo-selectors` to conditionally apply style properties to sub-components (i.e. `':busy::indicator': 'Indicator_busy'`).
 
-Use [`config.subComponentTypes`](#configsubcomponenttypes) to declare which `::sub-components` are valid, and how their style props should be processed inside [`computedStyles`](#computedstyles).
+Use [`config.subComponentTypes`](#config-subcomponenttypes) to declare which `::sub-components` are valid, and how their style props should be processed inside [`computedStyles`](#computedstyles).
 
 > Note:
 >
@@ -257,7 +257,7 @@ Use [`config.subComponentTypes`](#configsubcomponenttypes) to declare which `::s
 
 ### Style callbacks
 
-When a `function` is encountered in a `styles` object, it is treated as a callback. This function will receive an object containing the results of [`config.getStyleState()`](#configgetstylestate) as its first and only argument.
+When a `function` is encountered in a `styles` object, it is treated as a callback. This function will receive an object containing the results of [`config.getStyleState()`](#config-getstylestate) as its first and only argument.
 
 Such callbacks can be used to compute the entire `styles` prop, the `styles` pertaining to a specific `:pseudo-selector` or `::pseudo-element`, or a single inline-style value.
 
@@ -265,4 +265,4 @@ Nested callbacks are not supported, but you may return a styles definition conta
 
 > Note:
 >
-> Callbacks should be avoided whenever possible. They are generally less predictable and need to be re-evaluated every `render()`, and purely-declarative styles can be [optimized](PERFORMANCE.md) by Seamstress, behind the scenes.
+> Callbacks should be avoided whenever possible. They are generally less predictable and need to be re-evaluated every `render()`, and purely-declarative styles can be [optimized](/docs/PERFORMANCE.md) by Seamstress, behind the scenes.

@@ -28,6 +28,10 @@ function overrideWithWarning (object, propertyName, value, displayName) {
   object[propertyName] = value;
 }
 
+function getDisplayName (Component) {
+  return Component.displayName || Component.name;
+}
+
 function configureSeamstress (config={}) {
   const {
     styles={},
@@ -46,7 +50,7 @@ function configureSeamstress (config={}) {
       throw new TypeError('Expected a React component, but got ' + typeofComponent);
     }
 
-    const displayName = Component.displayName || Component.name;
+    const displayName = getDisplayName(Component);
     const validateComponentStyles = validateStyles.bind(null, config, displayName);
 
     if (__DEV__) {
@@ -84,7 +88,7 @@ function configureSeamstress (config={}) {
       const allSubComponentNames = Object.keys(Object.assign({}, computedStyles, subComponentTypes));
 
       allSubComponentNames.forEach((name) => {
-        if (subComponentTypes[name] === SubComponentTypes.composed) {
+        if (subComponentTypes[name] === SubComponentTypes.composite) {
           computedStyles[name] = { styles: computedStyles[name] };
         } else {
           computedStyles[name] = mergeStyles(computedStyles[name]);
@@ -154,7 +158,14 @@ function configureSeamstress (config={}) {
 }
 
 export function createDecorator (config) {
-  return configureSeamstress(config).decorate;
+  return function (Component) {
+    warning(!isReactClass(Component),
+      `\`Seamstress.createDecorator\` should only be used with class-based components (created via `extends React.Component` or `React.createClass`) ,` +
+      ` but \`${getDisplayName(Component)}\` does not appear to be one; use \`Seamstress.createContainer\` instead.`
+    );
+
+    return configureSeamstress(config).decorate(Component);
+  }
 }
 
 export function createContainer (Component, config) {
