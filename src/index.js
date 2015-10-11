@@ -139,11 +139,11 @@ function configureSeamstress (config={}) {
         newComponent = class extends Component {
           static propTypes = Object.assign({}, Component.propTypes);
         };
+
+        overrideWithWarning(newComponent.prototype, 'getComputedStyles', thisGetComputedStyles, `${displayName}.prototype.getComputedStyles`);
       }
 
       newComponent.displayName = displayName;
-      
-      overrideWithWarning(newComponent.prototype, 'getComputedStyles', thisGetComputedStyles, `${displayName}.prototype.getComputedStyles`);
     }
     
     overrideWithWarning(newComponent, 'extendStyles', extendStyles, `${displayName}.extendStyles`);
@@ -159,11 +159,6 @@ function configureSeamstress (config={}) {
 
 export function createDecorator (config) {
   return function (Component) {
-    warning(!isReactClass(Component),
-      `\`Seamstress.createDecorator\` should only be used with class-based components (created via \`extends React.Component\` or \`React.createClass\`) ,` +
-      ` but \`${getDisplayName(Component)}\` does not appear to be one; use \`Seamstress.createContainer\` instead.`
-    );
-
     return configureSeamstress(config).decorate(Component);
   }
 }
