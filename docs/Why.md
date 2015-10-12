@@ -106,7 +106,7 @@ Inside our `Combobox` implementation, we move all of the styling logic outside `
 Rather than writing lots of boilerplate logic, we just *declare* what the "style state" of our component is, and Seamstress takes care of the rest:
 
 ```js
-@Seamstress.decorate({
+@Seamstress.createDecorator({
   styles: {
     ':base': classes.base,
     ':expanded': classes.expanded,
@@ -149,7 +149,7 @@ Component authors can take advantage of a special config option, [`styleStateTyp
 This pattern should look familiar to those who've used `propTypes` before:
 
 ```js
-@Seamstress.decorate({
+@Seamstress.createDecorator({
   styleStateTypes: {
     expanded: React.PropTypes.bool.isRequired,
     busy: React.PropTypes.bool.isRequired,
@@ -194,7 +194,7 @@ Naturally, users will want to change how this looks as well. Here's how that wou
 Any `::sub-components` specified on the `styles` prop are automatically added to [`computedStyles`](/api/README.md#computedstyles):
 
 ```js
-@Seamstress.decorate({
+@Seamstress.createDecorator({
   // ...
 })
 class Combobox extends React.Component {
