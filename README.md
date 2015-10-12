@@ -8,6 +8,10 @@ Declaratively describe conditional styles of your React components.
 - **Eliminates most styling boilerplate** - Decouple style "rendering" from the `render()` function.
 - **Mix CSS classes and inline styles** - Intelligently merge class-names and style props with a single `styles` prop.
 
+### Component Styling:
+![Before and After](/docs/before_after_users.png)
+
+### Component Authoring:
 ![Before and After](/docs/before_after.png)
 
 ## Installation

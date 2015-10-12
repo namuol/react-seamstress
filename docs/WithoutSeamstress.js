@@ -39,3 +39,14 @@ class Combobox extends React.Component {
   }
 }
 
+// ...
+
+import myClasses from './MyCombobox.css';
+
+<Combobox
+  className={myClasses.base}
+  expandedStyle={{
+    color: 'red',
+  }}
+  expandedIndicatorClassName={myClasses.expandedIndicator}
+/>
