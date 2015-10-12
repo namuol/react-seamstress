@@ -81,7 +81,7 @@ function configureSeamstress (config={}) {
       const computedStyles = getSubComponentStyles({
         styles: computeStylesFromState({
           state: styleState,
-          styles: [...arrayify(styles), ...arrayify(props.styles)],
+          styles: [...arrayify(styles), ...arrayify(props.styles), props.className, props.style],
         }),
       });
 
@@ -89,9 +89,9 @@ function configureSeamstress (config={}) {
 
       allSubComponentNames.forEach((name) => {
         if (subComponentTypes[name] === SubComponentTypes.composite) {
-          computedStyles[name] = { styles: computedStyles[name] };
+          computedStyles[name] = { styles: computedStyles[name] || [] };
         } else {
-          computedStyles[name] = mergeStyles(computedStyles[name]);
+          computedStyles[name] = mergeStyles(computedStyles[name] || {});
         }
       });
 
