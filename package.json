@@ -1,6 +1,6 @@
 {
   "name": "react-seamstress",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Experimental interface for exposing style-related state inside complex React components",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
