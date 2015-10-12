@@ -18,7 +18,7 @@ npm install react-seamstress --save
 
 ## Examples
 
-See the [`examples`](examples) directory for some simple examples of using Seamstress.
+See the [`examples`](https://github.com/namuol/react-seamstress/tree/master/examples) directory for some simple examples of using Seamstress.
 
 For a more complex component-authoring example, take a look at [this fork of `react-select`](https://github.com/namuol/react-select-seamstress/blob/b662327697a8646300791d8cedb647653b951762/src/Select.js#L855) that replaces most of its styling logic with Seamstress as an exercise (it was easier than I expected!).
 
