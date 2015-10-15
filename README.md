@@ -38,7 +38,8 @@ Thanks! :beers:
 
 ## Prior Art/Acknowledgements
 
-- [JedWatson/classNames](https://github.com/JedWatson/classnames) - conditional composition of classNames
-- [pluralsight/react-styleable](https://github.com/pluralsight/react-styleable) - very easy re-skinning via CSS Modules
 - [Modularise CSS the React Way](https://medium.com/@jviereck/modularise-css-the-react-way-1e817b317b04) - article with some ideas that influenced this library
-- [casesandberg/ReactCSS](https://github.com/casesandberg/reactcss) - inline CSS interface that shares many similarities to Seamstress
+- [JedWatson/classNames](https://github.com/JedWatson/classnames) - conditionally compose classNames
+- [casesandberg/ReactCSS](https://github.com/casesandberg/reactcss) - declaratively style components
+- [pluralsight/react-styleable](https://github.com/pluralsight/react-styleable) - theme components with CSS modules
+- [markdalgleish/react-themeable](https://github.com/markdalgleish/react-themeable) - theme components with inline styles *or* CSS classes
