@@ -635,5 +635,132 @@ runTests({
         {'::pseudo-element': 'Yep'},
       ],
     },
+
+    {
+      capability: 'include [truthyProps]',
+      input: {
+        styles: [
+          {
+            '[valid]': 'Yep',
+            '[alsoValid]': 'Totally',
+          }
+        ],
+
+        props: {
+          valid: true,
+          alsoValid: 1,
+        },
+      },
+      expected: [
+        'Yep',
+        'Totally',
+      ],
+    },
+
+    {
+      capability: 'not include [falsyProps]',
+      input: {
+        styles: [
+          {
+            '[invalid]': 'Nope',
+            '[alsoInvalid]': 'Nah',
+          }
+        ],
+
+        props: {
+          invalid: false,
+          alsoInvalid: null,
+        },
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'not include [falsyProps]',
+      input: {
+        styles: [
+          {
+            '[doesntEvenExist]': 'NoWay',
+          }
+        ],
+
+        props: {
+        },
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'include numeric prop equalities',
+      input: {
+        styles: [
+          {
+            '[answer=42]': 'Valid',
+          }
+        ],
+
+        props: {
+          answer: 42,
+        },
+      },
+      expected: [
+        'Valid',
+      ],
+    },
+
+    {
+      capability: 'not include numeric prop inequalities',
+      input: {
+        styles: [
+          {
+            '[answer=42]': 'Valid',
+          }
+        ],
+
+        props: {
+          answer: 43,
+        },
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'include string prop equalities',
+      input: {
+        styles: [
+          {
+            '[favoriteColor="red"]': 'LikesRed',
+          }
+        ],
+
+        props: {
+          favoriteColor: 'red',
+        },
+      },
+      expected: [
+        'LikesRed',
+      ],
+    },
+
+    {
+      capability: 'not include string prop inequalities',
+      input: {
+        styles: [
+          {
+            '[favoriteColor="red"]': 'LikesRed',
+          }
+        ],
+
+        props: {
+          favoriteColor: 'green',
+        },
+      },
+      expected: [
+      ],
+    },
+
   ],
 });

@@ -7,6 +7,45 @@ function satisfies (state) {
   }
 }
 
+function execAll (regexp, str) {
+  const results = [];
+  
+  let result;
+  while ((result = regexp.exec(str)) !== null) {
+    results.push(result);
+  }
+
+  return results;
+}
+
+const propRegex = /\[(\w+)(=([^\]]+)?)?\]/g;
+const getPropsAndValues = (str) => {
+  return execAll(propRegex, str).reduce((propValues, matches) => {
+    const [ , propName, , propValue ] = matches;
+    propValues[propName] = propValue;
+    return propValues
+  }, {});
+}
+
+function propsSatisfies (props) {
+  return function (propString) {
+    const propsAndValues = getPropsAndValues(propString);
+    return Object.keys(propsAndValues).every((propName) => {
+      try {
+        const unparsedValue = propsAndValues[propName];
+        if (unparsedValue === undefined) {
+          return !!props[propName];
+        }
+        const expectedValue = JSON.parse(unparsedValue);
+        const actualValue = props[propName];
+        return actualValue === expectedValue;
+      } catch (e) {
+        throw new TypeError(`Seamstress: Malformed rule: ${propString}; did you forget to quote a string?`);
+      }
+    });
+  }
+}
+
 function splitPseudoElementString (fullString) {
   const idx = fullString.indexOf('::');
   return [fullString, fullString.substr(0, idx), fullString.substr(idx)];
@@ -22,12 +61,13 @@ function getValue (style, k, state) {
   return value;
 }
 
-export default function computeStylesFromState ({styles, state={}}) {
+export default function computeStylesFromState ({styles, state={}, props={}}) {
   if (!styles) {
     return [];
   }
 
   const satisfiesState = satisfies(state);
+  const satisfiesProps = propsSatisfies(props);
 
   return arrayify(styles).filter(s =>
     ['string','function','object'].indexOf(typeof s) > -1
@@ -70,12 +110,15 @@ export default function computeStylesFromState ({styles, state={}}) {
     const {
       topLevel,
       conditionals,
+      propConditionals,
       pseudoElements,
     } = Object.keys(style).reduce((keys, k) => {
       if (/::/.test(k)) {
         keys.pseudoElements.push(k);
       } else if (/^:/.test(k)) {
         keys.conditionals.push(k);
+      } else if (/^\[.+\]/.test(k)) {
+        keys.propConditionals.push(k);
       } else if (k !== ':base') {
         keys.topLevel.push(k);
       }
@@ -84,6 +127,7 @@ export default function computeStylesFromState ({styles, state={}}) {
     }, {
       topLevel: [],
       conditionals: [],
+      propConditionals: [],
       pseudoElements: [],
     });
 
@@ -96,7 +140,7 @@ export default function computeStylesFromState ({styles, state={}}) {
       computedStyles.push(topLevelStyles);
     }
 
-    conditionals.filter(satisfiesState).forEach((k) => {
+    const addValue = (k) => {
       const value = getValue(style, k, state);
 
       if (Array.isArray(value)) {
@@ -104,7 +148,10 @@ export default function computeStylesFromState ({styles, state={}}) {
       } else {
         computedStyles.push(value);
       }
-    });
+    }
+
+    conditionals.filter(satisfiesState).forEach(addValue);
+    propConditionals.filter(satisfiesProps).forEach(addValue);
 
     pseudoElements.map(splitPseudoElementString)
     .filter(([k, propString]) => {
