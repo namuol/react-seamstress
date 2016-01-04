@@ -51,11 +51,36 @@ const BLUE_STYLE_CSS = [
   }
 ];
 
+// StatelessToggler can simply use [prop] selectors, a la vanilla CSS's [attr] selectors:
+
+const RED_STYLE_INLINE_STATELESS = {
+  border: '2px solid #c66',
+  backgroundColor: '#fbb',
+  '[toggled]': {
+    backgroundColor: '#c66',
+  },
+};
+
+const GREEN_STYLE_CSS_STATELESS = [
+  'GreenToggler',
+  {
+    '[toggled]': 'GreenToggler_toggled',
+    '[toggled]::indicator': 'GreenTogglerIndicator',
+  }
+];
+
+const BLUE_STYLE_CSS_STATELESS = [
+  'BlueToggler',
+  {
+    '[toggled]': 'BlueToggler_toggled',
+  }
+];
+
 const RedToggler = Toggler.extendStyles(RED_STYLE_CSS);
 const GreenToggler = Toggler.extendStyles(GREEN_STYLE_CSS);
 const BlueToggler = Toggler.extendStyles(BLUE_STYLE_CSS);
 
-const BlueStatelessToggler = StatelessToggler.extendStyles(BLUE_STYLE_CSS);
+const BlueStatelessToggler = StatelessToggler.extendStyles(BLUE_STYLE_CSS_STATELESS);
 
 export default class App extends Component {
   render () {
@@ -132,9 +157,9 @@ export default class App extends Component {
 
         <section>
           <h2>It also works with stateless components:</h2>
-          <StatelessToggler styles={RED_STYLE_INLINE} />
-          <StatelessToggler styles={GREEN_STYLE_CSS} toggled={true} />
-          <BlueStatelessToggler />
+          <StatelessToggler styles={RED_STYLE_INLINE_STATELESS} toggled={true} />
+          <StatelessToggler styles={GREEN_STYLE_CSS_STATELESS} toggled={true} />
+          <BlueStatelessToggler toggled={true} />
         </section>
       </div>
     );

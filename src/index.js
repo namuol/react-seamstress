@@ -78,10 +78,10 @@ function configureSeamstress (config={}) {
         const { propTypes } = Component;
 
         if (propTypes) {
-          const addendum = `Check the \`styles\` prop supplied to the Seamstress config of \`${displayName}\`.`;
           [...arrayify(styles), ...arrayify(props.styles)].filter(s => !!s && (typeof s === 'object')).forEach((styles) => {
             Object.keys(styles).forEach((propString) => {
               const expectedProps = getExpectedPropsFromSelector(propString);
+              const addendum = `\n\nHint: The invalid prop selector in question is \`${propString}\`.`;
               checkPropTypes(displayName, propTypes, expectedProps, 'prop', '[prop] selector type', addendum);
             });
           });
