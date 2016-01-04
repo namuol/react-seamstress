@@ -1,47 +1,27 @@
 import arrayify from './arrayify';
+import getExpectedPropsFromSelector from './getExpectedPropsFromSelector';
+import getAllMatches from './getAllMatches';
 
-function satisfies (state) {
+const selectorRegex = /:(\w+)/g;
+
+function makeStateSatisfactionChecker (state) {
   return function (propString) {
-    const propNames = propString.split(':').filter(p => !!p);
+    const propNames = getAllMatches(selectorRegex, propString).map(matches => matches[1]).filter(m => !!m);
     return propNames.every(p => !!state[p]);
   }
 }
 
-function execAll (regexp, str) {
-  const results = [];
-  
-  let result;
-  while ((result = regexp.exec(str)) !== null) {
-    results.push(result);
-  }
-
-  return results;
-}
-
-const propRegex = /\[(\w+)(=([^\]]+)?)?\]/g;
-const getPropsAndValues = (str) => {
-  return execAll(propRegex, str).reduce((propValues, matches) => {
-    const [ , propName, , propValue ] = matches;
-    propValues[propName] = propValue;
-    return propValues
-  }, {});
-}
-
-function propsSatisfies (props) {
+function makePropsSatisfactionChecker (props) {
   return function (propString) {
-    const propsAndValues = getPropsAndValues(propString);
+    const propsAndValues = getExpectedPropsFromSelector(propString);
     return Object.keys(propsAndValues).every((propName) => {
-      try {
-        const unparsedValue = propsAndValues[propName];
-        if (unparsedValue === undefined) {
-          return !!props[propName];
-        }
-        const expectedValue = JSON.parse(unparsedValue);
-        const actualValue = props[propName];
-        return actualValue === expectedValue;
-      } catch (e) {
-        throw new TypeError(`Seamstress: Malformed rule: ${propString}; did you forget to quote a string?`);
+      const expectedValue = propsAndValues[propName];
+
+      if (expectedValue === undefined) {
+        return !!props[propName];
       }
+
+      return props[propName] === expectedValue;
     });
   }
 }
@@ -66,8 +46,8 @@ export default function computeStylesFromState ({styles, state={}, props={}}) {
     return [];
   }
 
-  const satisfiesState = satisfies(state);
-  const satisfiesProps = propsSatisfies(props);
+  const satisfiesState = makeStateSatisfactionChecker(state);
+  const satisfiesProps = makePropsSatisfactionChecker(props);
 
   return arrayify(styles).filter(s =>
     ['string','function','object'].indexOf(typeof s) > -1
@@ -155,7 +135,7 @@ export default function computeStylesFromState ({styles, state={}, props={}}) {
 
     pseudoElements.map(splitPseudoElementString)
     .filter(([k, propString]) => {
-      return satisfiesState(propString);
+      return satisfiesState(propString) && satisfiesProps(propString);
     }).forEach(([k, _, pseudoElementName]) => {
       computedStyles.push({[pseudoElementName]: getValue(style, k, state)});
     });

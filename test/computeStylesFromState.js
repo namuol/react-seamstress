@@ -762,5 +762,79 @@ runTests({
       ],
     },
 
+    {
+      capability: 'include multiple string prop equalities',
+      input: {
+        styles: [
+          {
+            '[work="all"][play=0]': 'DullBoy',
+          }
+        ],
+
+        props: {
+          work: 'all',
+          play: 0,
+        },
+      },
+      expected: [
+        'DullBoy',
+      ],
+    },
+
+    {
+      capability: 'not include multiple string prop equalities when some are not valid',
+      input: {
+        styles: [
+          {
+            '[work="all"][play=0]': 'DullBoy',
+          }
+        ],
+
+        props: {
+          work: 'all',
+          play: 1,
+        },
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'doesn\'t care about whitespace in [prop] selectors',
+      input: {
+        styles: [
+          {
+            '[  work ="all"][ play = 0 ]': 'DullBoy',
+          }
+        ],
+
+        props: {
+          work: 'all',
+          play: 0,
+        },
+      },
+      expected: [
+        'DullBoy'
+      ],
+    },
+
+    {
+      capability: 'include [valid]::pseudo-elements',
+      input: {
+        styles: [
+          {
+            '[valid]::pseudo-element': 'Yep',
+          }
+        ],
+
+        props: {
+          valid: true,
+        },
+      },
+      expected: [
+        {'::pseudo-element': 'Yep'},
+      ],
+    },
+
   ],
 });

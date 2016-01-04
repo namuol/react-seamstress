@@ -6,6 +6,7 @@ import arrayify from './arrayify';
 
 import computeStylesFromState from './computeStylesFromState';
 import getSubComponentStyles from './getSubComponentStyles';
+import getExpectedPropsFromSelector from './getExpectedPropsFromSelector';
 
 import validateStyles from './validateStyles';
 import checkPropTypes from './checkPropTypes';
@@ -60,7 +61,7 @@ function configureSeamstress (config={}) {
     }
 
     function getComputedStyles ({ props, context, state }) {
-      const styleState = getStyleState({props, context, state});
+      const styleState = getStyleState({props, context, state}) || {};
 
       if (__DEV__) {
         const addendum = `Check the \`getStyleState()\` function supplied to the Seamstress config of \`${displayName}\`.`;
@@ -73,6 +74,18 @@ function configureSeamstress (config={}) {
         if (styleStateTypes) {
           checkPropTypes(displayName, styleStateTypes, styleState, 'prop', 'styleStateType', addendum);
         }
+        
+        const { propTypes } = Component;
+
+        if (propTypes) {
+          const addendum = `Check the \`styles\` prop supplied to the Seamstress config of \`${displayName}\`.`;
+          [...arrayify(styles), ...arrayify(props.styles)].filter(s => !!s && (typeof s === 'object')).forEach((styles) => {
+            Object.keys(styles).forEach((propString) => {
+              const expectedProps = getExpectedPropsFromSelector(propString);
+              checkPropTypes(displayName, propTypes, expectedProps, 'prop', '[prop] selector type', addendum);
+            });
+          });
+        }
       }
     
       // HACKish: ensures :base:composed:selectors work as expected:
@@ -81,6 +94,7 @@ function configureSeamstress (config={}) {
       const computedStyles = getSubComponentStyles({
         styles: computeStylesFromState({
           state: styleState,
+          props: props,
           styles: [...arrayify(styles), ...arrayify(props.styles), props.className, props.style],
         }),
       });

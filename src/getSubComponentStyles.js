@@ -16,7 +16,7 @@ export default function getSubComponentStyles ({styles=[]}) {
         let value = style[propName];
         if ((/^::/).test(propName)) {
           subComponentName = propName.substr(2);
-        } else if ((/^:/).test(propName)) {
+        } else {
           const subComponentIndicatorIdx = propName.indexOf('::');
           const selector = propName.substr(0, subComponentIndicatorIdx);
           subComponentName = propName.substr(subComponentIndicatorIdx + 2);
