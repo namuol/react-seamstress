@@ -34,7 +34,7 @@ function getDisplayName (Component) {
 }
 
 function configureSeamstress (config={}) {
-  let {
+  const {
     styles={},
     styleStateTypes,
     getStyleState=() => { return {}; },
