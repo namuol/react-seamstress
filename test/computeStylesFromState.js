@@ -836,5 +836,40 @@ runTests({
       ],
     },
 
+    {
+      capability: 'include :hyphenated-selectors',
+      input: {
+        styles: [
+          {
+            ':valid-hyphenated': 'Yep',
+          }
+        ],
+
+        state: {
+          'valid-hyphenated': true,
+        },
+      },
+      expected: [
+        'Yep'
+      ],
+    },
+
+    {
+      capability: 'include [hyphenated-prop-selectors]',
+      input: {
+        styles: [
+          {
+            '[valid-hyphenated]': 'Yep',
+          }
+        ],
+
+        props: {
+          'valid-hyphenated': true,
+        },
+      },
+      expected: [
+        'Yep'
+      ],
+    },
   ],
 });
