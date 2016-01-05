@@ -2,11 +2,12 @@ import arrayify from './arrayify';
 import getExpectedPropsFromSelector from './getExpectedPropsFromSelector';
 import getAllMatches from './getAllMatches';
 
-const selectorRegex = /:(\w+)/g;
+const selectorRegex = /:([\w-_]+)/g;
+const elementRegex = /::([\w-_]+)/g;
 
 function makeStateSatisfactionChecker (state) {
   return function (propString) {
-    const propNames = getAllMatches(selectorRegex, propString).map(matches => matches[1]).filter(m => !!m);
+    const propNames = getAllMatches(selectorRegex, propString.replace(elementRegex, '')).map(matches => matches[1]).filter(m => !!m);
     return propNames.every(p => !!state[p]);
   }
 }

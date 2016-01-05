@@ -34,10 +34,10 @@ function getDisplayName (Component) {
 }
 
 function configureSeamstress (config={}) {
-  const {
+  let {
     styles={},
     styleStateTypes,
-    getStyleState=(_ => {}),
+    getStyleState=() => { return {}; },
   } = config;
 
   const __subComponentTypes = config.subComponentTypes || {};
@@ -61,7 +61,7 @@ function configureSeamstress (config={}) {
     }
 
     function getComputedStyles ({ props, context, state }) {
-      const styleState = getStyleState({props, context, state}) || {};
+      const styleState = getStyleState({props, context, state});
 
       if (__DEV__) {
         const addendum = `Check the \`getStyleState()\` function supplied to the Seamstress config of \`${displayName}\`.`;
