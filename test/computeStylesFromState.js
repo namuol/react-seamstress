@@ -871,5 +871,25 @@ runTests({
         'Yep'
       ],
     },
+
+    {
+      capability: 'include props in callbacks',
+      input: {
+        styles: [
+          {
+            color: (styleState, props) => {
+              return props.favoriteColor;
+            },
+          }
+        ],
+
+        props: {
+          favoriteColor: 'red',
+        }
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
   ],
 });

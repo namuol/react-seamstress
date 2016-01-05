@@ -16,7 +16,7 @@ export default function getExpectedPropsFromSelector (str) {
       try {
         expectedValue = JSON.parse(unparsedValue);
       } catch (e) {
-        throw new TypeError(`Seamstress: Malformed [prop] selector: "${str}"; did you forget to quote a string?`);
+        throw new SyntaxError(`Seamstress: Malformed [prop] selector: "${str}"; did you forget to quote a string?`);
       }
     }
 
