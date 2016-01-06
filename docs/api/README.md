@@ -119,7 +119,7 @@ styleStateTypes: {
 
 An optional (but recommended) way to declare the styleable sub-components (if any) that your component contains.
 
-In a nutshell, each named sub-component corresponds to a single [`::pseudo-element`](#-pseudo-element).
+In a nutshell, each named sub-component corresponds to a single [`::pseudo-element`](#-pseudo-elements).
 
 Values must come from [`Seamstress.SubComponentTypes`](#seamstresssubcomponenttypes).
 
