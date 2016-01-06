@@ -26,6 +26,11 @@ See the [`examples`](https://github.com/namuol/react-seamstress/tree/master/exam
 
 For a more complex component-authoring example, take a look at [this fork of `react-select`](https://github.com/namuol/react-select-seamstress/blob/b662327697a8646300791d8cedb647653b951762/src/Select.js#L855) that replaces most of its styling logic with Seamstress as an exercise (it was easier than I expected!).
 
+## Documentation
+
+- [GitBook](http://namuol.github.io/react-seamstress/)
+- [API Reference](http://namuol.github.io/react-seamstress/docs/api/index.html)
+
 ## Stability & Feedback
 
 This project is still in the **experimental** phase, and I need feedback.

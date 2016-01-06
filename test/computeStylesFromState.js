@@ -44,7 +44,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: false,
         }
       },
@@ -61,7 +61,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: true,
         }
       },
@@ -82,7 +82,7 @@ runTests({
           }
         ],
 
-        state: {
+        styleState: {
           test: true,
         }
       },
@@ -107,7 +107,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: true,
         }
       },
@@ -128,7 +128,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: true,
           test2: true,
         }
@@ -149,7 +149,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: true,
           test2: true,
         }
@@ -171,7 +171,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: true,
         }
       },
@@ -197,7 +197,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: true,
         }
       },
@@ -220,7 +220,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: true,
         }
       },
@@ -241,7 +241,7 @@ runTests({
           42,
         ],
 
-        state: {}
+        styleState: {}
       },
       expected: [],
     },
@@ -250,7 +250,7 @@ runTests({
       capability: 'handle false style instead of array',
       input: {
         styles: false,
-        state: {}
+        styleState: {}
       },
       expected: [],
     },
@@ -259,7 +259,7 @@ runTests({
       capability: 'handle null style instead of array',
       input: {
         styles: null,
-        state: {}
+        styleState: {}
       },
       expected: [],
     },
@@ -268,7 +268,7 @@ runTests({
       capability: 'handle undefined style instead of array',
       input: {
         styles: undefined,
-        state: {}
+        styleState: {}
       },
       expected: [],
     },
@@ -291,7 +291,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: true,
           test2: true,
         }
@@ -314,7 +314,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: true,
           test2: false,
         }
@@ -335,7 +335,7 @@ runTests({
           },
         ],
 
-        state: {}
+        styleState: {}
       },
       expected: [
         {color: 'red'},
@@ -346,14 +346,14 @@ runTests({
       capability: 'pass styleState as the first argument',
       input: {
         styles: [
-          ({favoriteColor}) => {
+          ({styleState: {favoriteColor}}) => {
             return {
               color: favoriteColor,
             };
           },
         ],
 
-        state: {
+        styleState: {
           favoriteColor: 'red',
         }
       },
@@ -367,13 +367,13 @@ runTests({
       input: {
         styles: [
           {
-            color: ({favoriteColor}) => {
+            color: ({styleState: {favoriteColor}}) => {
               return favoriteColor;
             },
           }
         ],
 
-        state: {
+        styleState: {
           favoriteColor: 'red',
         }
       },
@@ -387,7 +387,7 @@ runTests({
       input: {
         styles: [
           {
-            ':test': ({favoriteColor}) => {
+            ':test': ({styleState: {favoriteColor}}) => {
               return {
                 color: favoriteColor,
               };
@@ -395,7 +395,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: true,
           favoriteColor: 'red',
         }
@@ -410,7 +410,7 @@ runTests({
       input: {
         styles: [
           {
-            ':base': ({favoriteColor}) => {
+            ':base': ({styleState: {favoriteColor}}) => {
               return {
                 color: favoriteColor,
               };
@@ -418,7 +418,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           favoriteColor: 'red',
         }
       },
@@ -433,14 +433,14 @@ runTests({
         styles: [
           {
             ':base': {
-              color: ({favoriteColor}) => {
+              color: ({styleState: {favoriteColor}}) => {
                 return favoriteColor;
               },
             }
           }
         ],
 
-        state: {
+        styleState: {
           favoriteColor: 'red',
         }
       },
@@ -455,14 +455,14 @@ runTests({
         styles: [
           {
             ':base': {
-              color: ({favoriteColor}) => {
+              color: ({styleState: {favoriteColor}}) => {
                 return favoriteColor;
               },
             }
           }
         ],
 
-        state: {
+        styleState: {
           favoriteColor: 'red',
         }
       },
@@ -520,7 +520,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           valid: true,
         },
       },
@@ -542,7 +542,7 @@ runTests({
           },
         ],
 
-        state: {
+        styleState: {
           test: true,
         },
       },
@@ -588,11 +588,11 @@ runTests({
       input: {
         styles: [
           {
-            '::pseudo-element': ({currentSubColor}) => { return {color: currentSubColor} },
+            '::pseudo-element': ({styleState: {currentSubColor}}) => { return {color: currentSubColor} },
           }
         ],
 
-        state: {
+        styleState: {
           currentSubColor: 'red',
         }
       },
@@ -627,7 +627,7 @@ runTests({
           }
         ],
 
-        state: {
+        styleState: {
           valid: true,
         },
       },
@@ -845,7 +845,7 @@ runTests({
           }
         ],
 
-        state: {
+        styleState: {
           'valid-hyphenated': true,
         },
       },
@@ -877,7 +877,7 @@ runTests({
       input: {
         styles: [
           {
-            color: (styleState, props) => {
+            color: ({styleState, props}) => {
               return props.favoriteColor;
             },
           }

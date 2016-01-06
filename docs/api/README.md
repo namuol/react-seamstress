@@ -202,7 +202,7 @@ See [Styles_Prop_Examples.md](../Styles_Prop_Examples.md) for a comprehensive li
 
 All keys in a styles `object` that *don't* begin with `:` are considered "top-level" styles. These will be combined into [`computedStyles.root`](#computedstyles).
 
-Top-level CSS classes can be applied as a standalone `string`, a `string` in an array, or with the [`:base` pseudo-selector](#base).
+Top-level CSS classes can be applied as a standalone `string`, a `string` in an array, or with the [`:base` pseudo-selector](#-base).
 
 ### :pseudo-selectors
 
@@ -243,11 +243,11 @@ There are some key differences from standard CSS `[attr]` selectors, however:
 * Only `[prop]` and `[prop=<value>]` syntax supported.
 * `[prop]` only applies when `prop` is [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy).
   * Note: boolean props can also be tested explicitly, i.e. `[prop=true]` or `[prop=false]`
-* String values must include **double-quotes**, i.e. `[prop="string"]`
+* String values **must** include **double-quotes**, i.e. `[prop="string"]`
 
 > Note: Seamstress examines your component's [`propTypes`](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) to ensure all such selectors are valid. PropTypes-style warnings will be logged when invalid comparisons are made (i.e. `[number="this should be a number"]`).
 
-#### `:base`
+#### :base
 
 ```js
 ':base': string/object/Function
@@ -278,12 +278,24 @@ Use [`config.subComponentTypes`](#config-subcomponenttypes) to declare which `::
 
 ### Style callbacks
 
-When a `function` is encountered in a `styles` object, it is treated as a callback. This function will receive an object containing the results of [`config.getStyleState()`](#config-getstylestate) as its first and only argument.
+```js
+object/array/String styleCallback ({
+  object styleState,
+  object props
+})
+```
 
-Such callbacks can be used to compute the entire `styles` prop, the `styles` pertaining to a specific `:pseudo-selector` or `::pseudo-element`, or a single inline-style value.
+When a `function` is encountered in a `styles` object, it is treated as a callback.
 
-Nested callbacks are not supported, but you may return a styles definition containing nested `:pseudo-selector` and `::pseudo-element` items.
+This function receives a single object argument with two named values:
+
+- `styleState` - the return value of [`config.getStyleState()`](#config-getstylestate)
+- `props` - the current props of this component
+
+Such callbacks can be used to compute the entire `styles` prop, the style pertaining to a specific selector, or a single inline-style value (i.e. `(styleState, props) => { return {color: 'red'} }`).
+
+**Nested callbacks are not supported**, but you may return a `styles` definition containing nested `:pseudo-selector` and `::pseudo-element` items.
 
 > Note:
 >
-> Callbacks should be avoided whenever possible. They are generally less predictable and need to be re-evaluated every `render()`, and purely-declarative styles can be [optimized](../Performance.md) by Seamstress, behind the scenes.
+> Callbacks should be avoided. They are generally less predictable and need to be re-evaluated every `render()`, and purely-declarative styles may be [optimized](../Performance.md) by Seamstress, behind the scenes.

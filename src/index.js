@@ -93,8 +93,8 @@ function configureSeamstress (config={}) {
 
       const computedStyles = getSubComponentStyles({
         styles: computeStylesFromState({
-          state: styleState,
-          props: props,
+          styleState,
+          props,
           styles: [...arrayify(styles), ...arrayify(props.styles), props.className, props.style],
         }),
       });
