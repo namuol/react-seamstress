@@ -131,30 +131,8 @@ Right now there's just `simple` and `composite` types, but we may want to suppor
 I'm thinking the best way to do this is with something like `.hasMany`:
 
 ```js
-styleStateTypes = {
+subComponentTypes = {
   indicator: SubComponentTypes.simple,
   row: SubComponentTypes.composite.hasMany,
 }
 ```
-
-### `[prop]` selector
-
-Similar to [Advanced Queries](#advanced-queries), but for props.
-
-Analagous to CSS's `[attr]` selectors, but operating directly on the component's `props`.
-
-```js
-{
-  '[checked]': { ... },
-  '[foo=42]': { ... },
-  '[bar="baz"]': { ... },
-}
-```
-
-This would reduce a lot of `getStyleState` boilerplate; most style-state is a simple passthru to props, especially stateless components.
-
-It's also a more direct reflection of the existing CSS syntax.
-
-We can use `propTypes` to validate these; very nice.
-
-Lastly -- and perhaps most importantly -- this will allow us to wrap any existing component; even third-party ones, presuming we don't need access to internal state.
