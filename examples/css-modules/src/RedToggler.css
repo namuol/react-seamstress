@@ -1,0 +1,8 @@
+.base {
+  border: 2px solid #c66;
+  background-color: #fbb;
+}
+
+.toggled {
+  background-color: #c66;
+}

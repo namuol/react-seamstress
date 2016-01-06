@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <title>Simple Example</title>
+    <style type="text/css">
+      * {
+        box-sizing: border-box;
+      }
+      
+      body, html {
+        font-family: sans-serif;
+        font-size: 14px;
+        width: 80ch;
+        margin: 2rem auto;
+      }
+
+      p {
+        line-height: 2;
+      }
+
+      section {
+        margin: 3rem 0;
+      }
+
+      .Toggler {
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        margin: 5px;
+        border: 2px solid #aaa;
+        background-color: #eee;
+        display: inline-block;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        overflow: hidden;
+      }
+
+      .Toggler_toggled {
+        background-color: #aaa;
+      }
+
+      .TogglerIndicator {
+        color: white;
+        display: block;
+        line-height: 20px;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        font-size: 16pt;
+      }
+    </style>
+  </head>
+  <body>
+    <div id='root'>
+    </div>
+    <script src="/static/bundle.js"></script>
+  </body>
+</html>

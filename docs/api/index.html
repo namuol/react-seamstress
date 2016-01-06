@@ -1,0 +1,546 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>API Reference | Seamstress</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.4.1">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../../gitbook/plugins/gitbook-plugin-edit-link/plugin.css">
+        
+    
+        
+        <link rel="stylesheet" href="../../gitbook/plugins/gitbook-plugin-prism/prism.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../../docs/Styles_Prop_Examples.html" />
+    
+    
+    <link rel="prev" href="../../docs/Why.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="3" data-basepath="../.." data-revision="Wed Jan 06 2016 12:50:59 GMT-0600 (CST)">
+    
+
+<div class="book-summary">
+    <div class="book-search" role="search">
+        <input type="text" placeholder="Type to search" class="form-control" />
+    </div>
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Readme
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="docs/Intro.html">
+            
+                
+                    <a href="../../docs/Intro.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Introduction
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="docs/Why.html">
+            
+                
+                    <a href="../../docs/Why.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Why use Seamstress?
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="3" data-path="docs/api/index.html">
+            
+                
+                    <a href="../../docs/api/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        API Reference
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="docs/Styles_Prop_Examples.html">
+            
+                
+                    <a href="../../docs/Styles_Prop_Examples.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        `props.styles` cheatsheet
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5" >
+            
+            <span><b>5.</b> Seamstress with other styling tools</span>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="5.1" data-path="docs/CSS_Modules.html">
+            
+                
+                    <a href="../../docs/CSS_Modules.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.1.</b>
+                        
+                        CSS Modules
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.2" data-path="docs/Free_Style.html">
+            
+            <span><b>5.2.</b> free-style</span>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5.3" data-path="docs/Radium.html">
+            
+            <span><b>5.3.</b> Radium</span>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="6" data-path="docs/Other_Ideas.html">
+            
+                
+                    <a href="../../docs/Other_Ideas.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                        Other Thoughts &amp; Features
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7" data-path="docs/Performance.html">
+            
+                
+                    <a href="../../docs/Performance.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                        Performance Considerations
+                    </a>
+            
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    <a href="#" class="btn pull-left toggle-summary" aria-label="Table of Contents"><i class="fa fa-align-justify"></i></a>
+    <a href="#" class="btn pull-left toggle-search" aria-label="Search"><i class="fa fa-search"></i></a>
+    
+    <div id="font-settings-wrapper" class="dropdown pull-left">
+        <a href="#" class="btn toggle-dropdown" aria-label="Font Settings"><i class="fa fa-font"></i>
+        </a>
+        <div class="dropdown-menu font-settings">
+    <div class="dropdown-caret">
+        <span class="caret-outer"></span>
+        <span class="caret-inner"></span>
+    </div>
+
+    <div class="buttons">
+        <button type="button" id="reduce-font-size" class="button size-2">A</button>
+        <button type="button" id="enlarge-font-size" class="button size-2">A</button>
+    </div>
+
+    <div class="buttons font-family-list">
+        <button type="button" data-font="0" class="button">Serif</button>
+        <button type="button" data-font="1" class="button">Sans</button>
+    </div>
+
+    <div class="buttons color-theme-list">
+        <button type="button" id="color-theme-preview-0" class="button size-3" data-theme="0">White</button>
+        <button type="button" id="color-theme-preview-1" class="button size-3" data-theme="1">Sepia</button>
+        <button type="button" id="color-theme-preview-2" class="button size-3" data-theme="2">Night</button>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Actions Right -->
+    
+    <div class="dropdown pull-right">
+        <a href="#" class="btn toggle-dropdown" aria-label="Share"><i class="fa fa-share-alt"></i>
+        </a>
+        <div class="dropdown-menu font-settings dropdown-left">
+            <div class="dropdown-caret">
+                <span class="caret-outer"></span>
+                <span class="caret-inner"></span>
+            </div>
+            <div class="buttons">
+                <button type="button" data-sharing="twitter" class="button">
+                    Share on Twitter
+                </button>
+                <button type="button" data-sharing="google-plus" class="button">
+                    Share on Google
+                </button>
+                <button type="button" data-sharing="facebook" class="button">
+                    Share on Facebook
+                </button>
+                <button type="button" data-sharing="weibo" class="button">
+                    Share on Weibo
+                </button>
+                <button type="button" data-sharing="instapaper" class="button">
+                    Share on Instapaper
+                </button>
+            </div>
+        </div>
+    </div>
+    
+
+    
+    <a href="#" target="_blank" class="btn pull-right google-plus-sharing-link sharing-link" data-sharing="google-plus" aria-label="Google"><i class="fa fa-google-plus"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right facebook-sharing-link sharing-link" data-sharing="facebook" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+    
+    
+    <a href="#" target="_blank" class="btn pull-right twitter-sharing-link sharing-link" data-sharing="twitter" aria-label="Twitter"><i class="fa fa-twitter"></i></a>
+    
+    
+    
+
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../../" >Seamstress</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <a id="edit-link" href="https://github.com/namuol/react-seamstress/tree/master/docs/api/README.md" class="btn fa fa-edit pull-left">&nbsp;&nbsp;Edit This Page</a><h1 id="api-reference">API Reference</h1>
+<h2 id="seamstress">Seamstress</h2>
+<pre><code class="lang-js"><span class="token keyword">import</span> Seamstress from <span class="token string">&apos;react-seamstress&apos;</span><span class="token punctuation">;</span>
+</code></pre>
+<p>The entry point into the Seamstress library.</p>
+<h2 id="seamstress-createcontainer">Seamstress.createContainer</h2>
+<pre><code class="lang-js">HigherOrderComponent <span class="token function">createContainer</span><span class="token punctuation">(</span>
+  ReactClass<span class="token operator">/</span>Component<span class="token operator">/</span>Function WrappedComponent<span class="token punctuation">,</span>
+  object config
+<span class="token punctuation">)</span>
+</code></pre>
+<p>Returns a higher-order component that processes <a href="#props-styles"><code>props.styles</code></a>and passes the result as <a href="#computedstyles"><code>props.computedStyles</code></a> to <code>WrappedComponent</code>.</p>
+<p>The <a href="#config">configuration object</a> passed as the second argument determines how the input styles are processed.</p>
+<blockquote>
+<p>Note:</p>
+<p>If your <a href="#config-getstylestate"><code>config.getStyleState()</code></a> function needs access to <code>this.state</code>, or your component&apos;s API exposes any instance properties or methods, use <a href="#seamstress-createdecorator"><strong><code>createDecorator</code></strong></a>, instead.</p>
+</blockquote>
+<h2 id="seamstress-createdecorator">Seamstress.createDecorator</h2>
+<pre><code class="lang-js">decoratorFunction <span class="token function">createDecorator</span><span class="token punctuation">(</span>object config<span class="token punctuation">)</span>
+</code></pre>
+<p>Returns a decorator function that takes the following form:</p>
+<pre><code class="lang-js">SeamstressComponent <span class="token function">decoratorFunction</span><span class="token punctuation">(</span>ReactClass<span class="token operator">/</span>Component YourComponent<span class="token punctuation">)</span>
+</code></pre>
+<p>The decorator returns a component that derives from <code>YourComponent</code> and supplies some additional behaviors:</p>
+<ul>
+<li><code>this.getComputedStyles()</code> provides <a href="#computedstyles"><code>computedStyles</code></a> to your component.</li>
+<li><code>propTypes</code> is enhanced with a custom <code>styles</code> validator if <a href="#config-stylestatetypes"><code>styleStateTypes</code></a> or <a href="#config-subcomponenttypes"><code>subComponentTypes</code></a> were configured.</li>
+</ul>
+<blockquote>
+<p>Note:</p>
+<p>If <code>YourComponent</code> is a stateless component, or your <a href="#config-getstylestate"><code>config.getStyleState()</code></a> function doesn&apos;t need access to component state, use <a href="#seamstress-createcontainer"><strong><code>createContainer</code></strong></a>, instead.</p>
+</blockquote>
+<h2 id="config">config</h2>
+<pre><code class="lang-js"><span class="token punctuation">{</span>
+  styles<span class="token punctuation">:</span> string<span class="token operator">/</span>object<span class="token operator">/</span><span class="token keyword">function</span><span class="token operator">/</span>Array<span class="token punctuation">,</span>
+  getStyleState<span class="token punctuation">:</span> Function<span class="token punctuation">,</span>
+  <span class="token punctuation">[</span>styleStateTypes<span class="token punctuation">:</span> object<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">[</span>subComponentTypes<span class="token punctuation">:</span> object<span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="config-styles">config.styles</h3>
+<p>The &quot;default&quot; styles for your component.</p>
+<p>Takes the same form as the <a href="#props-styles"><code>styles</code> prop</a>.</p>
+<p>These styles are applied unless explicitly overridden by <code>props.styles</code>.</p>
+<h3 id="config-getstylestate">config.getStyleState</h3>
+<pre><code class="lang-js">getStyleState<span class="token punctuation">:</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  props<span class="token punctuation">:</span> object<span class="token punctuation">,</span>
+  context<span class="token punctuation">:</span> object<span class="token punctuation">,</span>
+  <span class="token punctuation">[</span>state<span class="token punctuation">:</span> object<span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// style-state values go here</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>A function that returns all style-related state of your component.</p>
+<p>This should be a <strong>pure function</strong> of the <code>props</code>, <code>context</code>, and if applicable, the <code>state</code> of your component.</p>
+<p>The <code>state</code> parameter is only specified when using <a href="#seamstress-createdecorator"><code>Seamstress.createDecorator()</code></a>.</p>
+<h3 id="config-stylestatetypes">config.styleStateTypes</h3>
+<pre><code class="lang-js">styleStateTypes<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">[</span><span class="token string">&apos;style-state&apos;</span><span class="token punctuation">:</span> React<span class="token punctuation">.</span>PropType<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>An optional (but recommended) way to declare the state your component exposes for styling purposes.</p>
+<p>Takes the same form as <a href="https://facebook.github.io/react/docs/reusable-components.html#prop-validation" target="_blank"><code>propTypes</code></a>.</p>
+<p>In a nutshell, <code>bool</code> style-state items correspond to a single <a href="#-pseudo-selectors"><code>:pseudo-selector</code></a>, and all other types are only accessible via <a href="#stylecallbacks">style callbacks</a>.</p>
+<p>Much like <code>propTypes</code>, <code>styleStateTypes</code> will help ensure your component is being styled correctly by providing warnings whenever unspecified or non-boolean style-states are used as <code>:pseudo-selectors</code>.</p>
+<p>The result of <code>config.getStyleState()</code> is also validated using these prop-types.</p>
+<blockquote>
+<p>Note:</p>
+<p>Validations are skipped and warnings will be suppressed when executing in a production environment.</p>
+</blockquote>
+<h3 id="config-subcomponenttypes">config.subComponentTypes</h3>
+<pre><code class="lang-js">styleStateTypes<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">[</span><span class="token string">&apos;sub-component&apos;</span><span class="token punctuation">:</span> Seamstress<span class="token punctuation">.</span>SubComponentType<span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>An optional (but recommended) way to declare the styleable sub-components (if any) that your component contains.</p>
+<p>In a nutshell, each named sub-component corresponds to a single <a href="#-pseudo-elements"><code>::pseudo-element</code></a>.</p>
+<p>Values must come from <a href="#seamstresssubcomponenttypes"><code>Seamstress.SubComponentTypes</code></a>.</p>
+<p>If specified, <code>props.styles</code> will warn the user if any unspecified <code>::sub-component</code> is used.</p>
+<p>If unspecified, all <code>::sub-components</code> are assumed to be <code>SubComponentTypes.simple</code>.</p>
+<blockquote>
+<p>Note:</p>
+<p>Validations are skipped and warnings will be suppressed when executing in a production environment.</p>
+</blockquote>
+<h2 id="seamstress-subcomponenttypes">Seamstress.SubComponentTypes</h2>
+<pre><code class="lang-js"><span class="token comment" spellcheck="true">// A simple sub-component that expects `className` and `style` props:</span>
+Seamstress<span class="token punctuation">.</span>SubComponentTypes<span class="token punctuation">.</span>simple
+
+<span class="token comment" spellcheck="true">// A Seamstress-enabled sub-component that expects a `styles` prop:</span>
+Seamstress<span class="token punctuation">.</span>SubComponentTypes<span class="token punctuation">.</span>composite
+</code></pre>
+<h2 id="computedstyles">computedStyles</h2>
+<p>The applicable style-related props for your component and any of its sub-components. Typically used inside a <code>render()</code> function.</p>
+<p>Can be accessed in one of two ways, depending on how you created your Seamstress-enabled component:</p>
+<p>If (and <strong>only</strong> if) you&apos;re using <a href="#seamstress-createdecorator">Seamstress.createDecorator</a>:</p>
+<pre><code class="lang-js"><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getComputedStyles</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<p>If (and <strong>only</strong> if) you&apos;re using <a href="#seamstress-createcontainer">Seamstress.createContainer</a>:</p>
+<pre><code class="lang-js">props<span class="token punctuation">.</span>computedStyles
+</code></pre>
+<p>The <code>computedStyles</code> object takes on the following shape:</p>
+<pre><code class="lang-js"><span class="token punctuation">{</span>
+  root<span class="token punctuation">:</span> <span class="token punctuation">{</span> className<span class="token punctuation">,</span> style <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+  <span class="token punctuation">(</span>simple sub<span class="token operator">-</span>component<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token punctuation">{</span> className<span class="token punctuation">,</span> style <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">(</span>composite sub<span class="token operator">-</span>component<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token punctuation">{</span> styles <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>The <code>root</code> property is always defined on <code>computedStyles</code>, because it corresponds to all &quot;top-level&quot; styles from <a href="#props-styles"><code>props.styles</code></a>. Typically, <code>root</code> props are passed to the outermost styleable element inside your component&apos;s <code>render()</code> method.</p>
+<p>All other items in <code>computedStyles</code> apply to the named sub-components of your component.</p>
+<p><a href="#subcomponenttypessimple"><strong><code>simple</code></strong> sub-components</a> are automatically merged into low-level style props (in the case of the DOM, <code>className</code> and <code>style</code>).</p>
+<p><a href="#subcomponenttypescomposite"><strong><code>composite</code></strong> sub-components</a> retain the original unprocessed <a href="#props-styles"><code>styles</code></a> prop that should only be passed to other Seamstress-wrapped components.</p>
+<p>By default, all sub-components are assumed to be <code>simple</code>. Use <a href="#config-subcomponenttypes"><code>config.subComponentTypes</code></a> to control how each individual sub-component&apos;s style props are processed.</p>
+<h2 id="props-styles">props.styles</h2>
+<pre><code class="lang-js"><span class="token operator">&lt;</span>SeamstressComponent styles<span class="token operator">=</span><span class="token punctuation">{</span>string<span class="token operator">/</span>object<span class="token operator">/</span><span class="token keyword">function</span><span class="token operator">/</span>Array<span class="token punctuation">}</span> <span class="token operator">/</span><span class="token operator">&gt;</span>
+</code></pre>
+<p>A prop for expressing how a Seamstress component should be styled.</p>
+<p>Think of it as a combination of React inline styles with custom <a href="#-pseudo-selectors"><code>:pseudo-selectors</code></a>, <a href="#-pseudo-elements"><code>::pseudo-elements</code></a>, and <a href="#-prop-selectors"><code>[prop]</code> selectors</a>.</p>
+<p>Values can be a <code>string</code>, an <code>object</code>, a callback <code>function</code>, or an <code>Array</code> containing any combination of such types.</p>
+<p>All other value types (<code>boolean</code>, <code>null</code>, <code>undefined</code>, etc) are ignored.</p>
+<p>Default styles specified with <a href="#configstyles"><code>config.styles</code></a> are retained unless explicitly overridden by <code>props.styles</code>.</p>
+<p>See <a href="../Styles_Prop_Examples.html">Styles_Prop_Examples.md</a> for a comprehensive list of the forms <code>props.styles</code> can take.</p>
+<h3 id="top-level-styles">Top-level styles</h3>
+<p>All keys in a styles <code>object</code> that <em>don&apos;t</em> begin with <code>:</code> are considered &quot;top-level&quot; styles. These will be combined into <a href="#computedstyles"><code>computedStyles.root</code></a>.</p>
+<p>Top-level CSS classes can be applied as a standalone <code>string</code>, a <code>string</code> in an array, or with the <a href="#-base"><code>:base</code> pseudo-selector</a>.</p>
+<h3 id="-pseudo-selectors">:pseudo-selectors</h3>
+<pre><code class="lang-js"><span class="token string">&apos;:some-style-state-name&apos;</span><span class="token punctuation">:</span> string<span class="token operator">/</span>object<span class="token operator">/</span>Function
+</code></pre>
+<p>Inside any <code>object</code>, keys beginning with a single <code>:</code> correspond to styles that are only applied when the matching value returned from <a href="#config-getstylestate"><code>config.getStyleState()</code></a> is <code>true</code>.</p>
+<p>For instance, the key-value-pair <code>&apos;:busy&apos;: {opacity: 0.5}</code> translates to &quot;When the component is busy, set <code>opacity</code> to <code>0.5</code>.&quot;</p>
+<p>If multiple style-state selectors are specified (i.e. <code>:busy:expanded</code>), the associated styles only apply when <strong>all</strong> correspinding style-states are <code>true</code>.</p>
+<p>To apply a specific CSS class, provide a <code>string</code> instead of an object (i.e. <code>&apos;:busy&apos;: &apos;MyComponent_busy&apos;</code>).</p>
+<blockquote>
+<p>Note:</p>
+<p>Seamstress <code>:pseudo-selectors</code> are <strong>not</strong> CSS pseudo-selectors.</p>
+<p>For instance, <code>:hover</code> will only apply if you explicitly keep track of the hover state and include it in the result of <a href="#config-getstylestate"><code>config.getStyleState()</code></a>.</p>
+<p>However, ordinary CSS selectors may still be used within your actual CSS, of course! Seamstress merely combines and applies the applicable CSS classes for you.</p>
+</blockquote>
+<h3 id="-prop-selectors">[prop] selectors</h3>
+<pre><code class="lang-js"><span class="token string">&apos;[prop]&apos;</span><span class="token punctuation">:</span> string<span class="token operator">/</span>object<span class="token operator">/</span>Function
+<span class="token string">&apos;[prop=false]&apos;</span><span class="token punctuation">:</span> string<span class="token operator">/</span>object<span class="token operator">/</span>Function
+<span class="token string">&apos;[prop=42]&apos;</span><span class="token punctuation">:</span> string<span class="token operator">/</span>object<span class="token operator">/</span>Function
+<span class="token string">&apos;[prop=&quot;string&quot;]&apos;</span><span class="token punctuation">:</span> string<span class="token operator">/</span>object<span class="token operator">/</span>Function
+</code></pre>
+<p>Seamstress implements a syntax inspired by <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors" target="_blank">CSS&apos;s <code>[attr]</code> selector</a> to allow you to style your components purely based on their props without the need to write any <a href="#config-getstylestate"><code>getStyleState</code></a> boilerplate.</p>
+<p>There are some key differences from standard CSS <code>[attr]</code> selectors, however:</p>
+<ul>
+<li>Only <code>[prop]</code> and <code>[prop=<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">&gt;</span></span>]</code> syntax supported.</li>
+<li><code>[prop]</code> only applies when <code>prop</code> is <a href="https://developer.mozilla.org/en-US/docs/Glossary/Truthy" target="_blank">truthy</a>.<ul>
+<li>Note: boolean props can also be tested explicitly, i.e. <code>[prop=true]</code> or <code>[prop=false]</code></li>
+</ul>
+</li>
+<li>String values <strong>must</strong> include <strong>double-quotes</strong>, i.e. <code>[prop=&quot;string&quot;]</code></li>
+</ul>
+<blockquote>
+<p>Note: Seamstress examines your component&apos;s <a href="https://facebook.github.io/react/docs/reusable-components.html#prop-validation" target="_blank"><code>propTypes</code></a> to ensure all such selectors are valid. PropTypes-style warnings will be logged when invalid comparisons are made (i.e. <code>[number=&quot;this should be a number&quot;]</code>).</p>
+</blockquote>
+<h4 id="-base">:base</h4>
+<pre><code class="lang-js"><span class="token string">&apos;:base&apos;</span><span class="token punctuation">:</span> string<span class="token operator">/</span>object<span class="token operator">/</span>Function
+</code></pre>
+<p>A special style-state used to <em>unconditionally</em> apply styles to a component. This is mostly useful for specifying a default classnames, (i.e. <code>&apos;:base&apos;: &apos;MyComponent&apos;</code>).</p>
+<h3 id="-pseudo-elements">::pseudo-elements</h3>
+<pre><code class="lang-js"><span class="token string">&apos;::some-sub-component-name&apos;</span><span class="token punctuation">:</span> string<span class="token operator">/</span>object<span class="token operator">/</span>Function
+</code></pre>
+<p>Inside any <code>object</code>, keys containing <code>::</code> correspond to styles that apply to nested sub-components (i.e. <code>&apos;::indicator&apos;: &apos;Indicator&apos;</code>).</p>
+<p>These can be used in combination with <code>:pseudo-selectors</code> to conditionally apply style properties to sub-components (i.e. <code>&apos;:busy::indicator&apos;: &apos;Indicator_busy&apos;</code>).</p>
+<p>Use <a href="#config-subcomponenttypes"><code>config.subComponentTypes</code></a> to declare which <code>::sub-components</code> are valid, and how their style props should be processed inside <a href="#computedstyles"><code>computedStyles</code></a>.</p>
+<blockquote>
+<p>Note:</p>
+<p>Seamstress <code>::pseudo-elements</code> are <strong>not</strong> CSS pseudo-elements.</p>
+<p>For instance, <code>::first-letter</code> only means something if the component-author explicitly applies <code>computedStyles[&apos;first-letter]</code> to something like a <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span><span class="token punctuation">&gt;</span></span></code> wrapped around the first letter of its internal content.</p>
+<p>However, ordinary CSS selectors may still be used within your actual CSS, of course! Seamstress merely combines and applies the applicable CSS classes for you.</p>
+</blockquote>
+<h3 id="style-callbacks">Style callbacks</h3>
+<pre><code class="lang-js">object<span class="token operator">/</span>array<span class="token operator">/</span>String styleCallback <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  object styleState<span class="token punctuation">,</span>
+  object props
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre>
+<p>When a <code>function</code> is encountered in a <code>styles</code> object, it is treated as a callback.</p>
+<p>This function receives a single object argument with two named values:</p>
+<ul>
+<li><code>styleState</code> - the return value of <a href="#config-getstylestate"><code>config.getStyleState()</code></a></li>
+<li><code>props</code> - the current props of this component</li>
+</ul>
+<p>Such callbacks can be used to compute the entire <code>styles</code> prop, the style pertaining to a specific selector, or a single inline-style value (i.e. <code>(styleState, props) =&gt; { return {color: &apos;red&apos;} }</code>).</p>
+<p><strong>Nested callbacks are not supported</strong>, but you may return a <code>styles</code> definition containing nested <code>:pseudo-selector</code> and <code>::pseudo-element</code> items.</p>
+<blockquote>
+<p>Note:</p>
+<p>Callbacks should be avoided. They are generally less predictable and need to be re-evaluated every <code>render()</code>, and purely-declarative styles may be <a href="../Performance.html">optimized</a> by Seamstress, behind the scenes.</p>
+</blockquote>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../../docs/Why.html" class="navigation navigation-prev " aria-label="Previous page: Why use Seamstress?"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../../docs/Styles_Prop_Examples.html" class="navigation navigation-next " aria-label="Next page: `props.styles` cheatsheet"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../../gitbook/app.js"></script>
+
+    
+    <script src="../../gitbook/plugins/gitbook-plugin-edit-link/plugin.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"fontSettings":{"theme":null,"family":"sans","size":2},"edit-link":{"base":"https://github.com/namuol/react-seamstress/tree/master","label":"Edit This Page"}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

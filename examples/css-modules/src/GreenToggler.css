@@ -1,0 +1,12 @@
+.base {
+  border: 2px solid #6c6;
+  background-color: #bfb;
+}
+
+.toggled {
+  background-color: #6c6;
+}
+
+.indicator {
+  color: #272;  
+}
