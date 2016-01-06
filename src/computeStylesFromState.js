@@ -1,9 +1,29 @@
 import arrayify from './arrayify';
+import getExpectedPropsFromSelector from './getExpectedPropsFromSelector';
+import getAllMatches from './getAllMatches';
 
-function satisfies (state) {
+const selectorRegex = /:([\w-_]+)/g;
+const elementRegex = /::([\w-_]+)/g;
+
+function makeStateSatisfactionChecker (state) {
   return function (propString) {
-    const propNames = propString.split(':').filter(p => !!p);
+    const propNames = getAllMatches(selectorRegex, propString.replace(elementRegex, '')).map(matches => matches[1]).filter(m => !!m);
     return propNames.every(p => !!state[p]);
+  }
+}
+
+function makePropsSatisfactionChecker (props) {
+  return function (propString) {
+    const propsAndValues = getExpectedPropsFromSelector(propString);
+    return Object.keys(propsAndValues).every((propName) => {
+      const expectedValue = propsAndValues[propName];
+
+      if (expectedValue === undefined) {
+        return !!props[propName];
+      }
+
+      return props[propName] === expectedValue;
+    });
   }
 }
 
@@ -12,22 +32,24 @@ function splitPseudoElementString (fullString) {
   return [fullString, fullString.substr(0, idx), fullString.substr(idx)];
 }
 
-function getValue (style, k, state) {
+function getValue (style, k, state, props) {
   const value = style[k];
 
   if (typeof value === 'function') {
-    return value(state);
+    return value(state, props);
   }
 
   return value;
 }
 
-export default function computeStylesFromState ({styles, state={}}) {
+export default function computeStylesFromState ({styles, state={}, props={}}) {
   if (!styles) {
     return [];
   }
 
-  const satisfiesState = satisfies(state);
+  const satisfiesState = makeStateSatisfactionChecker(state);
+  const satisfiesProps = makePropsSatisfactionChecker(props);
+  const satisfiesSelector = str => satisfiesState(str) && satisfiesProps(str);
 
   return arrayify(styles).filter(s =>
     ['string','function','object'].indexOf(typeof s) > -1
@@ -74,7 +96,7 @@ export default function computeStylesFromState ({styles, state={}}) {
     } = Object.keys(style).reduce((keys, k) => {
       if (/::/.test(k)) {
         keys.pseudoElements.push(k);
-      } else if (/^:/.test(k)) {
+      } else if (/^:|^\[.+\]/.test(k)) {
         keys.conditionals.push(k);
       } else if (k !== ':base') {
         keys.topLevel.push(k);
@@ -88,7 +110,7 @@ export default function computeStylesFromState ({styles, state={}}) {
     });
 
     const topLevelStyles = topLevel.reduce((result, k) => {
-      result[k] = getValue(style, k, state);
+      result[k] = getValue(style, k, state, props);
       return result;
     }, {});
 
@@ -96,21 +118,23 @@ export default function computeStylesFromState ({styles, state={}}) {
       computedStyles.push(topLevelStyles);
     }
 
-    conditionals.filter(satisfiesState).forEach((k) => {
-      const value = getValue(style, k, state);
+    const addValue = (k) => {
+      const value = getValue(style, k, state, props);
 
       if (Array.isArray(value)) {
         computedStyles.push(...value);
       } else {
         computedStyles.push(value);
       }
-    });
+    }
+
+    conditionals.filter(satisfiesSelector).forEach(addValue);
 
     pseudoElements.map(splitPseudoElementString)
     .filter(([k, propString]) => {
-      return satisfiesState(propString);
+      return satisfiesSelector(propString);
     }).forEach(([k, _, pseudoElementName]) => {
-      computedStyles.push({[pseudoElementName]: getValue(style, k, state)});
+      computedStyles.push({[pseudoElementName]: getValue(style, k, state, props)});
     });
 
     return computedStyles;

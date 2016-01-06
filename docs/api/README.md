@@ -98,7 +98,7 @@ An optional (but recommended) way to declare the state your component exposes fo
 
 Takes the same form as [`propTypes`](https://facebook.github.io/react/docs/reusable-components.html#prop-validation).
 
-In a nutshell, `bool` style-state items correspond to a single [`:pseudo-selector`](#pseudo-selectors), and all other types are only accessible via [style callbacks](#stylecallbacks).
+In a nutshell, `bool` style-state items correspond to a single [`:pseudo-selector`](#-pseudo-selectors), and all other types are only accessible via [style callbacks](#stylecallbacks).
 
 Much like `propTypes`, `styleStateTypes` will help ensure your component is being styled correctly by providing warnings whenever unspecified or non-boolean style-states are used as `:pseudo-selectors`.
 
@@ -119,7 +119,7 @@ styleStateTypes: {
 
 An optional (but recommended) way to declare the styleable sub-components (if any) that your component contains.
 
-In a nutshell, each named sub-component corresponds to a single [`::pseudo-element`](#pseudo-element).
+In a nutshell, each named sub-component corresponds to a single [`::pseudo-element`](#-pseudo-element).
 
 Values must come from [`Seamstress.SubComponentTypes`](#seamstresssubcomponenttypes).
 
@@ -188,7 +188,7 @@ By default, all sub-components are assumed to be `simple`. Use [`config.subCompo
 
 A prop for expressing how a Seamstress component should be styled.
 
-Think of it as a combination of React inline styles with custom `:pseudo-selectors` and `::pseudo-elements`.
+Think of it as a combination of React inline styles with custom [`:pseudo-selectors`](#-pseudo-selectors), [`::pseudo-elements`](#-pseudo-elements), and [`[prop]` selectors](#-prop-selectors).
 
 Values can be a `string`, an `object`, a callback `function`, or an `Array` containing any combination of such types.
 
@@ -225,6 +225,27 @@ To apply a specific CSS class, provide a `string` instead of an object (i.e. `':
 > For instance, `:hover` will only apply if you explicitly keep track of the hover state and include it in the result of [`config.getStyleState()`](#config-getstylestate).
 >
 > However, ordinary CSS selectors may still be used within your actual CSS, of course! Seamstress merely combines and applies the applicable CSS classes for you.
+
+
+### [prop] selectors
+
+```js
+'[prop]': string/object/Function
+'[prop=false]': string/object/Function
+'[prop=42]': string/object/Function
+'[prop="string"]': string/object/Function
+```
+
+Seamstress implements a syntax inspired by [CSS's `[attr]` selector](https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors) to allow you to style your components purely based on their props without the need to write any [`getStyleState`](#config-getstylestate) boilerplate.
+
+There are some key differences from standard CSS `[attr]` selectors, however:
+
+* Only `[prop]` and `[prop=<value>]` syntax supported.
+* `[prop]` only applies when `prop` is [truthy](https://developer.mozilla.org/en-US/docs/Glossary/Truthy).
+  * Note: boolean props can also be tested explicitly, i.e. `[prop=true]` or `[prop=false]`
+* String values must include **double-quotes**, i.e. `[prop="string"]`
+
+> Note: Seamstress examines your component's [`propTypes`](https://facebook.github.io/react/docs/reusable-components.html#prop-validation) to ensure all such selectors are valid. PropTypes-style warnings will be logged when invalid comparisons are made (i.e. `[number="this should be a number"]`).
 
 #### `:base`
 

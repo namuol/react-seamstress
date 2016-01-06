@@ -127,5 +127,26 @@ runTests({
         ],
       },
     },
+
+    {
+      capability: 'handle [propSelectorsBeforeThe]::sub-component',
+      input: {
+        styles: [
+          {
+            '[prop]::sub-component': {
+              color: 'red',
+            },
+          },
+        ],
+      },
+      expected: {
+        root: [],
+        "sub-component": [
+          {
+            '[prop]': {color: 'red'},
+          },
+        ],
+      },
+    },
   ],
 });

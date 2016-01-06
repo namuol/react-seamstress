@@ -107,5 +107,15 @@ runTests({
       },
       expected: undefined,
     },
+
+    {
+      capability: 'consider all [props] valid',
+      input: {
+        style: {
+          '[valid]': {},
+        },
+      },
+      expected: undefined,
+    },
   ],
 });

@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react';
 const seamstressConfig = {
   styles: {
     ':base': 'Toggler',
-    ':toggled': 'Toggler_toggled',
+    '[toggled]': 'Toggler_toggled',
     '::indicator': 'TogglerIndicator',
   },
 
@@ -12,15 +12,6 @@ const seamstressConfig = {
     indicator: Seamstress.SubComponentTypes.simple,
   },
 
-  styleStateTypes: {
-    toggled: PropTypes.bool.isRequired,
-  },
-
-  getStyleState: ({props, context}) => {
-    return {
-      toggled: !!props.toggled,
-    };
-  },
 };
 
 function StatelessToggler (props) {
@@ -33,8 +24,6 @@ function StatelessToggler (props) {
   </div>;
 }
 
-StatelessToggler = Seamstress.createContainer(StatelessToggler, seamstressConfig);
-
 StatelessToggler.propTypes = {
   toggled: PropTypes.bool,
 };
@@ -45,4 +34,4 @@ StatelessToggler.defaultProps = {
 
 StatelessToggler.displayName = 'StatelessToggler';
 
-export default StatelessToggler;
+export default Seamstress.createContainer(StatelessToggler, seamstressConfig);

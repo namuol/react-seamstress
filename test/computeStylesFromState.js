@@ -635,5 +635,261 @@ runTests({
         {'::pseudo-element': 'Yep'},
       ],
     },
+
+    {
+      capability: 'include [truthyProps]',
+      input: {
+        styles: [
+          {
+            '[valid]': 'Yep',
+            '[alsoValid]': 'Totally',
+          }
+        ],
+
+        props: {
+          valid: true,
+          alsoValid: 1,
+        },
+      },
+      expected: [
+        'Yep',
+        'Totally',
+      ],
+    },
+
+    {
+      capability: 'not include [falsyProps]',
+      input: {
+        styles: [
+          {
+            '[invalid]': 'Nope',
+            '[alsoInvalid]': 'Nah',
+          }
+        ],
+
+        props: {
+          invalid: false,
+          alsoInvalid: null,
+        },
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'not include [falsyProps]',
+      input: {
+        styles: [
+          {
+            '[doesntEvenExist]': 'NoWay',
+          }
+        ],
+
+        props: {
+        },
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'include numeric prop equalities',
+      input: {
+        styles: [
+          {
+            '[answer=42]': 'Valid',
+          }
+        ],
+
+        props: {
+          answer: 42,
+        },
+      },
+      expected: [
+        'Valid',
+      ],
+    },
+
+    {
+      capability: 'not include numeric prop inequalities',
+      input: {
+        styles: [
+          {
+            '[answer=42]': 'Valid',
+          }
+        ],
+
+        props: {
+          answer: 43,
+        },
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'include string prop equalities',
+      input: {
+        styles: [
+          {
+            '[favoriteColor="red"]': 'LikesRed',
+          }
+        ],
+
+        props: {
+          favoriteColor: 'red',
+        },
+      },
+      expected: [
+        'LikesRed',
+      ],
+    },
+
+    {
+      capability: 'not include string prop inequalities',
+      input: {
+        styles: [
+          {
+            '[favoriteColor="red"]': 'LikesRed',
+          }
+        ],
+
+        props: {
+          favoriteColor: 'green',
+        },
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'include multiple string prop equalities',
+      input: {
+        styles: [
+          {
+            '[work="all"][play=0]': 'DullBoy',
+          }
+        ],
+
+        props: {
+          work: 'all',
+          play: 0,
+        },
+      },
+      expected: [
+        'DullBoy',
+      ],
+    },
+
+    {
+      capability: 'not include multiple string prop equalities when some are not valid',
+      input: {
+        styles: [
+          {
+            '[work="all"][play=0]': 'DullBoy',
+          }
+        ],
+
+        props: {
+          work: 'all',
+          play: 1,
+        },
+      },
+      expected: [
+      ],
+    },
+
+    {
+      capability: 'doesn\'t care about whitespace in [prop] selectors',
+      input: {
+        styles: [
+          {
+            '[  work ="all"][ play = 0 ]': 'DullBoy',
+          }
+        ],
+
+        props: {
+          work: 'all',
+          play: 0,
+        },
+      },
+      expected: [
+        'DullBoy'
+      ],
+    },
+
+    {
+      capability: 'include [valid]::pseudo-elements',
+      input: {
+        styles: [
+          {
+            '[valid]::pseudo-element': 'Yep',
+          }
+        ],
+
+        props: {
+          valid: true,
+        },
+      },
+      expected: [
+        {'::pseudo-element': 'Yep'},
+      ],
+    },
+
+    {
+      capability: 'include :hyphenated-selectors',
+      input: {
+        styles: [
+          {
+            ':valid-hyphenated': 'Yep',
+          }
+        ],
+
+        state: {
+          'valid-hyphenated': true,
+        },
+      },
+      expected: [
+        'Yep'
+      ],
+    },
+
+    {
+      capability: 'include [hyphenated-prop-selectors]',
+      input: {
+        styles: [
+          {
+            '[valid-hyphenated]': 'Yep',
+          }
+        ],
+
+        props: {
+          'valid-hyphenated': true,
+        },
+      },
+      expected: [
+        'Yep'
+      ],
+    },
+
+    {
+      capability: 'include props in callbacks',
+      input: {
+        styles: [
+          {
+            color: (styleState, props) => {
+              return props.favoriteColor;
+            },
+          }
+        ],
+
+        props: {
+          favoriteColor: 'red',
+        }
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
   ],
 });

@@ -6,6 +6,7 @@ import arrayify from './arrayify';
 
 import computeStylesFromState from './computeStylesFromState';
 import getSubComponentStyles from './getSubComponentStyles';
+import getExpectedPropsFromSelector from './getExpectedPropsFromSelector';
 
 import validateStyles from './validateStyles';
 import checkPropTypes from './checkPropTypes';
@@ -36,7 +37,7 @@ function configureSeamstress (config={}) {
   const {
     styles={},
     styleStateTypes,
-    getStyleState=(_ => {}),
+    getStyleState=() => { return {}; },
   } = config;
 
   const __subComponentTypes = config.subComponentTypes || {};
@@ -73,6 +74,18 @@ function configureSeamstress (config={}) {
         if (styleStateTypes) {
           checkPropTypes(displayName, styleStateTypes, styleState, 'prop', 'styleStateType', addendum);
         }
+        
+        const { propTypes } = Component;
+
+        if (propTypes) {
+          [...arrayify(styles), ...arrayify(props.styles)].filter(s => !!s && (typeof s === 'object')).forEach((styles) => {
+            Object.keys(styles).forEach((propString) => {
+              const expectedProps = getExpectedPropsFromSelector(propString);
+              const addendum = `\n\nHint: The invalid prop selector in question is \`${propString}\`.`;
+              checkPropTypes(displayName, propTypes, expectedProps, 'prop', '[prop] selector type', addendum);
+            });
+          });
+        }
       }
     
       // HACKish: ensures :base:composed:selectors work as expected:
@@ -81,6 +94,7 @@ function configureSeamstress (config={}) {
       const computedStyles = getSubComponentStyles({
         styles: computeStylesFromState({
           state: styleState,
+          props: props,
           styles: [...arrayify(styles), ...arrayify(props.styles), props.className, props.style],
         }),
       });
