@@ -111,7 +111,7 @@ The result of `config.getStyleState()` is also validated using these prop-types.
 ### config.subComponentTypes
 
 ```js
-styleStateTypes: {
+subComponentTypes: {
   ['sub-component': Seamstress.SubComponentType],
   ...,
 }
