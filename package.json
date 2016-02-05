@@ -33,7 +33,6 @@
     "tape": "^4.2.1"
   },
   "peerDependencies": {
-    "fbjs": "^0.2.0",
     "react": ">=0.13.0 <0.15.0 || ^0.14.0-alpha"
   },
   "keywords": [
@@ -43,5 +42,9 @@
     "inline",
     "theme",
     "skin"
-  ]
+  ],
+  "dependencies": {
+    "invariant": "^2.2.0",
+    "warning": "^2.1.0"
+  }
 }

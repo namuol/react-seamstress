@@ -3,8 +3,8 @@
 // https://github.com/facebook/react/blob/2d63dfd73c5258e683d394d9ea0b922be21c65d8/src/isomorphic/classic/element/ReactElementValidator.js
 //
 
-import warning from 'fbjs/lib/warning';
-import invariant from 'fbjs/lib/invariant';
+import warning from 'warning';
+import invariant from 'invariant';
 
 const ReactPropTypeLocationNames = {
   prop: 'prop',

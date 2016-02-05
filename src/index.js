@@ -1,7 +1,7 @@
 import React from 'react';
 import isReactClass from './isReactClass';
 
-import warning from 'fbjs/lib/warning';
+import warning from 'warning';
 import arrayify from './arrayify';
 
 import computeStylesFromState from './computeStylesFromState';
