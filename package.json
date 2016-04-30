@@ -6,7 +6,7 @@
   "jsnext:main": "src/index.js",
   "scripts": {
     "test": "babel-node test | tap-difflet",
-    "hack": "nodemon -w src -w test -w package.json --exec \"npm run build && npm test\" & npm run example & npm run docs:watch",
+    "hack": "nodemon -w src -w test -w package.json --exec \"npm run build && npm test\"",
     "build": "babel src -d lib",
     "example": "cd examples/simple && npm install && npm start",
     "start": "npm run example",

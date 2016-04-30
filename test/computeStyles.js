@@ -1,8 +1,8 @@
-import computeStylesFromState from '../src/computeStylesFromState';
+import computeStyles from '../src/computeStyles';
 import runTests from './runTests';
 
 runTests({
-  func: computeStylesFromState,
+  func: computeStyles,
   tests: [
     {
       capability: 'return an empty array when supplied null/undefined',
@@ -23,50 +23,15 @@ runTests({
     },
 
     {
-      capability: 'not include any objects when no state is supplied (we assume false)',
+      capability: 'not include any objects when no props are supplied (we assume false)',
       input: {
         styles: [
           {
-            ':test': {color: 'red'},
+            '[test]': {color: 'red'},
           },
         ],
       },
       expected: [
-      ],
-    },
-
-    {
-      capability: 'filter out style objects whose corresponding state is false',
-      input: {
-        styles: [
-          {
-            ':test': {color: 'red'},
-          },
-        ],
-
-        styleState: {
-          test: false,
-        },
-      },
-      expected: [
-      ],
-    },
-
-    {
-      capability: 'include style objects whose corresponding state is true',
-      input: {
-        styles: [
-          {
-            ':test': {color: 'red'},
-          },
-        ],
-
-        styleState: {
-          test: true,
-        },
-      },
-      expected: [
-        {color: 'red'},
       ],
     },
 
@@ -75,14 +40,14 @@ runTests({
       input: {
         styles: [
           {
-            ':test': {color: 'black'},
+            '[test]': {color: 'black'},
           },
           {
-            ':test': {color: 'red'},
+            '[test]': {color: 'red'},
           },
         ],
 
-        styleState: {
+        props: {
           test: true,
         },
       },
@@ -97,17 +62,17 @@ runTests({
       input: {
         styles: [
           {
-            ':test': 'MyComponent_test',
+            '[test]': 'MyComponent_test',
           },
           {
-            ':test': {color: 'black'},
+            '[test]': {color: 'black'},
           },
           {
-            ':test': {color: 'red'},
+            '[test]': {color: 'red'},
           },
         ],
 
-        styleState: {
+        props: {
           test: true,
         },
       },
@@ -123,12 +88,12 @@ runTests({
       input: {
         styles: [
           {
-            ':test2': 'MyComponent_test2',
-            ':test': 'MyComponent_test',
+            '[test2]': 'MyComponent_test2',
+            '[test]': 'MyComponent_test',
           },
         ],
 
-        styleState: {
+        props: {
           test: true,
           test2: true,
         },
@@ -144,12 +109,12 @@ runTests({
       input: {
         styles: [
           {
-            ':test': 'MyComponent_test',
-            ':test2': 'MyComponent_test2',
+            '[test]': 'MyComponent_test',
+            '[test2]': 'MyComponent_test2',
           },
         ],
 
-        styleState: {
+        props: {
           test: true,
           test2: true,
         },
@@ -166,12 +131,12 @@ runTests({
         styles: [
           {
             color: 'black',
-            ':test': {color: 'red'},
+            '[test]': {color: 'red'},
             backgroundColor: 'orange',
           },
         ],
 
-        styleState: {
+        props: {
           test: true,
         },
       },
@@ -185,19 +150,19 @@ runTests({
     },
 
     {
-      capability: '"hoist" :base styles and assume :base to be true',
+      capability: '"hoist" ::root styles',
       input: {
         styles: [
           {
-            ':test': {color: 'red'},
-            ':base': {
+            '[test]': {color: 'red'},
+            '::root': {
               color: 'black',
               backgroundColor: 'orange',
             },
           },
         ],
 
-        styleState: {
+        props: {
           test: true,
         },
       },
@@ -211,16 +176,16 @@ runTests({
     },
 
     {
-      capability: '"hoist" :base classNames and assume :base to be true',
+      capability: '"hoist" ::root classNames',
       input: {
         styles: [
           {
-            ':test': {color: 'red'},
-            ':base': 'MyComponent',
+            '[test]': {color: 'red'},
+            '::root': 'MyComponent',
           },
         ],
 
-        styleState: {
+        props: {
           test: true,
         },
       },
@@ -241,7 +206,7 @@ runTests({
           42,
         ],
 
-        styleState: {},
+        props: {},
       },
       expected: [],
     },
@@ -250,7 +215,7 @@ runTests({
       capability: 'handle false style instead of array',
       input: {
         styles: false,
-        styleState: {},
+        props: {},
       },
       expected: [],
     },
@@ -259,7 +224,7 @@ runTests({
       capability: 'handle null style instead of array',
       input: {
         styles: null,
-        styleState: {},
+        props: {},
       },
       expected: [],
     },
@@ -268,7 +233,7 @@ runTests({
       capability: 'handle undefined style instead of array',
       input: {
         styles: undefined,
-        styleState: {},
+        props: {},
       },
       expected: [],
     },
@@ -281,17 +246,17 @@ runTests({
     },
 
     {
-      capability: 'handle :composed:selectors',
+      capability: 'handle [composed][selectors]',
       input: {
         styles: [
           {
-            ':test': {color: 'red'},
-            ':test2': {color: 'white'},
-            ':test:test2': {color: 'black'},
+            '[test]': {color: 'red'},
+            '[test2]': {color: 'white'},
+            '[test][test2]': {color: 'black'},
           },
         ],
 
-        styleState: {
+        props: {
           test: true,
           test2: true,
         },
@@ -304,17 +269,17 @@ runTests({
     },
 
     {
-      capability: 'only pass :composed:selectors whose every selector is true',
+      capability: 'only pass [composed][selectors] whose every selector is true',
       input: {
         styles: [
           {
-            ':test': {color: 'red'},
-            ':test2': {color: 'white'},
-            ':test:test2': {color: 'black'},
+            '[test]': {color: 'red'},
+            '[test2]': {color: 'white'},
+            '[test][test2]': {color: 'black'},
           },
         ],
 
-        styleState: {
+        props: {
           test: true,
           test2: false,
         },
@@ -335,7 +300,7 @@ runTests({
           },
         ],
 
-        styleState: {},
+        props: {},
       },
       expected: [
         {color: 'red'},
@@ -343,17 +308,17 @@ runTests({
     },
 
     {
-      capability: 'pass styleState as the first argument',
+      capability: 'pass props as the first argument',
       input: {
         styles: [
-          ({styleState: {favoriteColor}}) => {
+          ({props: {favoriteColor}}) => {
             return {
               color: favoriteColor,
             };
           },
         ],
 
-        styleState: {
+        props: {
           favoriteColor: 'red',
         },
       },
@@ -367,13 +332,13 @@ runTests({
       input: {
         styles: [
           {
-            color: ({styleState: {favoriteColor}}) => {
+            color: ({props: {favoriteColor}}) => {
               return favoriteColor;
             },
           },
         ],
 
-        styleState: {
+        props: {
           favoriteColor: 'red',
         },
       },
@@ -387,7 +352,7 @@ runTests({
       input: {
         styles: [
           {
-            ':test': ({styleState: {favoriteColor}}) => {
+            '[test]': ({props: {favoriteColor}}) => {
               return {
                 color: favoriteColor,
               };
@@ -395,7 +360,7 @@ runTests({
           },
         ],
 
-        styleState: {
+        props: {
           test: true,
           favoriteColor: 'red',
         },
@@ -406,11 +371,11 @@ runTests({
     },
 
     {
-      capability: 'call functions to get value of :base',
+      capability: 'call functions to get value of ::root',
       input: {
         styles: [
           {
-            ':base': ({styleState: {favoriteColor}}) => {
+            '::root': ({props: {favoriteColor}}) => {
               return {
                 color: favoriteColor,
               };
@@ -418,7 +383,7 @@ runTests({
           },
         ],
 
-        styleState: {
+        props: {
           favoriteColor: 'red',
         },
       },
@@ -428,41 +393,19 @@ runTests({
     },
 
     {
-      capability: 'call functions to determine the value of individual style properties in :base objects',
+      capability: 'call functions to determine the value of individual style properties in ::root objects',
       input: {
         styles: [
           {
-            ':base': {
-              color: ({styleState: {favoriteColor}}) => {
+            '::root': {
+              color: ({props: {favoriteColor}}) => {
                 return favoriteColor;
               },
             },
           },
         ],
 
-        styleState: {
-          favoriteColor: 'red',
-        },
-      },
-      expected: [
-        {color: 'red'},
-      ],
-    },
-
-    {
-      capability: 'call functions to determine the value of individual style properties in :base objects',
-      input: {
-        styles: [
-          {
-            ':base': {
-              color: ({styleState: {favoriteColor}}) => {
-                return favoriteColor;
-              },
-            },
-          },
-        ],
-
-        styleState: {
+        props: {
           favoriteColor: 'red',
         },
       },
@@ -512,15 +455,15 @@ runTests({
     },
 
     {
-      capability: 'concat array results from :valid top-level callbacks',
+      capability: 'concat array results from [valid] top-level callbacks',
       input: {
         styles: [
           {
-            ':valid': () => { return ['aaa', 'bbb', 'ccc']; },
+            '[valid]': () => { return ['aaa', 'bbb', 'ccc']; },
           },
         ],
 
-        styleState: {
+        props: {
           valid: true,
         },
       },
@@ -532,17 +475,17 @@ runTests({
     },
 
     {
-      capability: 'compute second-order :selectors from top-level callbacks',
+      capability: 'compute second-order [selectors] from top-level callbacks',
       input: {
         styles: [
           () => {
             return {
-              ':test': {color: 'red'},
+              '[test]': {color: 'red'},
             };
           },
         ],
 
-        styleState: {
+        props: {
           test: true,
         },
       },
@@ -588,11 +531,11 @@ runTests({
       input: {
         styles: [
           {
-            '::pseudo-element': ({styleState: {currentSubColor}}) => { return {color: currentSubColor}; },
+            '::pseudo-element': ({props: {currentSubColor}}) => ({color: currentSubColor}),
           },
         ],
 
-        styleState: {
+        props: {
           currentSubColor: 'red',
         },
       },
@@ -606,11 +549,11 @@ runTests({
     },
 
     {
-      capability: 'not include :invalid::pseudo-elements',
+      capability: 'not include [invalid]::pseudo-elements',
       input: {
         styles: [
           {
-            ':invalid::pseudo-element': 'Nope',
+            '[invalid]::pseudo-element': 'Nope',
           },
         ],
       },
@@ -619,15 +562,15 @@ runTests({
     },
 
     {
-      capability: 'include :valid::pseudo-elements',
+      capability: 'include [valid]::pseudo-elements',
       input: {
         styles: [
           {
-            ':valid::pseudo-element': 'Yep',
+            '[valid]::pseudo-element': 'Yep',
           },
         ],
 
-        styleState: {
+        props: {
           valid: true,
         },
       },
@@ -841,11 +784,11 @@ runTests({
       input: {
         styles: [
           {
-            ':valid-hyphenated': 'Yep',
+            '[valid-hyphenated]': 'Yep',
           },
         ],
 
-        styleState: {
+        props: {
           'valid-hyphenated': true,
         },
       },
@@ -877,7 +820,7 @@ runTests({
       input: {
         styles: [
           {
-            color: ({styleState, props}) => {
+            color: ({props}) => {
               return props.favoriteColor;
             },
           },

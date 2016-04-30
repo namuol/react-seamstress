@@ -4,7 +4,7 @@ import isReactClass from './isReactClass';
 import warning from 'warning';
 import arrayify from './arrayify';
 
-import computeStylesFromState from './computeStylesFromState';
+import computeStyles from './computeStyles';
 import getSubComponentStyles from './getSubComponentStyles';
 import getExpectedPropsFromSelector from './getExpectedPropsFromSelector';
 
@@ -92,7 +92,7 @@ function configureSeamstress (config = {}) {
       styleState.base = true;
 
       const computedStyles = getSubComponentStyles({
-        styles: computeStylesFromState({
+        styles: computeStyles({
           styleState,
           props,
           styles: [...arrayify(styles), ...arrayify(props.styles), props.className, props.style],
