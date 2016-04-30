@@ -136,3 +136,53 @@ subComponentTypes = {
   row: SubComponentTypes.composite.hasMany,
 }
 ```
+
+### Simpler API
+
+Remove everything but `[prop]` syntax. Style-state is confusing, and it encourages stateful components.
+
+A HoC would be the main supported API.
+
+All other functionality could be exposed with a lower-level `getComputedStyles(props)` function.
+
+Here's how you might use Seamstress with a stateful component:
+
+```js
+const seamstressConfig = {
+  styles: { /* ... */ },
+
+};
+
+const {
+  computeStyles,
+  validateStyles,
+} = Seamstress.createStyleComputer(seamstressConfig);
+
+class Combobox extends React.Component {
+  state = {
+    // ...
+  };
+
+  static propTypes = {
+    styles: validateStyles,
+  };
+
+  render () {
+    const styles = computeStyles(this.props.styles, {
+      ...this.props,
+      ...this.state,
+      styles: undefined,
+    });
+
+    return (
+      <div {...styles.root}>
+        <div {...styles.indicator} />
+
+        {/* ... */}
+      </div>
+    );
+  }
+}
+```
+
+The advantage of using a HoC is therefore a small reduction in boilerplate code.
