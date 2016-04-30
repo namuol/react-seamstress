@@ -9,7 +9,7 @@ import invariant from 'invariant';
 const ReactPropTypeLocationNames = {
   prop: 'prop',
   context: 'context',
-  childContext: 'child context'
+  childContext: 'child context',
 };
 
 const loggedTypeFailures = {};
@@ -23,7 +23,7 @@ const loggedTypeFailures = {};
  * @param {string} location e.g. "prop", "context", "child context"
  * @private
  */
-export default function checkPropTypes(componentName, propTypes, props, location, propTypeType="propType", addendum="") {
+export default function checkPropTypes (componentName, propTypes, props, location, propTypeType = 'propType', addendum = '') {
   for (var propName in propTypes) {
     if (propTypes.hasOwnProperty(propName)) {
       var error;

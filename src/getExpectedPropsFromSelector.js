@@ -7,7 +7,7 @@ export default function getExpectedPropsFromSelector (str) {
     return !!propName;
   }).reduce((propValues, matches) => {
     const [ , propName, , unparsedValue ] = matches;
-    
+
     let expectedValue;
 
     if (unparsedValue === undefined) {
@@ -22,6 +22,6 @@ export default function getExpectedPropsFromSelector (str) {
 
     propValues[propName] = expectedValue;
 
-    return propValues
+    return propValues;
   }, {});
 }

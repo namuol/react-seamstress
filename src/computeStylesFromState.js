@@ -7,9 +7,9 @@ const elementRegex = /::([\w-_]+)/g;
 
 function makeStyleStateSatisfactionChecker (styleState) {
   return function (propString) {
-    const propNames = getAllMatches(selectorRegex, propString.replace(elementRegex, '')).map(matches => matches[1]).filter(m => !!m);
-    return propNames.every(p => !!styleState[p]);
-  }
+    const propNames = getAllMatches(selectorRegex, propString.replace(elementRegex, '')).map((matches) => matches[1]).filter((m) => !!m);
+    return propNames.every((p) => !!styleState[p]);
+  };
 }
 
 function makePropsSatisfactionChecker (props) {
@@ -24,7 +24,7 @@ function makePropsSatisfactionChecker (props) {
 
       return props[propName] === expectedValue;
     });
-  }
+  };
 }
 
 function splitPseudoElementString (fullString) {
@@ -42,17 +42,17 @@ function getValue (style, k, styleState, props) {
   return value;
 }
 
-export default function computeStylesFromState ({styles, styleState={}, props={}}) {
+export default function computeStylesFromState ({styles, styleState = {}, props = {}}) {
   if (!styles) {
     return [];
   }
 
   const satisfiesStyleState = makeStyleStateSatisfactionChecker(styleState);
   const satisfiesProps = makePropsSatisfactionChecker(props);
-  const satisfiesSelector = str => satisfiesStyleState(str) && satisfiesProps(str);
+  const satisfiesSelector = (str) => satisfiesStyleState(str) && satisfiesProps(str);
 
-  return arrayify(styles).filter(s =>
-    ['string','function','object'].indexOf(typeof s) > -1
+  return arrayify(styles).filter((s) =>
+    ['string', 'function', 'object'].indexOf(typeof s) > -1
   ).reduce((computedStyles, style) => {
     if (!style) {
       return computedStyles;
@@ -127,7 +127,7 @@ export default function computeStylesFromState ({styles, styleState={}, props={}
       } else {
         computedStyles.push(value);
       }
-    }
+    };
 
     conditionals.filter(satisfiesSelector).forEach(addValue);
 

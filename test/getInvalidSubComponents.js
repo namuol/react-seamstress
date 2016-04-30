@@ -1,5 +1,3 @@
-import { PropTypes } from 'react';
-
 import getInvalidSubComponents from '../src/getInvalidSubComponents';
 import runTests from './runTests';
 

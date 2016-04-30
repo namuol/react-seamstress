@@ -10,30 +10,28 @@
     "build": "babel src -d lib",
     "example": "cd examples/simple && npm install && npm start",
     "start": "npm run example",
-    "prepublish": "npm run build",
-    "docs:clean": "rimraf _book",
-    "docs:prepare": "gitbook install",
-    "docs:build": "npm run docs:prepare && gitbook build -g namuol/react-seamstress",
-    "docs:watch": "npm run docs:prepare && gitbook serve",
-    "docs:publish": "./scripts/publish_book.sh"
+    "lint": "eslint .",
+    "prepublish": "npm run build"
   },
   "author": "Louis Acresti <louis.acresti@gmail.com> (http://namuol.github.io)",
   "license": "MIT",
   "devDependencies": {
     "babel": "^5.8.23",
-    "gitbook-cli": "^0.3.6",
-    "gitbook-plugin-edit-link": "^1.4.1",
-    "gitbook-plugin-prism": "^0.1.1",
+    "babel-eslint": "^6.0.4",
+    "eslint-config-standard-react": "^2.3.0",
+    "eslint-plugin-babel": "^3.2.0",
+    "eslint-plugin-promise": "^1.1.0",
+    "eslint-plugin-react": "^5.0.1",
+    "eslint-plugin-standard": "^1.3.2",
     "nodemon": "^1.7.1",
-    "react": "^0.14.0",
-    "react-dom": "^0.14.0",
-    "rimraf": "^2.4.3",
+    "react": "^0.14.8",
+    "react-dom": "^0.14.8",
     "tap": "^1.4.1",
     "tap-difflet": "^0.3.0",
     "tape": "^4.2.1"
   },
   "peerDependencies": {
-    "react": ">=0.13.0 <0.15.0 || ^0.14.0-alpha"
+    "react": ">=0.13.0 <16"
   },
   "keywords": [
     "react-component",

@@ -22,7 +22,7 @@ function overrideWithWarning (object, propertyName, value, displayName) {
 
     warning(!Object.prototype.hasOwnProperty.call(object, propertyName),
       `\`${displayName}\` is automatically provided by Seamstress. ` +
-      `The original definition will be overridden.`
+      'The original definition will be overridden.'
     );
   }
 
@@ -33,11 +33,11 @@ function getDisplayName (Component) {
   return Component.displayName || Component.name;
 }
 
-function configureSeamstress (config={}) {
+function configureSeamstress (config = {}) {
   const {
-    styles={},
+    styles = {},
     styleStateTypes,
-    getStyleState=() => { return {}; },
+    getStyleState = () => { return {}; },
   } = config;
 
   const __subComponentTypes = config.subComponentTypes || {};
@@ -67,18 +67,18 @@ function configureSeamstress (config={}) {
         const addendum = `Check the \`getStyleState()\` function supplied to the Seamstress config of \`${displayName}\`.`;
 
         warning(!styleState.hasOwnProperty('base'),
-          `\`:base\` is a reserved styleState that is always \`true\`; please use a different name. ` +
+          '`:base` is a reserved styleState that is always `true`; please use a different name. ' +
           addendum
         );
 
         if (styleStateTypes) {
           checkPropTypes(displayName, styleStateTypes, styleState, 'prop', 'styleStateType', addendum);
         }
-        
+
         const { propTypes } = Component;
 
         if (propTypes) {
-          [...arrayify(styles), ...arrayify(props.styles)].filter(s => !!s && (typeof s === 'object')).forEach((styles) => {
+          [...arrayify(styles), ...arrayify(props.styles)].filter((s) => !!s && (typeof s === 'object')).forEach((styles) => {
             Object.keys(styles).forEach((propString) => {
               const expectedProps = getExpectedPropsFromSelector(propString);
               const addendum = `\n\nHint: The invalid prop selector in question is \`${propString}\`.`;
@@ -87,7 +87,7 @@ function configureSeamstress (config={}) {
           });
         }
       }
-    
+
       // HACKish: ensures :base:composed:selectors work as expected:
       styleState.base = true;
 
@@ -133,7 +133,7 @@ function configureSeamstress (config={}) {
             computedStyles={getComputedStyles({props, context})}
           />;
         }
-      }
+      };
     }
 
     let newComponent;
@@ -141,10 +141,10 @@ function configureSeamstress (config={}) {
     if (useHoc) {
       newComponent = wrap(Component);
     } else {
-      function thisGetComputedStyles () {
+      const thisGetComputedStyles = () => {
         const { props, context, state } = this;
         return getComputedStyles({ props, context, state });
-      }
+      };
 
       if (!isReactClass(Component)) {
         // We wrap with a HoC if we detect a non-class component:
@@ -159,7 +159,7 @@ function configureSeamstress (config={}) {
 
       newComponent.displayName = displayName;
     }
-    
+
     overrideWithWarning(newComponent, 'extendStyles', extendStyles, `${displayName}.extendStyles`);
 
     return newComponent;
@@ -174,7 +174,7 @@ function configureSeamstress (config={}) {
 export function createDecorator (config) {
   return function (Component) {
     return configureSeamstress(config).decorate(Component);
-  }
+  };
 }
 
 export function createContainer (Component, config) {

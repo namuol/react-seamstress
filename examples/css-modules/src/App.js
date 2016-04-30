@@ -33,7 +33,7 @@ export default class App extends Component {
           <h2>Default styles:</h2>
           <div>
             <Toggler />
-            <Toggler defaultToggled={true} />
+            <Toggler defaultToggled />
             <Toggler />
           </div>
         </section>
@@ -42,7 +42,7 @@ export default class App extends Component {
           <h2>Overriding inside render with <code>props.styles</code>:</h2>
           <div>
             <Toggler styles={RED_STYLE_CSS} />
-            <Toggler styles={GREEN_STYLE_CSS} defaultToggled={true} />
+            <Toggler styles={GREEN_STYLE_CSS} defaultToggled />
             <Toggler styles={BLUE_STYLE_CSS} />
           </div>
         </section>
@@ -50,7 +50,7 @@ export default class App extends Component {
         <section>
           <h2>Overriding with <code>Toggler.extendStyles</code>:</h2>
           <RedToggler />
-          <GreenToggler defaultToggled={true} />
+          <GreenToggler defaultToggled />
           <BlueToggler />
         </section>
       </div>

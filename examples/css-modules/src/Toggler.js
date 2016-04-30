@@ -30,7 +30,7 @@ export default class Toggler extends Component {
   static defaultProps = {
     defaultToggled: false,
   };
-  
+
   state = {
     toggled: this.props.defaultToggled,
   };

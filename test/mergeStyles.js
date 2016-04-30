@@ -3,7 +3,7 @@ import runTests from './runTests';
 
 function orderedMap (val) {
   if (typeof val === 'object') {
-    return Object.keys(val).map(k => [k, orderedMap(val[k])]);
+    return Object.keys(val).map((k) => [k, orderedMap(val[k])]);
   } else {
     return val;
   }
@@ -13,23 +13,23 @@ const tests = [
   {
     capability: 'override styles in the order they appear',
     input: [
-      {color:'red'},
-      {color:'black'},
+      {color: 'red'},
+      {color: 'black'},
     ],
 
     expected: {
       className: '',
       style: orderedMap({
         'color': 'black',
-      })
+      }),
     },
   },
 
   {
     capability: 'override nested styles in the order they appear',
     input: [
-      {':hover': {color:'red'}},
-      {':hover': {color:'black'}},
+      {':hover': {color: 'red'}},
+      {':hover': {color: 'black'}},
     ],
     expected: {
       className: '',
@@ -37,7 +37,7 @@ const tests = [
         ':hover': {
           'color': 'black',
         },
-      })
+      }),
     },
   },
 
@@ -58,7 +58,7 @@ const tests = [
           },
         },
       },
-      
+
     ],
 
     expected: {
@@ -73,22 +73,22 @@ const tests = [
             'color': 'black',
           },
         },
-      })
+      }),
     },
   },
 
   {
     capability: '"push" toplevel styles down when they are overridden',
     input: [
-      {color:'red', backgroundColor: 'blue'},
-      {color:'black'},
+      {color: 'red', backgroundColor: 'blue'},
+      {color: 'black'},
     ],
     expected: {
       className: '',
       style: orderedMap({
         'backgroundColor': 'blue',
         'color': 'black',
-      })
+      }),
     },
   },
 
@@ -98,7 +98,7 @@ const tests = [
       {
         '@media': {
           color: 'black',
-        }
+        },
       },
       {
         '@media': {
@@ -118,7 +118,7 @@ const tests = [
             'color': 'black',
           },
         },
-      })
+      }),
     },
   },
 
@@ -147,7 +147,7 @@ const tests = [
           },
         },
       },
-      false
+      false,
     ],
 
     expected: {
@@ -168,7 +168,7 @@ const tests = [
             'backgroundColor': 'black',
           },
         },
-      })
+      }),
     },
   },
 

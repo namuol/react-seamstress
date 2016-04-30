@@ -26,6 +26,7 @@ function StatelessToggler (props) {
 
 StatelessToggler.propTypes = {
   toggled: PropTypes.bool,
+  computedStyles: PropTypes.object,
 };
 
 StatelessToggler.defaultProps = {

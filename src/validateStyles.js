@@ -5,7 +5,7 @@ import getSubComponentStyles from './getSubComponentStyles';
 import getInvalidStyleStates from './getInvalidStyleStates';
 import getInvalidSubComponents from './getInvalidSubComponents';
 
-const stringifyPropertyList = styleStates => styleStates.map(s=>`\`${s}\``).join(', ');
+const stringifyPropertyList = (styleStates) => styleStates.map((s) => `\`${s}\``).join(', ');
 
 export default function validateStyles ({ styleStateTypes, subComponentTypes }, displayName, props, propName, component) {
   const subComponentStyles = getSubComponentStyles({
@@ -32,7 +32,7 @@ export default function validateStyles ({ styleStateTypes, subComponentTypes }, 
       '].'
     );
   }
-  
+
   delete subComponentStyles.root;
 
   const invalidSubComponents = getInvalidSubComponents({

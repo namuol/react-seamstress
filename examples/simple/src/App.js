@@ -33,7 +33,7 @@ const RED_STYLE_CSS = [
   'RedToggler',
   {
     ':toggled': 'RedToggler_toggled',
-  }
+  },
 ];
 
 const GREEN_STYLE_CSS = [
@@ -41,14 +41,14 @@ const GREEN_STYLE_CSS = [
   {
     ':toggled': 'GreenToggler_toggled',
     ':toggled::indicator': 'GreenTogglerIndicator',
-  }
+  },
 ];
 
 const BLUE_STYLE_CSS = [
   'BlueToggler',
   {
     ':toggled': 'BlueToggler_toggled',
-  }
+  },
 ];
 
 // StatelessToggler can simply use [prop] selectors, a la vanilla CSS's [attr] selectors:
@@ -66,14 +66,14 @@ const GREEN_STYLE_CSS_STATELESS = [
   {
     '[toggled]': 'GreenToggler_toggled',
     '[toggled]::indicator': 'GreenTogglerIndicator',
-  }
+  },
 ];
 
 const BLUE_STYLE_CSS_STATELESS = [
   'BlueToggler',
   {
     '[toggled]': 'BlueToggler_toggled',
-  }
+  },
 ];
 
 const RedToggler = Toggler.extendStyles(RED_STYLE_CSS);
@@ -90,7 +90,7 @@ export default class App extends Component {
           <h2>Default styles:</h2>
           <div>
             <Toggler />
-            <Toggler defaultToggled={true} />
+            <Toggler defaultToggled />
             <Toggler />
           </div>
         </section>
@@ -100,7 +100,7 @@ export default class App extends Component {
           <div>
             <p>With inline styles:</p>
             <Toggler styles={RED_STYLE_INLINE} />
-            <Toggler styles={GREEN_STYLE_INLINE} defaultToggled={true} />
+            <Toggler styles={GREEN_STYLE_INLINE} defaultToggled />
             <Toggler styles={BLUE_STYLE_INLINE} />
           </div>
 
@@ -117,7 +117,6 @@ export default class App extends Component {
                 background-color: #c66;
               }
 
-
               .GreenToggler {
                 border: 2px solid #6c6;
                 background-color: #bfb;
@@ -131,7 +130,6 @@ export default class App extends Component {
                 background-color: #6c6;
               }
 
-
               .BlueToggler {
                 border: 2px solid #66c;
                 background-color: #bbf;
@@ -143,7 +141,7 @@ export default class App extends Component {
             `}
             </style>
             <Toggler styles={RED_STYLE_CSS} />
-            <Toggler styles={GREEN_STYLE_CSS} defaultToggled={true} />
+            <Toggler styles={GREEN_STYLE_CSS} defaultToggled />
             <Toggler styles={BLUE_STYLE_CSS} />
           </div>
         </section>
@@ -151,15 +149,15 @@ export default class App extends Component {
         <section>
           <h2>Overriding with <code>Toggler.extendStyles</code>:</h2>
           <RedToggler />
-          <GreenToggler defaultToggled={true} />
+          <GreenToggler defaultToggled />
           <BlueToggler />
         </section>
 
         <section>
           <h2>It also works with stateless components:</h2>
-          <StatelessToggler styles={RED_STYLE_INLINE_STATELESS} toggled={true} />
-          <StatelessToggler styles={GREEN_STYLE_CSS_STATELESS} toggled={true} />
-          <BlueStatelessToggler toggled={true} />
+          <StatelessToggler styles={RED_STYLE_INLINE_STATELESS} toggled />
+          <StatelessToggler styles={GREEN_STYLE_CSS_STATELESS} toggled />
+          <BlueStatelessToggler toggled />
         </section>
       </div>
     );

@@ -1,5 +1,4 @@
-export default function getSubComponentStyles ({styles=[]}) {
-
+export default function getSubComponentStyles ({styles = []}) {
   return styles.reduce((result, style) => {
     if (!style) {
       return result;
@@ -24,7 +23,7 @@ export default function getSubComponentStyles ({styles=[]}) {
             [selector]: value,
           };
         }
-        
+
         if (!subResult[subComponentName]) {
           subResult[subComponentName] = {};
         }

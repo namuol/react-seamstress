@@ -1,4 +1,4 @@
-function _mergeStyles (styles=[], depth=0) {
+function _mergeStyles (styles = [], depth = 0) {
   const classNames = {};
   const inlineStyles = {};
   const inlineStyleKeys = [];
@@ -9,17 +9,17 @@ function _mergeStyles (styles=[], depth=0) {
       if (depth === 0 && typeofStyle === 'string') {
         style.split(/\s+/).forEach((className) => {
           classNames[className] = true;
-        })
+        });
       }
       return;
     }
 
     Object.keys(style).forEach((key) => {
       const val = style[key];
-      
+
       let finalVal;
       if (typeof val === 'object' && inlineStyles[key]) {
-        finalVal = _mergeStyles([inlineStyles[key], val], depth+1);
+        finalVal = _mergeStyles([inlineStyles[key], val], depth + 1);
       } else {
         finalVal = val;
       }

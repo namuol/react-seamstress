@@ -27,7 +27,7 @@ runTests({
       input: {
         styles: [
           {
-            ':test': {color: 'red'}
+            ':test': {color: 'red'},
           },
         ],
       },
@@ -40,13 +40,13 @@ runTests({
       input: {
         styles: [
           {
-            ':test': {color: 'red'}
+            ':test': {color: 'red'},
           },
         ],
 
         styleState: {
           test: false,
-        }
+        },
       },
       expected: [
       ],
@@ -57,13 +57,13 @@ runTests({
       input: {
         styles: [
           {
-            ':test': {color: 'red'}
+            ':test': {color: 'red'},
           },
         ],
 
         styleState: {
           test: true,
-        }
+        },
       },
       expected: [
         {color: 'red'},
@@ -79,12 +79,12 @@ runTests({
           },
           {
             ':test': {color: 'red'},
-          }
+          },
         ],
 
         styleState: {
           test: true,
-        }
+        },
       },
       expected: [
         {color: 'black'},
@@ -109,7 +109,7 @@ runTests({
 
         styleState: {
           test: true,
-        }
+        },
       },
       expected: [
         'MyComponent_test',
@@ -131,7 +131,7 @@ runTests({
         styleState: {
           test: true,
           test2: true,
-        }
+        },
       },
       expected: [
         'MyComponent_test2',
@@ -152,7 +152,7 @@ runTests({
         styleState: {
           test: true,
           test2: true,
-        }
+        },
       },
       expected: [
         'MyComponent_test',
@@ -173,7 +173,7 @@ runTests({
 
         styleState: {
           test: true,
-        }
+        },
       },
       expected: [
         {
@@ -199,7 +199,7 @@ runTests({
 
         styleState: {
           test: true,
-        }
+        },
       },
       expected: [
         {
@@ -222,7 +222,7 @@ runTests({
 
         styleState: {
           test: true,
-        }
+        },
       },
       expected: [
         'MyComponent',
@@ -241,7 +241,7 @@ runTests({
           42,
         ],
 
-        styleState: {}
+        styleState: {},
       },
       expected: [],
     },
@@ -250,7 +250,7 @@ runTests({
       capability: 'handle false style instead of array',
       input: {
         styles: false,
-        styleState: {}
+        styleState: {},
       },
       expected: [],
     },
@@ -259,7 +259,7 @@ runTests({
       capability: 'handle null style instead of array',
       input: {
         styles: null,
-        styleState: {}
+        styleState: {},
       },
       expected: [],
     },
@@ -268,7 +268,7 @@ runTests({
       capability: 'handle undefined style instead of array',
       input: {
         styles: undefined,
-        styleState: {}
+        styleState: {},
       },
       expected: [],
     },
@@ -294,7 +294,7 @@ runTests({
         styleState: {
           test: true,
           test2: true,
-        }
+        },
       },
       expected: [
         {color: 'red'},
@@ -317,7 +317,7 @@ runTests({
         styleState: {
           test: true,
           test2: false,
-        }
+        },
       },
       expected: [
         {color: 'red'},
@@ -335,7 +335,7 @@ runTests({
           },
         ],
 
-        styleState: {}
+        styleState: {},
       },
       expected: [
         {color: 'red'},
@@ -355,7 +355,7 @@ runTests({
 
         styleState: {
           favoriteColor: 'red',
-        }
+        },
       },
       expected: [
         {color: 'red'},
@@ -370,12 +370,12 @@ runTests({
             color: ({styleState: {favoriteColor}}) => {
               return favoriteColor;
             },
-          }
+          },
         ],
 
         styleState: {
           favoriteColor: 'red',
-        }
+        },
       },
       expected: [
         {color: 'red'},
@@ -398,7 +398,7 @@ runTests({
         styleState: {
           test: true,
           favoriteColor: 'red',
-        }
+        },
       },
       expected: [
         {color: 'red'},
@@ -420,29 +420,7 @@ runTests({
 
         styleState: {
           favoriteColor: 'red',
-        }
-      },
-      expected: [
-        {color: 'red'},
-      ],
-    },
-    
-    {
-      capability: 'call functions to determine the value of individual style properties in :base objects',
-      input: {
-        styles: [
-          {
-            ':base': {
-              color: ({styleState: {favoriteColor}}) => {
-                return favoriteColor;
-              },
-            }
-          }
-        ],
-
-        styleState: {
-          favoriteColor: 'red',
-        }
+        },
       },
       expected: [
         {color: 'red'},
@@ -458,13 +436,35 @@ runTests({
               color: ({styleState: {favoriteColor}}) => {
                 return favoriteColor;
               },
-            }
-          }
+            },
+          },
         ],
 
         styleState: {
           favoriteColor: 'red',
-        }
+        },
+      },
+      expected: [
+        {color: 'red'},
+      ],
+    },
+
+    {
+      capability: 'call functions to determine the value of individual style properties in :base objects',
+      input: {
+        styles: [
+          {
+            ':base': {
+              color: ({styleState: {favoriteColor}}) => {
+                return favoriteColor;
+              },
+            },
+          },
+        ],
+
+        styleState: {
+          favoriteColor: 'red',
+        },
       },
       expected: [
         {color: 'red'},
@@ -488,9 +488,9 @@ runTests({
       capability: 'ignore null, false, and undefined results from callbacks',
       input: {
         styles: [
-          () => {return null},
-          () => {return false},
-          () => {return undefined},
+          () => { return null; },
+          () => { return false; },
+          () => { return undefined; },
         ],
       },
       expected: [
@@ -501,7 +501,7 @@ runTests({
       capability: 'concat array results from top-level callbacks',
       input: {
         styles: [
-          () => {return ['aaa', 'bbb', 'ccc']},
+          () => { return ['aaa', 'bbb', 'ccc']; },
         ],
       },
       expected: [
@@ -516,7 +516,7 @@ runTests({
       input: {
         styles: [
           {
-            ':valid': () => {return ['aaa', 'bbb', 'ccc']}
+            ':valid': () => { return ['aaa', 'bbb', 'ccc']; },
           },
         ],
 
@@ -538,7 +538,7 @@ runTests({
           () => {
             return {
               ':test': {color: 'red'},
-            }
+            };
           },
         ],
 
@@ -557,13 +557,13 @@ runTests({
         styles: [
           {
             '::pseudo-element': { color: 'red' },
-          }
+          },
         ],
       },
       expected: [
         {
           '::pseudo-element': { color: 'red' },
-        }
+        },
       ],
     },
 
@@ -573,13 +573,13 @@ runTests({
         styles: [
           {
             '::pseudo-element': 'MySubComponent',
-          }
+          },
         ],
       },
       expected: [
         {
           '::pseudo-element': 'MySubComponent',
-        }
+        },
       ],
     },
 
@@ -588,20 +588,20 @@ runTests({
       input: {
         styles: [
           {
-            '::pseudo-element': ({styleState: {currentSubColor}}) => { return {color: currentSubColor} },
-          }
+            '::pseudo-element': ({styleState: {currentSubColor}}) => { return {color: currentSubColor}; },
+          },
         ],
 
         styleState: {
           currentSubColor: 'red',
-        }
+        },
       },
       expected: [
         {
           '::pseudo-element': {
             color: 'red',
           },
-        }
+        },
       ],
     },
 
@@ -611,7 +611,7 @@ runTests({
         styles: [
           {
             ':invalid::pseudo-element': 'Nope',
-          }
+          },
         ],
       },
       expected: [
@@ -624,7 +624,7 @@ runTests({
         styles: [
           {
             ':valid::pseudo-element': 'Yep',
-          }
+          },
         ],
 
         styleState: {
@@ -643,7 +643,7 @@ runTests({
           {
             '[valid]': 'Yep',
             '[alsoValid]': 'Totally',
-          }
+          },
         ],
 
         props: {
@@ -664,7 +664,7 @@ runTests({
           {
             '[invalid]': 'Nope',
             '[alsoInvalid]': 'Nah',
-          }
+          },
         ],
 
         props: {
@@ -682,7 +682,7 @@ runTests({
         styles: [
           {
             '[doesntEvenExist]': 'NoWay',
-          }
+          },
         ],
 
         props: {
@@ -698,7 +698,7 @@ runTests({
         styles: [
           {
             '[answer=42]': 'Valid',
-          }
+          },
         ],
 
         props: {
@@ -716,7 +716,7 @@ runTests({
         styles: [
           {
             '[answer=42]': 'Valid',
-          }
+          },
         ],
 
         props: {
@@ -733,7 +733,7 @@ runTests({
         styles: [
           {
             '[favoriteColor="red"]': 'LikesRed',
-          }
+          },
         ],
 
         props: {
@@ -751,7 +751,7 @@ runTests({
         styles: [
           {
             '[favoriteColor="red"]': 'LikesRed',
-          }
+          },
         ],
 
         props: {
@@ -768,7 +768,7 @@ runTests({
         styles: [
           {
             '[work="all"][play=0]': 'DullBoy',
-          }
+          },
         ],
 
         props: {
@@ -787,7 +787,7 @@ runTests({
         styles: [
           {
             '[work="all"][play=0]': 'DullBoy',
-          }
+          },
         ],
 
         props: {
@@ -805,7 +805,7 @@ runTests({
         styles: [
           {
             '[  work ="all"][ play = 0 ]': 'DullBoy',
-          }
+          },
         ],
 
         props: {
@@ -814,7 +814,7 @@ runTests({
         },
       },
       expected: [
-        'DullBoy'
+        'DullBoy',
       ],
     },
 
@@ -824,7 +824,7 @@ runTests({
         styles: [
           {
             '[valid]::pseudo-element': 'Yep',
-          }
+          },
         ],
 
         props: {
@@ -842,7 +842,7 @@ runTests({
         styles: [
           {
             ':valid-hyphenated': 'Yep',
-          }
+          },
         ],
 
         styleState: {
@@ -850,7 +850,7 @@ runTests({
         },
       },
       expected: [
-        'Yep'
+        'Yep',
       ],
     },
 
@@ -860,7 +860,7 @@ runTests({
         styles: [
           {
             '[valid-hyphenated]': 'Yep',
-          }
+          },
         ],
 
         props: {
@@ -868,7 +868,7 @@ runTests({
         },
       },
       expected: [
-        'Yep'
+        'Yep',
       ],
     },
 
@@ -880,12 +880,12 @@ runTests({
             color: ({styleState, props}) => {
               return props.favoriteColor;
             },
-          }
+          },
         ],
 
         props: {
           favoriteColor: 'red',
-        }
+        },
       },
       expected: [
         {color: 'red'},
