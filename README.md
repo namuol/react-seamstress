@@ -1,12 +1,14 @@
 # Seamstress
 
-Provide a flexible styling API for your React components.
-
 > 
 > **Notice:**
 > 
 > This is an in-progress branch of Seamstress -- most documentation is currently out of date/missing.
 > 
+
+A powerful styling layer for reusable React components.
+
+Inspired by [`[attr]` selectors](https://developer.mozilla.org/en/docs/Web/CSS/Attribute_selectors) and [`::pseudo-elements`](https://developer.mozilla.org/en/docs/Web/CSS/Pseudo-elements).
 
 ## Prior Art/Acknowledgements
 
