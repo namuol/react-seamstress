@@ -31,7 +31,7 @@ function getValue (style, key, props) {
   return value;
 }
 
-export default function computeStyles ({styles, styleState = {}, props = {}}) {
+export default function computeStyles ({styles, props = {}}) {
   if (!styles) {
     return [];
   }
@@ -55,8 +55,7 @@ export default function computeStyles ({styles, styleState = {}, props = {}}) {
 
     if (styleType === 'function') {
       computedStyles.push(...computeStyles({
-        styles: style({styleState, props}),
-        styleState,
+        styles: style({props}),
         props,
       }));
       return computedStyles;
@@ -67,7 +66,7 @@ export default function computeStyles ({styles, styleState = {}, props = {}}) {
     let root = style['::root'];
 
     if ((typeof root) === 'function') {
-      root = root({styleState, props});
+      root = root({props});
     }
 
     arrayify(root).forEach((root) => {

@@ -1,6 +1,7 @@
 {
   "name": "react-seamstress",
   "version": "0.5.0",
+  "repository": "https://github.com/namuol/react-seamstress",
   "description": "Experimental interface for exposing style-related state inside complex React components",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
@@ -27,7 +28,7 @@
     "react": "^0.14.8",
     "react-dom": "^0.14.8",
     "tap": "^1.4.1",
-    "tap-difflet": "^0.3.0",
+    "tap-difflet": "^0.4.0",
     "tape": "^4.2.1"
   },
   "peerDependencies": {

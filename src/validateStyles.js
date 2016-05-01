@@ -1,37 +1,16 @@
 import arrayify from './arrayify';
-import mergeStyles from './mergeStyles';
 import getSubComponentStyles from './getSubComponentStyles';
 
-import getInvalidStyleStates from './getInvalidStyleStates';
 import getInvalidSubComponents from './getInvalidSubComponents';
 
-const stringifyPropertyList = (styleStates) => styleStates.map((s) => `\`${s}\``).join(', ');
+const stringifyPropertyList = (props) => props.map((s) => `\`${s}\``).join(', ');
 
-export default function validateStyles ({ styleStateTypes, subComponentTypes }, displayName, props, propName, component) {
+export default function validateStyles ({ subComponentTypes }, displayName, props, propName, component) {
   const subComponentStyles = getSubComponentStyles({
     styles: arrayify(props.styles),
   }) || {};
 
-  const invalidStyleStates = getInvalidStyleStates({
-    // We're only worried about root styles:
-    style: mergeStyles(subComponentStyles.root),
-    styleStateTypes,
-  });
-
   const errors = [];
-
-  if (invalidStyleStates) {
-    const errorIntro = (invalidStyleStates.length > 1
-      ? `[${stringifyPropertyList(invalidStyleStates)}] are not valid style-states of \`${displayName || component}\`.`
-      : `${stringifyPropertyList(invalidStyleStates)} is not a valid style-state of \`${displayName || component}\`.`
-    );
-
-    errors.push(
-      errorIntro + ' ' + 'Valid style-states are: [' +
-        stringifyPropertyList(Object.keys(styleStateTypes)) +
-      '].'
-    );
-  }
 
   delete subComponentStyles.root;
 
