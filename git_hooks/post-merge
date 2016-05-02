@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./install_git_hooks.sh

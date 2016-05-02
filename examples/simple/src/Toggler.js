@@ -1,49 +1,33 @@
-import Seamstress from 'react-seamstress';
+import Seamstress, { SubComponentTypes } from 'react-seamstress';
 import React, { PropTypes } from 'react';
 
-const seamstressConfig = {
+const {
+  createContainer,
+  stylesPropType,
+} = Seamstress.configure({
   styles: {
-    ':base': 'Toggler',
-    ':toggled': 'Toggler_toggled',
+    '::root': 'Toggler',
+    '[toggled]': 'Toggler_toggled',
     '::indicator': 'TogglerIndicator',
+    '[toggled]::indicator': 'TogglerIndicator_toggled',
   },
+  subComponentTypes: {
+    indicator: SubComponentTypes.simple,
+  },
+});
 
-  styleStateTypes: {
-    toggled: PropTypes.bool.isRequired,
-  },
+export const Toggler = ({ styles = {}, onToggle }) => (
+  <div
+    {...styles.root}
+    onClick={onToggle}
+  >
+    <span {...styles.indicator}>✓</span>
+  </div>
+);
 
-  getStyleState: ({props, state, context}) => {
-    return {
-      toggled: !!state.toggled,
-    };
-  },
+Toggler.propTypes = {
+  onToggle: PropTypes.func.isRequired,
+  styles: stylesPropType,
 };
 
-@Seamstress.createDecorator(seamstressConfig)
-export default class Toggler extends React.Component {
-  static propTypes = {
-    defaultToggled: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    defaultToggled: false,
-  };
-
-  state = {
-    toggled: this.props.defaultToggled,
-  };
-
-  toggle () {
-    this.setState({ toggled: !this.state.toggled });
-  }
-
-  render () {
-    const computedStyles = this.getComputedStyles();
-
-    return <div {...computedStyles.root} onClick={::this.toggle}>
-      {this.state.toggled &&
-        <span {...computedStyles.indicator}>✓</span>
-      }
-    </div>;
-  }
-}
+export default createContainer(Toggler);

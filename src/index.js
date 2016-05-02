@@ -1,18 +1,9 @@
-import React from 'react';
-import isReactClass from './isReactClass';
-
-import warning from 'warning';
 import arrayify from './arrayify';
 
 import computeStylesInternal from './computeStyles';
 import getSubComponentStyles from './getSubComponentStyles';
-import getExpectedPropsFromSelector from './getExpectedPropsFromSelector';
 
 import validateStyles from './validateStyles';
-import checkPropTypes from './checkPropTypes';
-
-// TODO: What's a better way to do this? How does React do it?
-const __DEV__ = process.env.NODE_ENV !== 'production';
 
 import mergeStyles from './mergeStyles';
 
@@ -24,6 +15,7 @@ export const SubComponentTypes = {
 export function configure ({
   styles = {},
   subComponentTypes = {},
+  propTypes = {},
 } = {}) {
   function computeStyles (props = {}) {
     const computedStyles = getSubComponentStyles({
@@ -48,6 +40,12 @@ export function configure ({
 
   return {
     computeStyles,
+    stylesPropType: (...args) => {
+      return validateStyles({
+        subComponentTypes,
+        propTypes,
+      }, ...args);
+    },
   };
 };
 

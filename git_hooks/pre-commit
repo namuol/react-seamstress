@@ -1,0 +1,15 @@
+#!/bin/bash
+
+npm run lint --silent
+
+returnCode=$?
+
+if [[ $returnCode != 0 ]]
+  then
+  echo
+  echo 'Error: ESLint failed; nothing was committed.'
+  echo
+  echo 'Fix the issues above and re-commit.'
+  echo
+  exit $returnCode
+fi

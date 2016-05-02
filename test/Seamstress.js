@@ -3,6 +3,8 @@ import Seamstress, {
   SubComponentTypes,
 } from '../src/index.js';
 
+import { PropTypes } from 'react';
+
 tape.test('SubComponentTypes', (t) => {
   t.equal(typeof SubComponentTypes, 'object', 'has a named "SubComponentTypes" export object');
 
@@ -15,7 +17,85 @@ tape.test('Seamstress.configure(...)', (t) => {
   t.equal(typeof Seamstress.configure, 'function', 'exists and is a function');
   const result = Seamstress.configure();
   t.equal(typeof result, 'object', 'returns an object');
-  t.equal(typeof result.computeStyles, 'function', 'returns `computeStyles` function property');
+  t.equal(typeof result.computeStyles, 'function', 'returned object includes `computeStyles` function');
+  t.equal(typeof result.stylesPropType, 'function', 'returned object includes `stylesPropType` function');
+  t.end();
+});
+
+tape.test('Seamstress.configure(...).stylesPropType(...)', (t) => {
+  const { stylesPropType } = Seamstress.configure({
+    subComponentTypes: {
+      simpleSubComponent: SubComponentTypes.simple,
+      compositeSubComponent: SubComponentTypes.composite,
+    },
+    propTypes: {
+      someBool: PropTypes.bool,
+      someNumber: PropTypes.number,
+      someString: PropTypes.string,
+    },
+  });
+
+  t.equal(stylesPropType({}, 'styles', 'TestComponent'), undefined, 'returns nothing when valid styles are supplied');
+
+  let result = stylesPropType({
+    styles: {
+      '::invalidSubComponent': 'whatever',
+    },
+  }, 'styles', 'TestComponent');
+  t.assert(result instanceof Error, 'returns an Error when an unspecified subcomponent style is provided');
+
+  result = stylesPropType({
+    styles: {
+      '::simpleSubComponent': 'whatever',
+      '::compositeSubComponent': 'whatever',
+    },
+  }, 'styles', 'TestComponent');
+  t.equal(result, undefined, 'returns undefined when valid subcomponent styles are provided');
+
+  result = stylesPropType({
+    styles: {
+      '[someBool=true]': 'whatever',
+      '[someNumber=42]': 'whatever',
+      '[someString="bacon"]': 'whatever',
+    },
+  }, 'styles', 'TestComponent');
+  t.equal(result, undefined, 'returns undefined when valid [prop] comparisons are made');
+
+  result = stylesPropType({
+    styles: {
+      '[someBool="true"]': 'whatever',
+    },
+  }, 'styles', 'TestComponent');
+  t.assert(result instanceof Error, 'returns an error when [bool="string"] comparisons are made');
+
+  result = stylesPropType({
+    styles: {
+      '[someNumber="42"]': 'whatever',
+    },
+  }, 'styles', 'TestComponent');
+  t.assert(result instanceof Error, 'returns an error when [number="string"] comparisons are made');
+
+  result = stylesPropType({
+    styles: {
+      '[someString=bacon]': 'whatever',
+    },
+  }, 'styles', 'TestComponent');
+  t.assert(result instanceof Error, 'returns an error when [string=unquoted-string] comparisons are made');
+
+  result = stylesPropType({
+    styles: {
+      '[someString=="bacon"]': 'whatever',
+    },
+  }, 'styles', 'TestComponent');
+  t.assert(result instanceof Error, 'returns an error when using double-equals');
+
+  result = stylesPropType({
+    styles: {
+      ':simpleSubComponent': 'whatever',
+    },
+  }, 'styles', 'TestComponent');
+  t.assert(result instanceof Error, 'returns an error when using single semicolon syntax');
+
   t.end();
 });
 
