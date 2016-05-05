@@ -31,6 +31,8 @@ function getValue (style, key, props) {
   return value;
 }
 
+import expandStyles from './expandStyles';
+
 export default function computeStyles ({styles, props = {}}) {
   if (!styles) {
     return [];
@@ -40,8 +42,15 @@ export default function computeStyles ({styles, props = {}}) {
   const satisfiesSelector = (str) => satisfiesProps(str);
 
   return arrayify(styles).filter((s) =>
-    ['string', 'function', 'object'].indexOf(typeof s) > -1
-  ).reduce((computedStyles, style) => {
+    s && ['string', 'function', 'object'].indexOf(typeof s) > -1
+  ).reduce((flattenedStyles, style) => {
+    if (typeof style !== 'object') {
+      flattenedStyles.push(style);
+    } else {
+      flattenedStyles.push(...expandStyles(style));
+    }
+    return flattenedStyles;
+  }, []).reduce((computedStyles, style) => {
     if (!style) {
       return computedStyles;
     }
@@ -84,7 +93,7 @@ export default function computeStyles ({styles, props = {}}) {
     } = Object.keys(style).reduce((keys, k) => {
       if (/::/.test(k) && k !== '::root') {
         keys.pseudoElements.push(k);
-      } else if (/^\[.+\]/.test(k)) {
+      } else if (/^\s*\[.+\]/.test(k)) {
         keys.conditionals.push(k);
       } else if (k !== '::root') {
         keys.topLevel.push(k);

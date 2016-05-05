@@ -580,6 +580,28 @@ runTests({
     },
 
     {
+      capability: 'retain multiple ::pseudo-elements object entries',
+      input: {
+        styles: [
+          {
+            '::pseudo-element': { color: 'red' },
+          },
+          {
+            '::pseudo-element': { background: 'black' },
+          },
+        ],
+      },
+      expected: [
+        {
+          '::pseudo-element': { color: 'red' },
+        },
+        {
+          '::pseudo-element': { background: 'black' },
+        },
+      ],
+    },
+
+    {
       capability: 'include [truthyProps]',
       input: {
         styles: [
@@ -780,7 +802,7 @@ runTests({
     },
 
     {
-      capability: 'include :hyphenated-selectors',
+      capability: 'include [hyphenated-selectors]',
       input: {
         styles: [
           {
@@ -832,6 +854,89 @@ runTests({
       },
       expected: [
         {color: 'red'},
+      ],
+    },
+
+    {
+      capability: 'include "[invalid],[valid]"',
+      input: {
+        styles: [
+          {
+            '[invalid],[valid]': {
+              color: 'red',
+            },
+            '[valid],[invalid]': {
+              background: 'black',
+            },
+          },
+        ],
+
+        props: {
+          invalid: false,
+          valid: true,
+        },
+      },
+      expected: [
+        {
+          color: 'red',
+        },
+        {
+          background: 'black',
+        },
+      ],
+    },
+
+    {
+      capability: 'include "[invalid],  [valid]" (with whitespace)',
+      input: {
+        styles: [
+          {
+            '[invalid], [valid]': {
+              color: 'red',
+            },
+            '[valid]  , [invalid]': {
+              background: 'black',
+            },
+          },
+        ],
+
+        props: {
+          invalid: false,
+          valid: true,
+        },
+      },
+      expected: [
+        {
+          color: 'red',
+        },
+        {
+          background: 'black',
+        },
+      ],
+    },
+
+    {
+      capability: 'include "[invalid]::pseudo-element,[valid]::pseudo-element"',
+      input: {
+        styles: [
+          {
+            '[invalid]::pseudo-element,[valid]::pseudo-element': {
+              color: 'red',
+            },
+          },
+        ],
+
+        props: {
+          invalid: false,
+          valid: true,
+        },
+      },
+      expected: [
+        {
+          '::pseudo-element': {
+            color: 'red',
+          },
+        },
       ],
     },
   ],
