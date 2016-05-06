@@ -10,9 +10,9 @@ const styleProp = '[a-z0-9]+';
 const propSelector = '(\\[\\s*(\\w+)\\s*(\\s*=\\s*(\\d+|true|false|"([^"]|\\\\")+")\\s*)?\\s*\\])';
 const subComponentSelector = '(::[^\\s:=]+)';
 
-// const validSelector = /^(\[\s*(\w+)\s*(\s*=\s*([^\]]+)\s*)?\s*\])+$|^(\[\s*([^\[\]\s]+)\s*(\s*=\s*([^\]]+)\s*)?\s*\])*(::[^\s:=]+)$|^(::[^\s:=]+)$|$/i;
 const validSelector = new RegExp(`^${propSelector}+$|^${propSelector}*${subComponentSelector}$|^${styleProp}$`, 'i');
 const validateSelector = validSelector.test.bind(validSelector);
+
 const unquotedCommas = /(,)(?=(?:[^"]|"[^"]*")*$)/g;
 export function isSelectorValid (selector) {
   return selector.split(unquotedCommas).filter((s) => s !== ',').map((s) => s.trim()).every(validateSelector);
