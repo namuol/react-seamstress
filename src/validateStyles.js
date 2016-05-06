@@ -4,16 +4,27 @@ import getSubComponentStyles from './getSubComponentStyles';
 import getInvalidSubComponents from './getInvalidSubComponents';
 import getExpectedPropsFromSelector from './getExpectedPropsFromSelector';
 
-const stringifyPropertyList = (props) => props.map((s) => `'::${s}'`).join('\n');
+const stringifySubComponentList = (props) => props.map((s) => `'::${s}'`).join('\n');
 
-const validSelector = /^(\[\s*(\w+)\s*(\s*=\s*([^\]]+)\s*)?\s*\])+$|^(\[\s*(\w+)\s*(\s*=\s*([^\]]+)\s*)?\s*\]*(::\w+))$|^(::\w+)$/;
+const styleProp = '[a-z0-9]+';
+const propSelector = '(\\[\\s*(\\w+)\\s*(\\s*=\\s*(\\d+|true|false|"([^"]|\\\\")+")\\s*)?\\s*\\])';
+const subComponentSelector = '(::[^\\s:=]+)';
 
-const validSelectorExamples = [
+// const validSelector = /^(\[\s*(\w+)\s*(\s*=\s*([^\]]+)\s*)?\s*\])+$|^(\[\s*([^\[\]\s]+)\s*(\s*=\s*([^\]]+)\s*)?\s*\])*(::[^\s:=]+)$|^(::[^\s:=]+)$|$/i;
+const validSelector = new RegExp(`^${propSelector}+$|^${propSelector}*${subComponentSelector}$|^${styleProp}$`, 'i');
+const validateSelector = validSelector.test.bind(validSelector);
+const unquotedCommas = /(,)(?=(?:[^"]|"[^"]*")*$)/g;
+export function isSelectorValid (selector) {
+  return selector.split(unquotedCommas).filter((s) => s !== ',').map((s) => s.trim()).every(validateSelector);
+}
+
+export const validSelectorExamples = [
   '::subComponent',
+  '::subComponent, ::subComponent2',
   '[prop]',
   '[prop=false]',
   '[prop=42]',
-  '[prop="string"]',
+  '[prop="string"], [prop2=42]',
   '[prop]::subComponent',
   '[prop1][prop2="string"]::subComponent',
 ];
@@ -33,11 +44,13 @@ export default function validateStyles ({
       return;
     }
 
-    Object.keys(styleSet).forEach((selector) => {
-      if (!validSelector.test(selector)) {
-        errors.push(`Seamstress: Malformed selector: "${selector}"\n\n${helpfulExamplesString}`);
-      }
-    });
+    const malformedSelectors = Object.keys(styleSet).filter((s) => !isSelectorValid(s));
+
+    if (malformedSelectors.length > 0) {
+      errors.push(`Seamstress: Malformed selector${
+        malformedSelectors.length !== 1 ? 's' : ''
+      }: ${malformedSelectors.map((s) => `"${s}"`).join(', ')}\n\n${helpfulExamplesString}`);
+    }
   });
 
   const subComponentStyles = getSubComponentStyles({
@@ -53,13 +66,13 @@ export default function validateStyles ({
 
   if (invalidSubComponents) {
     const errorIntro = (invalidSubComponents.length > 1
-      ? `[${stringifyPropertyList(invalidSubComponents)}] are not valid sub-components of \`${componentName}\`.`
-      : `${stringifyPropertyList(invalidSubComponents)} is not a valid sub-component of \`${componentName}\`.`
+      ? `[${stringifySubComponentList(invalidSubComponents)}] are not valid sub-components of \`${componentName}\`.`
+      : `${stringifySubComponentList(invalidSubComponents)} is not a valid sub-component of \`${componentName}\`.`
     );
 
     errors.push(
       errorIntro + ' ' + 'Valid sub-components are: [' +
-        stringifyPropertyList(Object.keys(subComponentTypes)) +
+        stringifySubComponentList(Object.keys(subComponentTypes)) +
       '].'
     );
   }
