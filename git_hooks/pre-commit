@@ -13,3 +13,17 @@ if [[ $returnCode != 0 ]]
   echo
   exit $returnCode
 fi
+
+npm run test --silent
+
+returnCode=$?
+
+if [[ $returnCode != 0 ]]
+  then
+  echo
+  echo 'Error: Tests failed; nothing was committed.'
+  echo
+  echo 'Fix the failed tests above and re-commit.'
+  echo
+  exit $returnCode
+fi
