@@ -1,9 +1,16 @@
 import tape from 'tape';
+
+import {
+  render,
+} from 'enzyme';
+
+import React, {
+  PropTypes,
+} from 'react';
+
 import Seamstress, {
   SubComponentTypes,
 } from '../src/index.js';
-
-import { PropTypes } from 'react';
 
 tape.test('SubComponentTypes', (t) => {
   t.equal(typeof SubComponentTypes, 'object', 'has a named "SubComponentTypes" export object');
@@ -35,7 +42,7 @@ tape.test('Seamstress.configure(...).stylesPropType(...)', (t) => {
     },
   });
 
-  t.equal(stylesPropType({}, 'styles', 'TestComponent'), undefined, 'returns nothing when valid styles are supplied');
+  t.equal(stylesPropType({}, 'styles', 'TestComponent'), null, 'returns null when valid styles are supplied');
 
   let result = stylesPropType({
     styles: {
@@ -50,7 +57,7 @@ tape.test('Seamstress.configure(...).stylesPropType(...)', (t) => {
       '::compositeSubComponent': 'whatever',
     },
   }, 'styles', 'TestComponent');
-  t.equal(result, undefined, 'returns undefined when valid subcomponent styles are provided');
+  t.equal(result, null, 'returns null when valid subcomponent styles are provided');
 
   result = stylesPropType({
     styles: {
@@ -59,7 +66,7 @@ tape.test('Seamstress.configure(...).stylesPropType(...)', (t) => {
       '[someString="bacon"]': 'whatever',
     },
   }, 'styles', 'TestComponent');
-  t.equal(result, undefined, 'returns undefined when valid [prop] comparisons are made');
+  t.equal(result, null, 'returns null when valid [prop] comparisons are made');
 
   result = stylesPropType({
     styles: {
@@ -96,6 +103,104 @@ tape.test('Seamstress.configure(...).stylesPropType(...)', (t) => {
   }, 'styles', 'TestComponent');
   t.assert(result instanceof Error, 'returns an error when using single semicolon syntax');
 
+  t.end();
+});
+
+tape.test('Seamstress.configure(...).computedStylesPropType(...)', (t) => {
+  const { computedStylesPropType } = Seamstress.configure({
+    subComponentTypes: {
+      simpleSubComponent: SubComponentTypes.simple,
+      compositeSubComponent: SubComponentTypes.composite,
+    },
+  });
+
+  t.equal(typeof computedStylesPropType, 'function');
+
+  let result;
+
+  result = computedStylesPropType({
+    styles: {
+      root: {},
+    },
+  }, 'styles', 'TestComponent');
+  t.equal(result, null, 'returns null when styles.root object prop is supplied');
+
+  result = computedStylesPropType({}, 'styles', 'TestComponent');
+  t.assert(result instanceof Error, 'returns an error when no styles prop is supplied');
+
+  result = computedStylesPropType({
+    styles: {},
+  }, 'styles', 'TestComponent');
+  t.assert(result instanceof Error, 'returns an error when no root sub-prop is supplied');
+
+  t.end();
+});
+
+tape.test('Seamstress.configure(...).createContainer(...)', (t) => {
+  class TestComponent extends React.Component {
+    render () {
+      const styles = this.props.styles;
+      return (
+        <div {...styles.root}>
+          <div {...styles.simpleSubComponent} />
+        </div>
+      );
+    }
+  }
+
+  const {
+    createContainer,
+    computedStylesPropType,
+  } = Seamstress.configure({
+    subComponentTypes: {
+      simpleSubComponent: SubComponentTypes.simple,
+      compositeSubComponent: SubComponentTypes.composite,
+    },
+    styles: {
+      '::root': 'rootClass',
+      '::simpleSubComponent': 'simpleClass',
+      '::compositeSubComponent': 'compositeClass',
+    },
+  });
+
+  TestComponent.propTypes = {
+    styles: computedStylesPropType,
+  };
+
+  t.equal(typeof createContainer, 'function', 'is a function');
+
+  const SeamstressTestComponent = createContainer(TestComponent);
+
+  t.equal(render(<SeamstressTestComponent />).find('.rootClass').length, 1, 'should have a single .rootClass element');
+  t.equal(render(<SeamstressTestComponent />).find('.simpleClass').length, 1, 'should have a single .simpleClass element');
+  t.equal(render(<SeamstressTestComponent
+    styles={{
+      '::simpleSubComponent': 'customClass',
+    }}
+  />).find('.customClass').length, 1, 'should allow style overrides');
+
+  class FancyTestComponent extends React.Component {
+    render () {
+      const styles = this.props.styles;
+      return (
+        <div {...styles.root}>
+          <SeamstressTestComponent {...styles.compositeSubComponent} />
+        </div>
+      );
+    }
+  }
+
+  FancyTestComponent.propTypes = {
+    styles: computedStylesPropType,
+  };
+
+  const FancySeamstressTestComponent = createContainer(FancyTestComponent);
+
+  t.equal(render(<FancySeamstressTestComponent
+    styles={{
+      '::compositeSubComponent': 'customClass',
+    }}
+  />).find('.customClass').length, 1, 'should allow style overrides');
   t.end();
 });
 

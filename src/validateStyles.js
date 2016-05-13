@@ -107,4 +107,6 @@ export default function validateStyles ({
   if (errors.length > 0) {
     return new Error(errors.join('\n'));
   }
+
+  return null;
 }

@@ -1,3 +1,5 @@
+import React, { PropTypes } from 'react';
+
 import arrayify from './arrayify';
 
 import computeStylesInternal from './computeStyles';
@@ -38,13 +40,36 @@ export function configure ({
     return computedStyles;
   }
 
+  const stylesPropType = (...args) => {
+    return validateStyles({
+      subComponentTypes,
+      propTypes,
+    }, ...args);
+  };
+
+  const computedStylesPropType = PropTypes.shape({
+    root: PropTypes.shape({}).isRequired,
+  }).isRequired;
+
   return {
     computeStyles,
-    stylesPropType: (...args) => {
-      return validateStyles({
-        subComponentTypes,
-        propTypes,
-      }, ...args);
+    stylesPropType,
+    computedStylesPropType,
+    createContainer: (Component) => {
+      return class extends React.Component {
+        static propTypes = {
+          styles: stylesPropType,
+        };
+
+        render () {
+          return (
+            <Component
+              {...this.props}
+              styles={computeStyles(this.props)}
+            />
+          );
+        }
+      };
     },
   };
 };
