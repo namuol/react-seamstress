@@ -33,7 +33,7 @@ export function configure ({
       if (subComponentTypes[name] === SubComponentTypes.composite) {
         computedStyles[name] = { styles: computedStyles[name] || [] };
       } else {
-        computedStyles[name] = mergeStyles(computedStyles[name] || {});
+        computedStyles[name] = mergeStyles(computedStyles[name] || []);
       }
     });
 

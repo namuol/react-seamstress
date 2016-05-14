@@ -201,6 +201,26 @@ tape.test('Seamstress.configure(...).createContainer(...)', (t) => {
       '::compositeSubComponent': 'customClass',
     }}
   />).find('.customClass').length, 1, 'should allow style overrides');
+
+  const {
+    createContainer: stylelessCreateContainer,
+  } = Seamstress.configure({
+    subComponentTypes: {
+      simpleSubComponent: SubComponentTypes.simple,
+    },
+    styles: {},
+  });
+
+  const StylelessTestComponent = stylelessCreateContainer(TestComponent);
+  let threw = false;
+  try {
+    render(<StylelessTestComponent />);
+  } catch (e) {
+    threw = true;
+  }
+
+  t.assert(!threw, 'doesn\'t throw when no sub component styles are supplied');
+
   t.end();
 });
 
