@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import StatefulToggler from './StatefulToggler';
+import Toggler from './Toggler';
 
 const RED_STYLE_INLINE = {
   border: '2px solid #c66',
@@ -54,9 +54,9 @@ export default class App extends Component {
         <section>
           <h2>Default styles:</h2>
           <div>
-            <StatefulToggler />
-            <StatefulToggler defaultToggled />
-            <StatefulToggler />
+            <Toggler />
+            <Toggler defaultToggled />
+            <Toggler />
           </div>
         </section>
 
@@ -64,9 +64,9 @@ export default class App extends Component {
           <h2>Overriding inside render with <code>props.styles</code>:</h2>
           <div>
             <p>With inline styles:</p>
-            <StatefulToggler styles={RED_STYLE_INLINE} />
-            <StatefulToggler styles={GREEN_STYLE_INLINE} defaultToggled />
-            <StatefulToggler styles={BLUE_STYLE_INLINE} />
+            <Toggler styles={RED_STYLE_INLINE} />
+            <Toggler styles={GREEN_STYLE_INLINE} defaultToggled />
+            <Toggler styles={BLUE_STYLE_INLINE} />
           </div>
 
           <div>
@@ -105,9 +105,9 @@ export default class App extends Component {
               }
             `}
             </style>
-            <StatefulToggler styles={RED_STYLE_CSS} />
-            <StatefulToggler styles={GREEN_STYLE_CSS} defaultToggled />
-            <StatefulToggler styles={BLUE_STYLE_CSS} />
+            <Toggler styles={RED_STYLE_CSS} />
+            <Toggler styles={GREEN_STYLE_CSS} defaultToggled />
+            <Toggler styles={BLUE_STYLE_CSS} />
           </div>
         </section>
       </div>
