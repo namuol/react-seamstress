@@ -23,6 +23,17 @@ runTests({
     },
 
     {
+      capability: 'include any numbers (React Native styles) from the input styles array',
+      input: {
+        styles: [
+          12345,
+        ],
+      },
+      expected: [
+        12345,
+      ],
+    },
+    {
       capability: 'not include any objects when no props are supplied (we assume false)',
       input: {
         styles: [
@@ -150,6 +161,30 @@ runTests({
     },
 
     {
+      capability: '"hoist" toplevel React Native styles',
+      input: {
+        styles: [
+          42,
+          {
+            '[test]': {color: 'red'},
+            backgroundColor: 'orange',
+          },
+        ],
+
+        props: {
+          test: true,
+        },
+      },
+      expected: [
+        42,
+        {
+          backgroundColor: 'orange',
+        },
+        {color: 'red'},
+      ],
+    },
+
+    {
       capability: '"hoist" ::root styles',
       input: {
         styles: [
@@ -196,14 +231,32 @@ runTests({
     },
 
     {
-      capability: 'straight-up *ignore* non-string, non-object values inside the array',
+      capability: '"hoist" ::root React Native styles',
+      input: {
+        styles: [
+          {
+            '[test]': {color: 'red'},
+            '::root': 42,
+          },
+        ],
+
+        props: {
+          test: true,
+        },
+      },
+      expected: [
+        42,
+        {color: 'red'},
+      ],
+    },
+
+    {
+      capability: 'straight-up *ignore* non-string, non-number, non-object values inside the array',
       input: {
         styles: [
           true,
-          0,
           false,
           null,
-          42,
         ],
 
         props: {},

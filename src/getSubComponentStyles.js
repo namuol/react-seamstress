@@ -1,10 +1,12 @@
 export default function getSubComponentStyles ({styles = []}) {
-  return styles.reduce((result, style) => {
+  return [...styles].reduce((result, style) => {
     if (!style) {
       return result;
     }
 
-    if (typeof style === 'string') {
+    const styleType = typeof style;
+
+    if (styleType === 'string' || styleType === 'number') {
       result.root.push(style);
       return result;
     }

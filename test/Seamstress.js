@@ -474,3 +474,63 @@ runTests({
     },
   ],
 });
+
+const {
+  computeStyles: computeStylesNative,
+} = Seamstress.configure({
+  native: true,
+  styles: {
+    '::root': 42,
+    '::subComponent': 43,
+    '::compositeSubComponent': 44,
+  },
+  subComponentTypes: {
+    subComponent: SubComponentTypes.simple,
+    compositeSubComponent: SubComponentTypes.composite,
+  },
+});
+
+runTests({
+  func: computeStylesNative,
+  funcName: 'React Native: Seamstress.configure(...).computeStyles(...)',
+  tests: [
+    {
+      capability: 'in absense of arguments, returns processed styles ',
+      input: undefined,
+      expected: {
+        root: {
+          style: [42],
+        },
+        subComponent: {
+          style: [43],
+        },
+        compositeSubComponent: {
+          styles: [44],
+        },
+      },
+    },
+
+    {
+      capability: 'in absense of arguments, returns processed styles ',
+      input: {
+        test: true,
+        styles: {
+          '[test]': 45,
+          '[test]::subComponent': 46,
+          '[test]::compositeSubComponent': 47,
+        },
+      },
+      expected: {
+        root: {
+          style: [42, 45],
+        },
+        subComponent: {
+          style: [43, 46],
+        },
+        compositeSubComponent: {
+          styles: [44, 47],
+        },
+      },
+    },
+  ],
+});

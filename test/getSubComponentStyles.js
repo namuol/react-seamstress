@@ -63,7 +63,6 @@ runTests({
         styles: [
           false,
           null,
-          24,
           undefined,
         ],
       },

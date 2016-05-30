@@ -42,7 +42,7 @@ export default function computeStyles ({styles, props = {}}) {
   const satisfiesSelector = (str) => satisfiesProps(str);
 
   return arrayify(styles).filter((s) =>
-    s && ['string', 'function', 'object'].indexOf(typeof s) > -1
+    s && ['string', 'function', 'object', 'number'].indexOf(typeof s) > -1
   ).reduce((flattenedStyles, style) => {
     if (typeof style !== 'object') {
       flattenedStyles.push(style);
@@ -57,7 +57,7 @@ export default function computeStyles ({styles, props = {}}) {
 
     const styleType = (typeof style);
 
-    if (styleType === 'string') {
+    if (styleType === 'string' || styleType === 'number') {
       computedStyles.push(style);
       return computedStyles;
     }
@@ -74,15 +74,19 @@ export default function computeStyles ({styles, props = {}}) {
 
     let root = style['::root'];
 
-    if ((typeof root) === 'function') {
+    const rootType = typeof root;
+
+    if (rootType === 'function') {
       root = root({props});
     }
 
-    arrayify(root).forEach((root) => {
-      if ((typeof root) === 'object') {
-        Object.assign(style, root);
-      } else if ((typeof root) === 'string') {
-        computedStyles.push(root);
+    arrayify(root).forEach((subRoot) => {
+      const subRootType = typeof subRoot;
+
+      if (subRootType === 'object') {
+        Object.assign(style, subRoot);
+      } else if (subRootType === 'string' || subRootType === 'number') {
+        computedStyles.push(subRoot);
       }
     });
 

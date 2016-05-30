@@ -5,3 +5,5 @@ test
 book.json
 .DS_Store
 _book
+.babelrc
+git_hooks

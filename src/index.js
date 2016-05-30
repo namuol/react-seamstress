@@ -18,6 +18,7 @@ export function configure ({
   styles = {},
   subComponentTypes = {},
   propTypes = {},
+  native = false,
 } = {}) {
   function computeStyles (props = {}) {
     const computedStyles = getSubComponentStyles({
@@ -32,6 +33,8 @@ export function configure ({
     allSubComponentNames.forEach((name) => {
       if (subComponentTypes[name] === SubComponentTypes.composite) {
         computedStyles[name] = { styles: computedStyles[name] || [] };
+      } else if (native) {
+        computedStyles[name] = { style: computedStyles[name] || [] };
       } else {
         computedStyles[name] = mergeStyles(computedStyles[name] || []);
       }
