@@ -1,5 +1,5 @@
 export default function getSubComponentStyles ({styles = []}) {
-  return [...styles].reduce((result, style) => {
+  return styles.reduce((result, style) => {
     if (!style) {
       return result;
     }
@@ -12,9 +12,9 @@ export default function getSubComponentStyles ({styles = []}) {
     }
 
     const sorted = Object.keys(style).reduce((subResult, propName) => {
-      let subComponentName;
       if ((/::/).test(propName)) {
         let value = style[propName];
+        let subComponentName;
         if ((/^::/).test(propName)) {
           subComponentName = propName.substr(2);
         } else {
@@ -26,11 +26,9 @@ export default function getSubComponentStyles ({styles = []}) {
           };
         }
 
-        if (!subResult[subComponentName]) {
-          subResult[subComponentName] = {};
+        if (subComponentName !== 'root') {
+          subResult[subComponentName] = value;
         }
-
-        subResult[subComponentName] = value;
       } else {
         if (!subResult.root) {
           subResult.root = {};
