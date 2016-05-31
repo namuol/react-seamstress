@@ -70,7 +70,7 @@ export default class App extends Component {
           </div>
 
           <div>
-            <p>With CSS:</p>
+            <p>Unfortunately, Radium makes it impossible to override styles with CSS:</p>
             <style>
             {`/* Let's "inject" some custom CSS: */
               .RedToggler {
