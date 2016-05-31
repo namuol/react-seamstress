@@ -511,7 +511,7 @@ runTests({
     },
 
     {
-      capability: 'in absense of arguments, returns processed styles ',
+      capability: 'returns conditional styles',
       input: {
         test: true,
         styles: {
@@ -529,6 +529,44 @@ runTests({
         },
         compositeSubComponent: {
           styles: [44, 47],
+        },
+      },
+    },
+
+    {
+      capability: 'includes non-merged inline styles in the order they appear',
+      input: {
+        test: true,
+        styles: {
+          color: 'red',
+          '[test]': {color: 'pink'},
+          '::subComponent': {color: 'green'},
+          '[test]::subComponent': {color: 'orange'},
+          '::compositeSubComponent': {color: 'blue'},
+          '[test]::compositeSubComponent': {color: 'purple'},
+        },
+      },
+      expected: {
+        root: {
+          style: [
+            42,
+            {color: 'red'},
+            {color: 'pink'},
+          ],
+        },
+        subComponent: {
+          style: [
+            43,
+            {color: 'green'},
+            {color: 'orange'},
+          ],
+        },
+        compositeSubComponent: {
+          styles: [
+            44,
+            {color: 'blue'},
+            {color: 'purple'},
+          ],
         },
       },
     },
