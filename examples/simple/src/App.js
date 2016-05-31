@@ -30,13 +30,13 @@ const BLUE_STYLE_INLINE = {
 
 const RED_STYLE_CSS = {
   '::root': 'RedToggler',
-  '[toggled]::root': 'RedToggler_toggled',
+  '[toggled]': 'RedToggler_toggled',
 };
 
 const GREEN_STYLE_CSS = {
   '::root': 'GreenToggler',
-  '[toggled]::root': 'GreenToggler_toggled',
-  '[toggled]::indicator': 'GreenTogglerIndicator',
+  '[toggled]': 'GreenToggler_toggled',
+  '::indicator': 'GreenTogglerIndicator',
 };
 
 const BLUE_STYLE_CSS = [
