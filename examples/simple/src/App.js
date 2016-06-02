@@ -61,7 +61,7 @@ export default class App extends Component {
         </section>
 
         <section>
-          <h2>Overriding inside render with <code>props.styles</code>:</h2>
+          <h2>Overriding with <code>props.styles</code>:</h2>
           <div>
             <p>With inline styles:</p>
             <Toggler styles={RED_STYLE_INLINE} />

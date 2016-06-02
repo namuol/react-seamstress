@@ -64,6 +64,7 @@ export default class App extends Component {
           <h2>Overriding with <code>props.styles</code>:</h2>
           <div>
             <p>With inline styles:</p>
+            <p>(Unfortunately, it is <a href='https://github.com/Khan/aphrodite/issues/25'>impossible</a> to skin Aphrodite-styled components with inline styles)</p>
             <Toggler styles={RED_STYLE_INLINE} />
             <Toggler styles={GREEN_STYLE_INLINE} defaultToggled />
             <Toggler styles={BLUE_STYLE_INLINE} />
@@ -71,7 +72,7 @@ export default class App extends Component {
 
           <div>
             <p>With CSS:</p>
-            <p>(Unfortunately, Radium requires all CSS properties to be !important)</p>
+            <p>You can skin Aphrodite components with CSS, but you must set all CSS properties to be <a href='https://github.com/Khan/aphrodite/issues/25'><code>!important</code></a>:</p>
             <style>
             {`/* Let's "inject" some custom CSS: */
               .RedToggler {
