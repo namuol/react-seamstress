@@ -9,7 +9,6 @@ const propTypes = {
 
 const {
   createContainer,
-  stylesPropType,
   computedStylesPropType,
 } = Seamstress.configure({
   propTypes,
@@ -76,7 +75,6 @@ const StyledToggler = createContainer(Toggler);
 export default class TogglerContainer extends React.Component {
   static propTypes = {
     defaultToggled: PropTypes.bool,
-    styles: stylesPropType,
   };
 
   static defaultProps = {
