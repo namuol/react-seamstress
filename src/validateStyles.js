@@ -95,13 +95,15 @@ export default function validateStyles ({
               return;
             }
 
+            const prefix = `"${propString}" is not a valid selector. `;
+
             try {
-              const error = propValidator(expectedProps, propName, componentName);
+              const error = propValidator(expectedProps, propName, componentName, 'prop');
               if (error instanceof Error) {
-                errors.push(error.message);
+                errors.push(prefix + error.message);
               }
             } catch (error) {
-              errors.push(error.message || error);
+              errors.push(prefix + (error.message || error));
             }
           });
         }
