@@ -60,6 +60,8 @@ export function configure ({
     computedStylesPropType,
     createContainer: (Component) => {
       return class extends React.Component {
+        static displayName = Component.displayName || Component.name;
+
         static propTypes = {
           styles: stylesPropType,
         };

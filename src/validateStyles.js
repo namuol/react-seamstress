@@ -80,7 +80,6 @@ export default function validateStyles ({
   if (propTypes) {
     styles.filter((s) => !!s && (typeof s === 'object')).forEach((styles) => {
       Object.keys(styles).forEach((propString) => {
-        // const addendum = `\n\nHint: The invalid prop selector in question is \`${propString}\`.`;
         let expectedProps;
         try {
           expectedProps = getExpectedPropsFromSelector(propString);
@@ -90,8 +89,14 @@ export default function validateStyles ({
 
         if (expectedProps) {
           Object.keys(expectedProps).forEach((propName) => {
+            const propValidator = propTypes[propName];
+
+            if (!propValidator) {
+              return;
+            }
+
             try {
-              const error = propTypes[propName](expectedProps, propName, componentName);
+              const error = propValidator(expectedProps, propName, componentName);
               if (error instanceof Error) {
                 errors.push(error.message);
               }
