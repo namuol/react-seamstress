@@ -1,0 +1,12 @@
+{
+  "plugins": {
+    "lint": {
+      "maximum-line-length": false,
+      "list-item-indent": false
+    },
+    "validate-links": true,
+    "toc": {
+      "heading": "contents"
+    }
+  }
+}

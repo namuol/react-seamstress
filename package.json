@@ -13,6 +13,7 @@
     "example": "cd examples/simple && npm install && npm start",
     "start": "npm run example",
     "lint": "eslint .",
+    "build-docs": "remark docs --frail --quiet -o docs",
     "prepublish": "npm run build"
   },
   "author": "Louis Acresti <louis.acresti@gmail.com> (http://namuol.github.io)",
@@ -36,6 +37,9 @@
     "react": "^15.1.0",
     "react-addons-test-utils": "^15.0.2",
     "react-dom": "^15.1.0",
+    "remark": "^4.2.2",
+    "remark-toc": "^3.0.0",
+    "remark-validate-links": "^3.0.0",
     "tap": "^1.4.1",
     "tap-difflet": "^0.4.0",
     "tape": "^4.2.1"

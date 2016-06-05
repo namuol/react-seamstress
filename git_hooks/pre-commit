@@ -1,19 +1,5 @@
 #!/bin/bash
 
-npm run lint --silent
-
-returnCode=$?
-
-if [[ $returnCode != 0 ]]
-  then
-  echo
-  echo 'Error: ESLint failed; nothing was committed.'
-  echo
-  echo 'Fix the issues above and re-commit.'
-  echo
-  exit $returnCode
-fi
-
 npm run test --silent
 
 returnCode=$?
@@ -24,6 +10,36 @@ if [[ $returnCode != 0 ]]
   echo 'Error: Tests failed; nothing was committed.'
   echo
   echo 'Fix the failed tests above and re-commit.'
+  echo
+  exit $returnCode
+fi
+
+npm run build-docs --silent
+
+returnCode=$?
+
+if [[ $returnCode != 0 ]]
+  then
+  echo
+  echo 'Error: Documentation build failed; nothing was committed.'
+  echo
+  echo 'Fix the issues above and re-commit.'
+  echo
+  exit $returnCode
+fi
+
+git add docs
+
+npm run lint --silent
+
+returnCode=$?
+
+if [[ $returnCode != 0 ]]
+  then
+  echo
+  echo 'Error: ESLint failed; nothing was committed.'
+  echo
+  echo 'Fix the issues above and re-commit.'
   echo
   exit $returnCode
 fi
