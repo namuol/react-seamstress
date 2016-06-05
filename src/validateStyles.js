@@ -4,7 +4,7 @@ import getSubComponentStyles from './getSubComponentStyles';
 import getInvalidSubComponents from './getInvalidSubComponents';
 import getExpectedPropsFromSelector from './getExpectedPropsFromSelector';
 
-const stringifySubComponentList = (props) => props.map((s) => `'::${s}'`).join('\n');
+const stringifySubComponentList = (props) => props.map((s) => `::${s}`).join('\n');
 
 const styleProp = '[a-z0-9]+';
 const propSelector = '(\\[\\s*(\\w+)\\s*(\\s*=\\s*(\\d+|true|false|"([^"]|\\\\")+")\\s*)?\\s*\\])';
@@ -47,9 +47,9 @@ export default function validateStyles ({
     const malformedSelectors = Object.keys(styleSet).filter((s) => !isSelectorValid(s));
 
     if (malformedSelectors.length > 0) {
-      errors.push(`Seamstress: Malformed selector${
+      errors.push(`Malformed selector${
         malformedSelectors.length !== 1 ? 's' : ''
-      }: ${malformedSelectors.map((s) => `"${s}"`).join(', ')}\n\n${helpfulExamplesString}`);
+      }: ${malformedSelectors.map((s) => `"${s}"`).join(', ')}\n\n${helpfulExamplesString}\n\n`);
     }
   });
 
@@ -71,9 +71,9 @@ export default function validateStyles ({
     );
 
     errors.push(
-      errorIntro + ' ' + 'Valid sub-components are: [' +
+      '\n\n' + errorIntro + '\n\nValid sub-components are:\n\n' +
         stringifySubComponentList(Object.keys(subComponentTypes)) +
-      '].'
+        '\n\n'
     );
   }
 
