@@ -13,7 +13,7 @@
     "example": "cd examples/simple && npm install && npm start",
     "start": "npm run example",
     "lint": "eslint .",
-    "build-docs": "remark docs --frail --quiet -o docs",
+    "build-docs": "remark . --frail --quiet -o",
     "prepublish": "npm run build"
   },
   "author": "Louis Acresti <louis.acresti@gmail.com> (http://namuol.github.io)",

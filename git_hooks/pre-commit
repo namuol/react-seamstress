@@ -28,7 +28,7 @@ if [[ $returnCode != 0 ]]
   exit $returnCode
 fi
 
-git add docs
+git add ./*.md examples/*/*.md
 
 npm run lint --silent
 

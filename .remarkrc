@@ -1,8 +1,7 @@
 {
   "plugins": {
     "lint": {
-      "maximum-line-length": false,
-      "list-item-indent": false
+      "maximum-line-length": false
     },
     "validate-links": true,
     "toc": {
