@@ -7,8 +7,9 @@
   "jsnext:main": "src/index.js",
   "scripts": {
     "preinstall": "./install_git_hooks.sh",
+    "install": "npm run build",
     "test": "babel-node test | tap-difflet",
-    "hack": "nodemon -w src -w test -w package.json --exec \"npm run build && npm test\"",
+    "hack": "nodemon -w src -w test -w package.json --exec \"npm run build && babel-node test | tap-difflet -p\"",
     "build": "babel src -d lib",
     "example": "cd examples/simple && npm install && npm start",
     "start": "npm run example",
@@ -41,7 +42,7 @@
     "remark-toc": "^3.0.0",
     "remark-validate-links": "^3.0.0",
     "tap": "^1.4.1",
-    "tap-difflet": "^0.4.0",
+    "tap-difflet": "^0.5.0",
     "tape": "^4.2.1"
   },
   "peerDependencies": {
