@@ -53,11 +53,26 @@ tape.test('Seamstress.configure(...).stylesPropType(...)', (t) => {
 
   result = stylesPropType({
     styles: {
+      '::simpleSubComponent, ::invalidSubComponent': 'whatever',
+    },
+  }, 'styles', 'TestComponent');
+  t.assert(result instanceof Error, 'returns an Error when an unspecified subcomponent style is provided in a comma-separated selector');
+
+  result = stylesPropType({
+    styles: {
       '::simpleSubComponent': 'whatever',
       '::compositeSubComponent': 'whatever',
     },
   }, 'styles', 'TestComponent');
   t.equal(result, null, 'returns null when valid subcomponent styles are provided');
+
+  result = stylesPropType({
+    styles: {
+      '::simpleSubComponent, ::compositeSubComponent': 'whatever',
+    },
+  }, 'styles', 'TestComponent');
+  console.log(result);
+  t.equal(result, null, 'returns null when valid comma-separated subcomponent styles are provided');
 
   result = stylesPropType({
     styles: {

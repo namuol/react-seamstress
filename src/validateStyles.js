@@ -3,6 +3,7 @@ import getSubComponentStyles from './getSubComponentStyles';
 
 import getInvalidSubComponents from './getInvalidSubComponents';
 import getExpectedPropsFromSelector from './getExpectedPropsFromSelector';
+import expandStyles from './expandStyles';
 
 const stringifySubComponentList = (props) => props.map((s) => `::${s}`).join('\n');
 
@@ -37,6 +38,10 @@ export default function validateStyles ({
 }, props, propName, componentName) {
   const errors = [];
 
+  if (!props[propName]) {
+    return null;
+  }
+
   const styles = arrayify(props[propName]);
 
   styles.forEach((styleSet) => {
@@ -53,9 +58,14 @@ export default function validateStyles ({
     }
   });
 
+  const expandedStyles = styles.map(expandStyles).reduce((flattenedStyles, styleList) => {
+    flattenedStyles.push(...styleList);
+    return flattenedStyles;
+  }, []);
+
   const subComponentStyles = getSubComponentStyles({
-    styles,
-  }) || {};
+    styles: expandedStyles,
+  });
 
   delete subComponentStyles.root;
 

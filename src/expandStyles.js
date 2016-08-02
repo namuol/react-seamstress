@@ -1,4 +1,8 @@
 export default function expandStyles (styles) {
+  if (!styles) {
+    return [];
+  }
+
   return Object.keys(styles).map((k) => [k, k.split(',')]).reduce((result, [fullKey, keySet], idx, keySets) => {
     if (keySet.length === 1) {
       if (((keySets[idx - 1] || [])[1] || []).length > 1) {

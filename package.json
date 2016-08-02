@@ -8,7 +8,7 @@
   "scripts": {
     "preinstall": "./install_git_hooks.sh",
     "install": "npm run build",
-    "test": "babel-node test | tap-difflet",
+    "test": "babel-node test | tap-difflet -p",
     "hack": "nodemon -w src -w test -w package.json --exec \"npm run build && babel-node test | tap-difflet -p\"",
     "build": "babel src -d lib",
     "example": "cd examples/simple && npm install && npm start",
@@ -42,7 +42,7 @@
     "remark-toc": "^3.0.0",
     "remark-validate-links": "^3.0.0",
     "tap": "^1.4.1",
-    "tap-difflet": "^0.5.0",
+    "tap-difflet": "^0.6.0",
     "tape": "^4.2.1"
   },
   "peerDependencies": {

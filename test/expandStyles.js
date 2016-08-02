@@ -5,6 +5,11 @@ runTests({
   func: expandStyles,
   tests: [
     {
+      capability: 'returns an empty array when nothing is supplied',
+      input: {},
+      expected: [],
+    },
+    {
       capability: 'retain simple one-element array when no comma-separated styles exist',
       input: {
         '[whatever]': { color: 'red' },
