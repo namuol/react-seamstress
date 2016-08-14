@@ -70,8 +70,8 @@ There are already some complete [examples](examples) using popular styling solut
 
 -   [React Native](examples/react-native)
 -   [CSS Modules](examples/css-modules)
--   [Radium](examples/css-modules)
--   [Aphrodite](examples/css-modules)
+-   [Radium](examples/radium)
+-   [Aphrodite](examples/aphrodite)
 -   [Vanilla CSS / Inline Styles](examples/simple)
 
 ## Prior Art/Acknowledgements
