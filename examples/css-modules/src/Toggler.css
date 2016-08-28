@@ -1,4 +1,4 @@
-.base {
+.root {
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -19,10 +19,14 @@
 
 .indicator {
   color: white;
-  display: block;
+  display: none;
   line-height: 20px;
   width: 100%;
   height: 100%;
   text-align: center;
   font-size: 16pt;
+}
+
+.indicatorToggled {
+  display: block;
 }

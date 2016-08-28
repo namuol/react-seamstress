@@ -1,0 +1,45 @@
+#!/bin/bash
+
+npm run test --silent
+
+returnCode=$?
+
+if [[ $returnCode != 0 ]]
+  then
+  echo
+  echo 'Error: Tests failed; nothing was committed.'
+  echo
+  echo 'Fix the failed tests above and re-commit.'
+  echo
+  exit $returnCode
+fi
+
+npm run build-docs --silent
+
+returnCode=$?
+
+if [[ $returnCode != 0 ]]
+  then
+  echo
+  echo 'Error: Documentation build failed; nothing was committed.'
+  echo
+  echo 'Fix the issues above and re-commit.'
+  echo
+  exit $returnCode
+fi
+
+git add ./*.md examples/*/*.md
+
+npm run lint --silent
+
+returnCode=$?
+
+if [[ $returnCode != 0 ]]
+  then
+  echo
+  echo 'Error: ESLint failed; nothing was committed.'
+  echo
+  echo 'Fix the issues above and re-commit.'
+  echo
+  exit $returnCode
+fi

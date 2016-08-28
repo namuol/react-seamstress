@@ -1,38 +1,72 @@
 import arrayify from './arrayify';
-import mergeStyles from './mergeStyles';
 import getSubComponentStyles from './getSubComponentStyles';
 
-import getInvalidStyleStates from './getInvalidStyleStates';
 import getInvalidSubComponents from './getInvalidSubComponents';
+import getExpectedPropsFromSelector from './getExpectedPropsFromSelector';
+import expandStyles from './expandStyles';
 
-const stringifyPropertyList = styleStates => styleStates.map(s=>`\`${s}\``).join(', ');
+const stringifySubComponentList = (props) => props.map((s) => `::${s}`).join('\n');
 
-export default function validateStyles ({ styleStateTypes, subComponentTypes }, displayName, props, propName, component) {
-  const subComponentStyles = getSubComponentStyles({
-    styles: arrayify(props.styles),
-  }) || {};
+const styleProp = '[a-z0-9]+';
+const propSelector = '(\\[\\s*(\\w+)\\s*(\\s*=\\s*(\\d+|true|false|"([^"]|\\\\")+")\\s*)?\\s*\\])';
+const subComponentSelector = '(::[^\\s:=]+)';
 
-  const invalidStyleStates = getInvalidStyleStates({
-    // We're only worried about root styles:
-    style: mergeStyles(subComponentStyles.root),
-    styleStateTypes,
-  });
+const validSelector = new RegExp(`^${propSelector}+$|^${propSelector}*${subComponentSelector}$|^${styleProp}$`, 'i');
+const validateSelector = validSelector.test.bind(validSelector);
 
+const unquotedCommas = /(,)(?=(?:[^"]|"[^"]*")*$)/g;
+export function isSelectorValid (selector) {
+  return selector.split(unquotedCommas).filter((s) => s !== ',').map((s) => s.trim()).every(validateSelector);
+}
+
+export const validSelectorExamples = [
+  '::subComponent',
+  '::subComponent, ::subComponent2',
+  '[prop]',
+  '[prop=false]',
+  '[prop=42]',
+  '[prop="string"], [prop2=42]',
+  '[prop]::subComponent',
+  '[prop1][prop2="string"]::subComponent',
+];
+
+const helpfulExamplesString = `Here are some examples of valid selectors:\n${validSelectorExamples.map((s) => '  ' + s).join('\n')}`;
+
+export default function validateStyles ({
+  subComponentTypes,
+  propTypes,
+}, props, propName, componentName) {
   const errors = [];
 
-  if (invalidStyleStates) {
-    const errorIntro = (invalidStyleStates.length > 1
-      ? `[${stringifyPropertyList(invalidStyleStates)}] are not valid style-states of \`${displayName || component}\`.`
-      : `${stringifyPropertyList(invalidStyleStates)} is not a valid style-state of \`${displayName || component}\`.`
-    );
-
-    errors.push(
-      errorIntro + ' ' + 'Valid style-states are: [' +
-        stringifyPropertyList(Object.keys(styleStateTypes)) +
-      '].'
-    );
+  if (!props[propName]) {
+    return null;
   }
-  
+
+  const styles = arrayify(props[propName]);
+
+  styles.forEach((styleSet) => {
+    if (typeof styleSet !== 'object') {
+      return;
+    }
+
+    const malformedSelectors = Object.keys(styleSet).filter((s) => !isSelectorValid(s));
+
+    if (malformedSelectors.length > 0) {
+      errors.push(`Malformed selector${
+        malformedSelectors.length !== 1 ? 's' : ''
+      }: ${malformedSelectors.map((s) => `"${s}"`).join(', ')}\n\n${helpfulExamplesString}\n\n`);
+    }
+  });
+
+  const expandedStyles = styles.map(expandStyles).reduce((flattenedStyles, styleList) => {
+    flattenedStyles.push(...styleList);
+    return flattenedStyles;
+  }, []);
+
+  const subComponentStyles = getSubComponentStyles({
+    styles: expandedStyles,
+  });
+
   delete subComponentStyles.root;
 
   const invalidSubComponents = getInvalidSubComponents({
@@ -42,18 +76,54 @@ export default function validateStyles ({ styleStateTypes, subComponentTypes }, 
 
   if (invalidSubComponents) {
     const errorIntro = (invalidSubComponents.length > 1
-      ? `[${stringifyPropertyList(invalidSubComponents)}] are not valid sub-components of \`${displayName || component}\`.`
-      : `${stringifyPropertyList(invalidSubComponents)} is not a valid sub-component of \`${displayName || component}\`.`
+      ? `[${stringifySubComponentList(invalidSubComponents)}] are not valid sub-components of \`${componentName}\`.`
+      : `${stringifySubComponentList(invalidSubComponents)} is not a valid sub-component of \`${componentName}\`.`
     );
 
     errors.push(
-      errorIntro + ' ' + 'Valid sub-components are: [' +
-        stringifyPropertyList(Object.keys(subComponentTypes)) +
-      '].'
+      '\n\n' + errorIntro + '\n\nValid sub-components are:\n\n' +
+        stringifySubComponentList(Object.keys(subComponentTypes)) +
+        '\n\n'
     );
+  }
+
+  if (propTypes) {
+    styles.filter((s) => !!s && (typeof s === 'object')).forEach((styles) => {
+      Object.keys(styles).forEach((propString) => {
+        let expectedProps;
+        try {
+          expectedProps = getExpectedPropsFromSelector(propString);
+        } catch (error) {
+          errors.push(error.message || error);
+        }
+
+        if (expectedProps) {
+          Object.keys(expectedProps).forEach((propName) => {
+            const propValidator = propTypes[propName];
+
+            if (!propValidator) {
+              return;
+            }
+
+            const prefix = `"${propString}" is not a valid selector. `;
+
+            try {
+              const error = propValidator(expectedProps, propName, componentName, 'prop');
+              if (error instanceof Error) {
+                errors.push(prefix + error.message);
+              }
+            } catch (error) {
+              errors.push(prefix + (error.message || error));
+            }
+          });
+        }
+      });
+    });
   }
 
   if (errors.length > 0) {
     return new Error(errors.join('\n'));
   }
+
+  return null;
 }

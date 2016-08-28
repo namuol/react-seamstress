@@ -8,7 +8,7 @@ runTests({
       capability: 'return {root: []} for empty input',
       input: {},
       expected: {
-        root: []
+        root: [],
       },
     },
 
@@ -49,7 +49,7 @@ runTests({
       },
       expected: {
         root: [],
-        "sub-component": [
+        'sub-component': [
           {
             color: 'red',
           },
@@ -63,7 +63,6 @@ runTests({
         styles: [
           false,
           null,
-          24,
           undefined,
         ],
       },
@@ -99,7 +98,7 @@ runTests({
       },
       expected: {
         root: [],
-        "sub-component": [
+        'sub-component': [
           {
             ':root-state': {color: 'red'},
           },
@@ -120,7 +119,7 @@ runTests({
       },
       expected: {
         root: [],
-        "sub-component": [
+        'sub-component': [
           {
             ':many:state:selectors:before:the': {color: 'red'},
           },
@@ -141,7 +140,7 @@ runTests({
       },
       expected: {
         root: [],
-        "sub-component": [
+        'sub-component': [
           {
             '[prop]': {color: 'red'},
           },

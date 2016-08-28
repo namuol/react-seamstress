@@ -1,29 +1,32 @@
 import React, { Component } from 'react';
 import Toggler from './Toggler';
 
-import RedClasses from './RedToggler.css';
-import GreenClasses from './GreenToggler.css';
-import BlueClasses from './BlueToggler.css';
-
-const RED_STYLE_CSS = {
-  ':base': RedClasses.base,
-  ':toggled': RedClasses.toggled,
+const RED_STYLE_INLINE = {
+  border: '2px solid #c66',
+  backgroundColor: '#fbb',
+  '[toggled]': {
+    backgroundColor: '#c66',
+  },
 };
 
-const GREEN_STYLE_CSS = {
-  ':base': GreenClasses.base,
-  ':toggled': GreenClasses.toggled,
-  '::indicator': GreenClasses.indicator,
+const GREEN_STYLE_INLINE = {
+  border: '2px solid #6c6',
+  backgroundColor: '#bfb',
+  '[toggled]': {
+    backgroundColor: '#6c6',
+  },
+  '::indicator': {
+    color: '#272',
+  },
 };
 
-const BLUE_STYLE_CSS = {
-  ':base': BlueClasses.base,
-  ':toggled': BlueClasses.toggled,
+const BLUE_STYLE_INLINE = {
+  border: '2px solid #66c',
+  backgroundColor: '#bbf',
+  '[toggled]': {
+    backgroundColor: '#66c',
+  },
 };
-
-const RedToggler = Toggler.extendStyles(RED_STYLE_CSS);
-const GreenToggler = Toggler.extendStyles(GREEN_STYLE_CSS);
-const BlueToggler = Toggler.extendStyles(BLUE_STYLE_CSS);
 
 export default class App extends Component {
   render () {
@@ -33,25 +36,19 @@ export default class App extends Component {
           <h2>Default styles:</h2>
           <div>
             <Toggler />
-            <Toggler defaultToggled={true} />
+            <Toggler defaultToggled />
             <Toggler />
           </div>
         </section>
 
         <section>
-          <h2>Overriding inside render with <code>props.styles</code>:</h2>
+          <h2>Overriding with <code>props.styles</code>:</h2>
           <div>
-            <Toggler styles={RED_STYLE_CSS} />
-            <Toggler styles={GREEN_STYLE_CSS} defaultToggled={true} />
-            <Toggler styles={BLUE_STYLE_CSS} />
+            <p>With inline styles:</p>
+            <Toggler styles={RED_STYLE_INLINE} />
+            <Toggler styles={GREEN_STYLE_INLINE} defaultToggled />
+            <Toggler styles={BLUE_STYLE_INLINE} />
           </div>
-        </section>
-
-        <section>
-          <h2>Overriding with <code>Toggler.extendStyles</code>:</h2>
-          <RedToggler />
-          <GreenToggler defaultToggled={true} />
-          <BlueToggler />
         </section>
       </div>
     );
