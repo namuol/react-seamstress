@@ -1,4 +1,4 @@
-# Seamstress Radium example
+# Seamstress React-Native example
 
 ## Requirements
 
